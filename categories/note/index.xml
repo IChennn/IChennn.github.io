@@ -9,6 +9,90 @@
     <atom:link href="https://ichennn.github.io/categories/note/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>try markdown</title>
+      <link>https://ichennn.github.io/blog/year-month-day/try-markdown/</link>
+      <pubDate>Sun, 19 Mar 2017 16:36:54 +0800</pubDate>
+      
+      <guid>https://ichennn.github.io/blog/year-month-day/try-markdown/</guid>
+      <description>
+
+&lt;pre&gt;&lt;code class=&#34;language-Python&#34;&gt;import pandas
+print(&amp;quot;hello world!&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;==today==&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;yryyy&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;yyy&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;yyy&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;4^2^=16&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;yes&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;google.com&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;3&lt;/th&gt;
+&lt;th&gt;4&lt;/th&gt;
+&lt;th&gt;5&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;Eee&lt;/td&gt;
+&lt;td&gt;www&lt;/td&gt;
+&lt;td&gt;Rrr&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;222&lt;/td&gt;
+&lt;td&gt;333&lt;/td&gt;
+&lt;td&gt;444&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;del&gt;ccccddd&lt;/del&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;u re pretty&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;head&#34;&gt;head&lt;/h1&gt;
+
+&lt;h2 id=&#34;head-1&#34;&gt;head&lt;/h2&gt;
+
+&lt;h3 id=&#34;head-2&#34;&gt;head&lt;/h3&gt;
+
+&lt;h4 id=&#34;head-3&#34;&gt;head&lt;/h4&gt;
+
+&lt;h5 id=&#34;head-4&#34;&gt;head&lt;/h5&gt;
+
+&lt;h6 id=&#34;head-5&#34;&gt;head&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ppp&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;font color=&#34;red&#34;&gt;reddddd word&lt;font&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;ichennn.github.io&#34;&gt;my blog&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>day_3</title>
       <link>https://ichennn.github.io/blog/year-month-day/day_3/</link>
       <pubDate>Sat, 18 Mar 2017 23:11:19 +0800</pubDate>
