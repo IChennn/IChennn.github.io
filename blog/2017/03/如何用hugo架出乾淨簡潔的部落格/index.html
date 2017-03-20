@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>如何用Hugo架出乾淨簡潔的部落格 &middot; IChen Hung</title>
+
+  
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/highlight/solarized_dark.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://ichennn.github.io/touch-icon-144-precomposed.png">
+  <link href="https://ichennn.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="其實寫部落格真的是一件很麻煩的事，但好不容易下定決心要為生活留下一點痕跡，就來記錄一下生出現在的部落格的過程吧。">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-08 layout-reverse">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>Murmuring</h1>
+      <p class="lead">心身之外，順其自然；順其自然，花落果成。</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/about-me/">About ME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/note/">note</a></li>
+      
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/IChennn"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      
+      
+      
+      
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2017 <a href="https://ichennn.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">如何用Hugo架出乾淨簡潔的部落格</h1>
+    <span class="post-date">Mar 20, 2017
+    
+    <br/>
+    <a class="label" href="https://ichennn.github.io/categories/tech">Tech</a>
+    </span>
+    
+
+<p>從小時候就一直覺得寫自己的部落格是一件很潮很厲害的事，當然也經營過好幾個，從最一開始的yahoo部落格、無名小站到天空部落，前前後後也寫了好幾年，可是最後都虎頭蛇尾收場ＸＤ還是別提了</p>
+
+<p>但是從很早之前，我就一直對這些部落格平台有一些小小的不滿（？
+- 首先，樣板很固定，用過的幾個當中，大概只有天空算比較自由，其他就&hellip;&hellip;xd
+- 很多時候只是想寫一些自己的碎碎念，並不想要知道有多少人看過，也不想要有人對此發表評論。
+- 有廣告有廣告有廣告啊啊啊</p>
+
+<p>直到最近開始比較會用github了之後，意外發現可以利用github pages存放靜態頁面。於是又重新燃起了我寫部落格的熊熊大火啊</p>
+
+<hr />
+
+<h2 id="hugo是什麼">Hugo是什麼？</h2>
+
+<p>簡單來說就是一個靜態網頁生成器，簡單快速好用。
+可以放在任何可host網站的空間，如github或FTP。
+用Go語言寫成，據說比Jekyll穩定且快（當然也比較簡單ＸＤ</p>
+
+<h2 id="這個網站怎麼生出來的">這個網站怎麼生出來的？</h2>
+
+<p>有多簡單好用呢？用Hugo架一個部落格，大概需要以下幾個步驟，根據官網的<a href="http://gohugo.io/overview/quickstart/">Quick start</a>這個過程大概只要2分鐘：</p>
+
+<ol>
+<li>下載hugo</li>
+<li><code>hugo new site &lt;sitename&gt;</code>，然後<code>cd</code>進<code>themes</code>，網路上隨便找個順眼的主題，把它<code>git clone</code>下來（ps. 如果想放github上的話，這邊請用submodule）</li>
+<li><code>hugo new post/&lt;title&gt;.md</code> ，寫點什麼東西進去</li>
+<li><code>hugo server</code> 就可以在本地看到熱騰騰的網站了</li>
+</ol>
+
+<p>好了，結束收工（欸</p>
+
+<p>不是啦，其實還是有很多細節可以設定，在<code>config.toml</code> 當中可以客製化一些細節，也可自己寫一個css覆蓋原本的主題做微調。真的要鑽研也是研究不完，像是short code我到現在還是沒弄懂 囧</p>
+
+<p><a href="http://gohugo.io/">Hugo官網</a>裡面有很多好玩的設定，留著日後慢慢看ＸＤ</p>
+
+<h2 id="hosting-on-github">Hosting on Github</h2>
+
+<p>然後呢？總不能這麼簡單漂亮的網站只有我自己看得到吧？</p>
+
+<p>我當初為了研究怎麼把它放上github，搞了一天一夜快要瘋掉，<a href="http://gohugo.io/tutorials/github-pages-blog/">官網上的教學</a>一個很複雜不想看懂（欸），一個怎麼試都失敗搞得我很火大ry</p>
+
+<p>順帶一提github pages有分成user page跟project page兩種，托hugo的福，我之前一直不知道原來有分別，詳細差別參見<a href="https://help.github.com/articles/user-organization-and-project-pages/">官方</a>。</p>
+
+<p>最後在各種英文日文網站的教學拼拼湊湊下，終於成功使用user page放上去惹～（也就是網址是github.io結尾）：</p>
+
+<h5 id="step1-準備兩個repository">Step1: 準備兩個repository</h5>
+
+<p>一個命名為<code>&lt;username&gt;.github.io</code>，用來放產生的靜態頁面；另一個隨意，用來放Hugo site的source code。</p>
+
+<h5 id="step2-利用hugo架網站囉">Step2: 利用hugo架網站囉</h5>
+
+<pre><code class="language-bash">$ hugo new site &lt;sitename&gt;
+$ cd &lt;sitename&gt;
+$ hugo new post/&lt;title&gt;.md  #文章會放在content/post裡
+$ git init
+$ git remote add origin &lt;隨意&gt;.git. #對應到另一個隨意命名的repo
+$ git submodule add &lt;theme url&gt; theme/&lt;theme name&gt;
+</code></pre>
+
+<p>submodule大概就是git裡的超連結，可以連到另一個獨立的repository裏，這樣原作者有什麼更新的話，就不用再手動更新了。
+不過直接<code>git clone</code>下來也是可以的，只要本地有檔案還是可以產生靜態頁面。真要說有什麼不方便的話，大概就是某天想要換電腦寫文章的時候，要再額外到theme作者的頁面git clone一次而已。</p>
+
+<h5 id="step3-生成網頁">Step3:  生成網頁</h5>
+
+<p>先填寫好<code>config.toml</code>內的設定，準備好要發表的文章，hugo`後會產生一個存放靜態頁面的資料夾，預設是叫public</p>
+
+<pre><code class="language-bash">$ hugo
+$ git submodule add &lt;username&gt;.github.io.git public
+</code></pre>
+
+<p>將public對應到<code>&lt;username&gt;.github.io</code>，這樣之後就可以直接將public中的靜態頁面push上去了</p>
+
+<h5 id="step4-準備放上github">Step4:  準備放上GitHub</h5>
+
+<pre><code class="language-bash">$ cd public #很重要！！
+$ git add .
+$ git commit -m &quot;message&quot;
+$ git push origin master
+</code></pre>
+
+<p>為什麼說很重要呢？因為不<code>cd</code>進public，裡面的東西是不會被連帶push上去的啊！！</p>
+
+<p>之後要新增文章，只要寫好之後執行<code>hugo</code>，再把public資料夾裡的東西push上去就可以更新了！</p>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://ichennn.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+
