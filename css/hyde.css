@@ -123,13 +123,13 @@ a.sidebar-nav-item:focus {
  */
 
 .content {
-  padding-top:    5rem;
-  padding-bottom: 5rem;
+  padding-top:    4rem;    /*article description*/
+  padding-bottom: 4rem;
 }
 
-@media (min-width: 48em) {
+@media (min-width: 48em) {   
   .content {
-    max-width: 38rem;
+    max-width: 40rem;    /*article block width*/
     margin-left: 20rem;
     margin-right: 2rem;
   }
