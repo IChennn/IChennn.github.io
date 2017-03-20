@@ -31,11 +31,11 @@
 
 &lt;hr /&gt;
 
-&lt;h4 id=&#34;u-所以我到底對他做了什麼呢-u&#34;&gt;&lt;strong&gt;&lt;u&gt;所以我到底對他做了什麼呢&lt;/u&gt;？&lt;/strong&gt;&lt;/h4&gt;
+&lt;h3 id=&#34;u-所以我到底對他做了什麼呢-u&#34;&gt;&lt;strong&gt;&lt;u&gt;所以我到底對他做了什麼呢&lt;/u&gt;？&lt;/strong&gt;&lt;/h3&gt;
 
 &lt;p&gt;…….我真的不知道啦（哭&lt;/p&gt;
 
-&lt;h6 id=&#34;可能原因-font-color-red-push順序錯誤-font&#34;&gt;→可能原因： &lt;font color=&#34;red&#34;&gt;&lt;strong&gt;push順序錯誤：&lt;/strong&gt;&lt;font&gt;&lt;/h6&gt;
+&lt;h5 id=&#34;可能原因-font-color-red-push順序錯誤-font&#34;&gt;→可能原因： &lt;font color=&#34;red&#34;&gt;&lt;strong&gt;push順序錯誤：&lt;/strong&gt;&lt;font&gt;&lt;/h5&gt;
 
 &lt;p&gt;&lt;font color=&#34;black&#34;&gt;因為submodule的內容不會被連帶更新，所以要先push submodule再push上一層（如果有需要的話），不然從上一層repo連結過去會是前一次push的內容。&lt;font&gt;&lt;/p&gt;
 
@@ -48,14 +48,14 @@
 
 &lt;p&gt;一開始看到我真的是滿頭問號orz明明最新的內容都push不上去你還騙我說什麼up-to-date&amp;hellip;.&lt;/p&gt;
 
-&lt;h4 id=&#34;u-解決方法-u&#34;&gt;&lt;strong&gt;&lt;u&gt;解決方法&lt;/u&gt;&lt;/strong&gt;&lt;/h4&gt;
+&lt;h3 id=&#34;u-解決方法-u&#34;&gt;&lt;strong&gt;&lt;u&gt;解決方法&lt;/u&gt;&lt;/strong&gt;&lt;/h3&gt;
 
 &lt;p&gt;參照&lt;a href=&#34;http://stackoverflow.com/questions/4445738/unable-to-push-commits-from-a-git-submodule&#34;&gt;這篇&lt;/a&gt; [註一]，總結來說就是：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$cd &amp;lt;submodule directory&amp;gt;
-$git checkout master
-$git merge HEAD@{1}
-$git push origin master
+&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ cd &amp;lt;submodule directory&amp;gt;
+$ git checkout master
+$ git merge HEAD@{1}
+$ git push origin master
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;因為現在其實有兩個branch。&lt;/p&gt;
@@ -67,7 +67,7 @@ $git push origin master
 
 &lt;p&gt;除了&lt;code&gt;master&lt;/code&gt;以外，另一個就是我們現在所處的branch 。所以解決方法就是要把這兩個莫名其妙被我搞出來的東西merge在一起。當輸入merge指令之後，會看到：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$git merge HEAD@{1}
+&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ git merge HEAD@{1}
 Updating 300cd65..08987fb
 Fast-forward
  blog/.DS_Store                              | Bin 6148 -&amp;gt; 6148 bytes
@@ -83,7 +83,7 @@ Fast-forward
 
 &lt;hr /&gt;
 
-&lt;h4 id=&#34;git-add-的時候碰到奇怪的錯誤訊息&#34;&gt;&lt;code&gt;git add&lt;/code&gt;的時候碰到奇怪的錯誤訊息：&lt;/h4&gt;
+&lt;h3 id=&#34;git-add-的時候碰到奇怪的錯誤訊息&#34;&gt;&lt;code&gt;git add&lt;/code&gt;的時候碰到奇怪的錯誤訊息：&lt;/h3&gt;
 
 &lt;p&gt;如果第一步要&lt;code&gt;add&lt;/code&gt;就不幸發生錯誤了&lt;/p&gt;
 
@@ -111,8 +111,8 @@ Abort trap: 6
 
 &lt;p&gt;此時解決方法就不太一樣，要回到上一層處理：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$git submodule init
-$git submodule update
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git submodule init
+$ git submodule update
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;因為自己真的很常手賤，又腦袋不太清楚就亂push東西&amp;hellip;&amp;hellip;這些問題從一開始很慌張地去估狗，甚至考慮把整個repo砍掉重練，到現在已經見怪不怪了～～（好像沒什麼好得意XD）&lt;/p&gt;

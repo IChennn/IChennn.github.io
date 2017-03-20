@@ -123,9 +123,8 @@ a.sidebar-nav-item:focus {
  */
 
 .content {
-  padding-top:    4rem;
-  padding-bottom: 4rem;
-  font-family: Chalkboard;
+  padding-top:    5rem;
+  padding-bottom: 5rem;
 }
 
 @media (min-width: 48em) {
