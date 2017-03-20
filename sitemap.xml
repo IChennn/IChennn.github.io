@@ -2,28 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://ichennn.github.io/blog/2017/03/day_5/</loc>
-    <lastmod>2017-03-19T23:07:09+08:00</lastmod>
+    <loc>https://ichennn.github.io/blog/2017/03/%E5%A6%82%E4%BD%95%E7%94%A8hugo%E6%9E%B6%E5%87%BA%E4%B9%BE%E6%B7%A8%E7%B0%A1%E6%BD%94%E7%9A%84%E9%83%A8%E8%90%BD%E6%A0%BC/</loc>
+    <lastmod>2017-03-20T20:28:57+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://ichennn.github.io/blog/2017/03/try-markdown/</loc>
-    <lastmod>2017-03-19T16:36:54+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ichennn.github.io/blog/2017/03/day_3/</loc>
-    <lastmod>2017-03-18T23:11:19+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ichennn.github.io/blog/2017/03/day_2/</loc>
-    <lastmod>2017-03-18T22:34:39+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ichennn.github.io/blog/2017/03/day_1/</loc>
-    <lastmod>2017-03-18T19:01:20+08:00</lastmod>
+    <loc>https://ichennn.github.io/about-me/</loc>
+    <lastmod>2017-03-20T16:51:32+08:00</lastmod>
   </url>
   
   <url>
@@ -33,19 +18,19 @@
   
   <url>
     <loc>https://ichennn.github.io/</loc>
-    <lastmod>2017-03-19T23:07:09+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://ichennn.github.io/categories/note/</loc>
-    <lastmod>2017-03-19T23:07:09+08:00</lastmod>
+    <lastmod>2017-03-20T20:28:57+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://ichennn.github.io/post/</loc>
-    <lastmod>2017-03-19T23:07:09+08:00</lastmod>
+    <lastmod>2017-03-20T20:28:57+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://ichennn.github.io/categories/tech/</loc>
+    <lastmod>2017-03-20T20:28:57+08:00</lastmod>
     <priority>0</priority>
   </url>
   
