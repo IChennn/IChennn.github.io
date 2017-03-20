@@ -6,8 +6,122 @@
     <description>Recent content on Murmuring</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Mar 2017 20:28:57 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 21 Mar 2017 00:33:37 +0800</lastBuildDate>
     <atom:link href="https://ichennn.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>在Hugo寫完文章，卻push不上github怎麼辦？</title>
+      <link>https://ichennn.github.io/blog/2017/03/%E5%9C%A8hugo%E5%AF%AB%E5%AE%8C%E6%96%87%E7%AB%A0%E5%8D%BBpush%E4%B8%8D%E4%B8%8Agithub%E6%80%8E%E9%BA%BC%E8%BE%A6/</link>
+      <pubDate>Tue, 21 Mar 2017 00:33:37 +0800</pubDate>
+      
+      <guid>https://ichennn.github.io/blog/2017/03/%E5%9C%A8hugo%E5%AF%AB%E5%AE%8C%E6%96%87%E7%AB%A0%E5%8D%BBpush%E4%B8%8D%E4%B8%8Agithub%E6%80%8E%E9%BA%BC%E8%BE%A6/</guid>
+      <description>
+
+&lt;p&gt;今天突然心血來潮想說自己來改改看hugo theme的樣式，CSS門外漢的我，就每個檔案都給它打開來研究研究，然後手賤的塗塗改改，想說反正&lt;code&gt;hugo server&lt;/code&gt; 上面看爽的就好，改壞了大不了重新&lt;code&gt;git clone&lt;/code&gt;下來就好惹～～&lt;/p&gt;
+
+&lt;p&gt;結果，門外漢的我還是手賤，push了一些也不知道自己在改啥的東西上去後&amp;hellip;&amp;hellip;就發現放hugo souce的repo裡的submodule好像不同步&amp;hellip;&amp;hellip;？&lt;/p&gt;
+
+&lt;p&gt;…&amp;hellip;我真的不知道我剛剛做了什麼（崩潰&lt;/p&gt;
+
+&lt;p&gt;為什麼public裡面的靜態網頁push不上去ＱＱＱ救命哦&lt;/p&gt;
+
+&lt;p&gt;想當然，就算喊破喉嚨應該也是沒人能救我  囧&lt;/p&gt;
+
+&lt;p&gt;自己的手賤自己救，拜過估狗大神後還是把它弄好了（雙手合十&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;u-所以我到底對他做了什麼呢-u&#34;&gt;&lt;strong&gt;&lt;u&gt;所以我到底對他做了什麼呢&lt;/u&gt;？&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;…….我真的不知道啦（哭&lt;/p&gt;
+
+&lt;h6 id=&#34;可能原因-font-color-red-push順序錯誤-font&#34;&gt;→可能原因： &lt;font color=&#34;red&#34;&gt;&lt;strong&gt;push順序錯誤：&lt;/strong&gt;&lt;font&gt;&lt;/h6&gt;
+
+&lt;p&gt;&lt;font color=&#34;black&#34;&gt;因為submodule的內容不會被連帶更新，所以要先push submodule再push上一層（如果有需要的話），不然從上一層repo連結過去會是前一次push的內容。&lt;font&gt;&lt;/p&gt;
+
+&lt;p&gt;只要連過去後發現，在顯示&lt;code&gt;branch:master&lt;/code&gt;的地方會顯示&lt;code&gt;tree:&amp;lt;上一次的commit&amp;gt;&lt;/code&gt;，應該就是不小心忘了先push submodule的目錄。&lt;/p&gt;
+
+&lt;p&gt;此時在submodule裡面嘗試push的話，就會顯示：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Everything up-to-date
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;一開始看到我真的是滿頭問號orz明明最新的內容都push不上去你還騙我說什麼up-to-date&amp;hellip;.&lt;/p&gt;
+
+&lt;h4 id=&#34;u-解決方法-u&#34;&gt;&lt;strong&gt;&lt;u&gt;解決方法&lt;/u&gt;&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;參照&lt;a href=&#34;http://stackoverflow.com/questions/4445738/unable-to-push-commits-from-a-git-submodule&#34;&gt;這篇&lt;/a&gt; [註一]，總結來說就是：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$cd &amp;lt;submodule directory&amp;gt;
+$git checkout master
+$git merge HEAD@{1}
+$git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;因為現在其實有兩個branch。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ git branch
+* (HEAD detached from &amp;lt;上一次的commit&amp;gt;)
+  master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;除了&lt;code&gt;master&lt;/code&gt;以外，另一個就是我們現在所處的branch 。所以解決方法就是要把這兩個莫名其妙被我搞出來的東西merge在一起。當輸入merge指令之後，會看到：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$git merge HEAD@{1}
+Updating 300cd65..08987fb
+Fast-forward
+ blog/.DS_Store                              | Bin 6148 -&amp;gt; 6148 bytes
+ blog/{year-month-day =&amp;gt; 2017}/.DS_Store     | Bin 6148 -&amp;gt; 6148 bytes
+ blog/year-month-day/day_1/index.html        |  96 ----------------
+ blog/year-month-day/day_2/index.html        |  96 ----------------
+ .
+ .
+ #下接一串要update的檔案
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;耶，然後就正常了！我以後還是乖乖寫東西更新就好了，不要再亂動裡面的檔案orz&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;git-add-的時候碰到奇怪的錯誤訊息&#34;&gt;&lt;code&gt;git add&lt;/code&gt;的時候碰到奇怪的錯誤訊息：&lt;/h4&gt;
+
+&lt;p&gt;如果第一步要&lt;code&gt;add&lt;/code&gt;就不幸發生錯誤了&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git add .
+fatal: Unable to create &#39;/Users/.../.git/index.lock&#39;: File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by &#39;git commit&#39;. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;就直接把&lt;code&gt;index.lock&lt;/code&gt;刪除即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ rm -f ./.git/index.lock
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;若無法&lt;code&gt;git add&lt;/code&gt;的是submodule的話，訊息應該是這樣的：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ git add .
+Assertion failed: (item-&amp;gt;nowildcard_len &amp;lt;= item-&amp;gt;len &amp;amp;&amp;amp; item-&amp;gt;prefix &amp;lt;= item-&amp;gt;len), function prefix_pathspec, file pathspec.c, line 308.
+Abort trap: 6
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;此時解決方法就不太一樣，要回到上一層處理：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$git submodule init
+$git submodule update
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;因為自己真的很常手賤，又腦袋不太清楚就亂push東西&amp;hellip;&amp;hellip;這些問題從一開始很慌張地去估狗，甚至考慮把整個repo砍掉重練，到現在已經見怪不怪了～～（好像沒什麼好得意XD）&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;[註一] 在stackoverflow的連結裡的狀況是headless-branch，跟我碰到的似乎有點不太一樣，不過提供的方法一樣有效就是了。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>如何用Hugo架出乾淨簡潔的部落格</title>
@@ -79,8 +193,9 @@ $ git remote add origin &amp;lt;隨意&amp;gt;.git. #對應到另一個隨意命
 $ git submodule add &amp;lt;theme url&amp;gt; theme/&amp;lt;theme name&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;submodule大概就是git裡的超連結，可以連到另一個獨立的repository裏，這樣原作者有什麼更新的話，就不用再手動更新了。
-不過直接&lt;code&gt;git clone&lt;/code&gt;下來也是可以的，只要本地有檔案還是可以產生靜態頁面。真要說有什麼不方便的話，大概就是某天想要換電腦寫文章的時候，要再額外到theme作者的頁面git clone一次而已。&lt;/p&gt;
+&lt;p&gt;submodule大概就是git裡的超連結，可以連到另一個獨立的repository裏，這樣原作者有什麼更新的話，就不用再手動更新了。&lt;/p&gt;
+
+&lt;p&gt;不過直接&lt;code&gt;git clone&lt;/code&gt;下來也是可以的，只要本地有檔案還是可以產生靜態頁面。真要說有什麼不方便的話，大概就是某天想要換電腦寫文章的時候，要再額外到theme作者的頁面git clone一次而已。&lt;/p&gt;
 
 &lt;h5 id=&#34;step3-生成網頁&#34;&gt;Step3:  生成網頁&lt;/h5&gt;
 
@@ -102,7 +217,7 @@ $ git push origin master
 
 &lt;p&gt;為什麼說很重要呢？因為不&lt;code&gt;cd&lt;/code&gt;進public，裡面的東西是不會被連帶push上去的啊！！&lt;/p&gt;
 
-&lt;p&gt;之後要新增文章，只要寫好之後執行&lt;code&gt;hugo&lt;/code&gt;，再把public資料夾裡的東西push上去就可以更新了！&lt;/p&gt;
+&lt;p&gt;之後要新增文章，只要寫好之後執行&lt;code&gt;hugo&lt;/code&gt;，再把public資料夾裡的東西push上去就可以更新了💕&lt;/p&gt;
 </description>
     </item>
     
@@ -112,7 +227,7 @@ $ git push origin master
       <pubDate>Mon, 20 Mar 2017 16:51:32 +0800</pubDate>
       
       <guid>https://ichennn.github.io/about-me/</guid>
-      <description>&lt;p&gt;&lt;font size=14&gt;一個集廢、宅、怪於一身的慵懶女子。&lt;/font&gt;&lt;/p&gt;
+      <description>&lt;p&gt;一個集廢、宅、怪於一身的慵懶女子。&lt;/p&gt;
 </description>
     </item>
     
