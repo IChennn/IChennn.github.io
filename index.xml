@@ -86,7 +86,7 @@
 &lt;li&gt;打點好面試的服裝＆背好自我介紹ＸＤ&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h5 id=&#34;情報學基礎&#34;&gt;&lt;em&gt;＃情報學基礎&lt;/em&gt;&lt;/h5&gt;
+&lt;h4 id=&#34;情報學基礎&#34;&gt;&lt;em&gt;＃情報學基礎&lt;/em&gt;&lt;/h4&gt;
 
 &lt;p&gt;募集要項上有指定書目，其實就是大一計算機概論會用的那本：&lt;/p&gt;
 
@@ -105,53 +105,51 @@
 &lt;li&gt;比較常出現的有operating system、algorithms、computation theory這三個單元&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h5 id=&#34;專門科目&#34;&gt;&lt;em&gt;＃專門科目&lt;/em&gt;&lt;/h5&gt;
+&lt;h4 id=&#34;專門科目&#34;&gt;&lt;em&gt;＃專門科目&lt;/em&gt;&lt;/h4&gt;
 
 &lt;p&gt;專門科目試卷非常厚一疊，&lt;strong&gt;17題選3，共有五種不同領域&lt;/strong&gt;，根據第一志望的研究室來選擇題目。&lt;/p&gt;
 
 &lt;p&gt;計算機題組5題的組成每年其實大同小異：&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;u&gt;Database&lt;/u&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;​ 1題。主要是SQL、relational algebra、relational calculas、indexing、transaction management&lt;/p&gt;
+&lt;li&gt;&lt;u&gt;&lt;strong&gt;&lt;em&gt;Database&lt;/em&gt;&lt;/strong&gt;&lt;/u&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;u&gt;HCI&lt;/u&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;​ 1題。主要是usability evaluation  的幾種方法及優缺點&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;u&gt;Information Retrieval&lt;/u&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;​ 1~2題。範圍很大，較難，從基本的precision/recall rate到B tree到recommendation system都有&lt;/p&gt;
+&lt;li&gt;1題。主要是SQL、relational algebra、relational calculas、indexing、transaction management&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;u&gt;&lt;strong&gt;&lt;em&gt;HCI&lt;/em&gt;&lt;/strong&gt;&lt;/u&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;u&gt;AI&lt;/u&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;​ 0~1題。decision tree、bayesian network等主題&lt;/p&gt;
+&lt;li&gt;1題。主要是usability evaluation  的幾種方法及優缺點&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;u&gt;&lt;strong&gt;&lt;em&gt;Information Retrieval&lt;/em&gt;&lt;/strong&gt;&lt;/u&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;u&gt;情報教育&lt;/u&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;li&gt;1~2題。範圍很大，較難，從基本的precision/recall rate到B tree到recommendation system都有&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;u&gt;&lt;strong&gt;&lt;em&gt;AI&lt;/em&gt;&lt;/strong&gt;&lt;/u&gt;
 
-&lt;p&gt;​ 0~1題。應該是學部的一門課，主要是e-learning的概念和方法。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;0~1題。decision tree、bayesian network等主題&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;u&gt;&lt;strong&gt;&lt;em&gt;情報教育&lt;/em&gt;&lt;/strong&gt;&lt;/u&gt;
+
+&lt;ul&gt;
+&lt;li&gt;0~1題。應該是學部的一門課，主要是e-learning的概念和方法。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;因為時間太少了，我決定只以資料庫跟HCI為主力目標，其他大概念一下，有考到算我撿到（欸&lt;/p&gt;
 
 &lt;p&gt;不過這部分我還是考得不好，考完失落到去超市大肆採購洩恨（不對吧&lt;/p&gt;
 
-&lt;h5 id=&#34;一般論述&#34;&gt;&lt;em&gt;＃一般論述&lt;/em&gt;&lt;/h5&gt;
+&lt;h4 id=&#34;一般論述&#34;&gt;&lt;em&gt;＃一般論述&lt;/em&gt;&lt;/h4&gt;
 
 &lt;p&gt;給一篇文章問你的看法或可能的解決方法，或是給文章跟圖表，考如何詮釋與理解。&lt;/p&gt;
 
 &lt;p&gt;基本上無法準備，各憑本事。自認邏輯跟表達能力還不錯的話，其實是個滿不錯的科目，可以平衡一下前兩節的挫折ＸＤ&lt;/p&gt;
 
-&lt;h5 id=&#34;面試&#34;&gt;&lt;em&gt;＃面試&lt;/em&gt;&lt;/h5&gt;
+&lt;h4 id=&#34;面試&#34;&gt;&lt;em&gt;＃面試&lt;/em&gt;&lt;/h4&gt;
 
 &lt;p&gt;面試名單當天早上會公布在系館樓下，看了一下號碼幾乎九成都有進吧ＸＤ&lt;/p&gt;
 
