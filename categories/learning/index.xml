@@ -473,7 +473,7 @@ $ git submodule add &amp;lt;theme url&amp;gt; theme/&amp;lt;theme name&amp;gt;
 
 &lt;h5 id=&#34;step3-生成網頁&#34;&gt;Step3:  生成網頁&lt;/h5&gt;
 
-&lt;p&gt;先填寫好&lt;code&gt;config.toml&lt;/code&gt;內的設定，準備好要發表的文章，hugo`後會產生一個存放靜態頁面的資料夾，預設是叫public&lt;/p&gt;
+&lt;p&gt;先填寫好&lt;code&gt;config.toml&lt;/code&gt;內的設定，準備好要發表的文章，&lt;code&gt;hugo&lt;/code&gt;後會產生一個存放靜態頁面的資料夾，預設是叫public&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ hugo
 $ git submodule add &amp;lt;username&amp;gt;.github.io.git public
