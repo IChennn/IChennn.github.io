@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Terminal on Murmuring</title>
+    <link>https://ichennn.github.io/categories/terminal/index.xml</link>
+    <description>Recent content in Terminal on Murmuring</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="https://ichennn.github.io/categories/terminal/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>許我一個美麗的Terminal</title>
+      <link>https://ichennn.github.io/blog/2017/07/%E8%A8%B1%E6%88%91%E4%B8%80%E5%80%8B%E7%BE%8E%E9%BA%97%E7%9A%84terminal/</link>
+      <pubDate>Sat, 22 Jul 2017 14:54:32 +0900</pubDate>
+      
+      <guid>https://ichennn.github.io/blog/2017/07/%E8%A8%B1%E6%88%91%E4%B8%80%E5%80%8B%E7%BE%8E%E9%BA%97%E7%9A%84terminal/</guid>
+      <description>&lt;p&gt;每天都去辦公室的話，自然就會想要把座位妝點的溫馨舒適：每天都開電腦，也自然就會想著要換個賞心悅目的漂亮桌面。&lt;/p&gt;
+
+&lt;p&gt;同理可證，每天都開terminal，怎麼捨得讓他黑壓壓一片字又小不拉機的還不去處理呢！&lt;/p&gt;
+
+&lt;p&gt;其實稍微爬一下國外的網站，就有很多如何客製化終端機的教學，但為了不要讓自己每次改過就忘，在此做個紀錄。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;首先，叫出&lt;code&gt;.bash_profile.&lt;/code&gt; 這個檔案&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ subl ~/.bash_profile
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;加上這兩段：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Shell&#34;&gt;#enable color
+export CLICOLOR=&#39;true&#39;
+export LSCOLORS=&amp;quot;gxfxcxdxcxegedabagacad&amp;quot;
+
+#change hostname color shown in terminal
+export PS1=&amp;quot;\[\e[0;33m\]\u\[\033[m\]@\[\033[2;93m\]\h:\[\033[0;32m\]\w\[\033[m\]\$ &amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;u&lt;/code&gt; 是user name&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;h&lt;/code&gt; 是host name&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;w&lt;/code&gt; 是working directory&lt;/li&gt;
+&lt;li&gt;$ 和 ＠ 看個人喜好，也可以換成其他喜歡的符號&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;字母後面的是顏色的色碼，一樣可以在網路上查到各式各樣的顏色 （關鍵字：terminal color code）&lt;/p&gt;
+
+&lt;p&gt;按照上面的設定，最後的成果長這樣：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-terminal-color.jpg&#34; alt=&#34;terminal color&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

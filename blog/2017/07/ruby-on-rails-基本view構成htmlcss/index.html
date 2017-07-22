@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>[Ruby on Rails] 基本View構成——HTML&amp;CSS &middot; IChen Hung</title>
+
+  
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/highlight/solarized_dark.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://ichennn.github.io/touch-icon-144-precomposed.png">
+  <link href="https://ichennn.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="記錄一些學習rails 過程中碰到的疑難雜症與新學到的用法part1。主要著重在View的構成">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-08 layout-reverse">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>Murmuring</h1>
+      <p class="lead">心身之外，順其自然；順其自然，花落果成。</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/about-me/">About ME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/learning/">Learning</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/%E4%BA%AC%E9%83%BD%E7%94%9F%E6%B4%BB/">Life in Kyoto</a></li>
+      
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/IChennn"><i class="fa fa-github-square fa-2x"></i></a>
+      
+      
+      
+      
+      
+      
+      
+      
+      </li>
+    </ul>
+
+    
+
+    <p><font size=2>Copyright &copy; 2017 <a href="https://ichennn.github.io/LICENSE">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></font></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">[Ruby on Rails] 基本View構成——HTML&amp;CSS</h1>
+    <span class="post-date">Jul 22, 2017
+    
+    <br/>
+    <a class="label" href="https://ichennn.github.io/categories/learning">Learning</a><a class="label" href="https://ichennn.github.io/categories/rails">Rails</a><a class="label" href="https://ichennn.github.io/categories/htmlcss">HTML&amp;CSS</a>
+    </span>
+    
+
+<p>這是第一次用Ruby on Rails 做出一個完整的網站。</p>
+
+<p>已經架在Heroku上了：  <a href="https://gentle-inlet-97986.herokuapp.com/">https://gentle-inlet-97986.herokuapp.com/</a></p>
+
+<p>可能跑的有點慢，畢竟整個專案很肥ＸＤ</p>
+
+<p>這次的主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。</p>
+
+<p>（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）</p>
+
+<hr />
+
+<p>此篇主要紀錄一些和View構成有關的部分。</p>
+
+<h2 id="html-partial">HTML partial</h2>
+
+<p>顧名思義，就是把一份html檔拆成好多部分來組合</p>
+
+<p>基本上，一個頁面可以拆成三個部分：navbar, footer, 中間的內容。這麼拆的好處是，可以將上下兩條bar設定成全域樣式，中間的內容無論怎麼跳轉，都不會影響到上下方的bar</p>
+
+<p>網站上頭的bar：<code>View/common/_navbar.html.erb</code></p>
+
+<pre><code class="language-html">&lt;!-- Navigation --&gt;
+&lt;nav class=&quot;navbar navbar-default navbar-fixed-top topnav&quot; role=&quot;navigation&quot;&gt;
+  ....
+&lt;/nav&gt;
+</code></pre>
+
+<p>網站下方的footer：<code>View/commom/_footer.html.erb</code></p>
+
+<pre><code class="language-html">&lt;!-- Footer --&gt;
+&lt;footer&gt;
+   ...
+&lt;/footer&gt;
+</code></pre>
+
+<p>然後修改</p>
+
+<p><code>View/layouts/application.html.erb</code></p>
+
+<p>(html全域樣式，不管頁面怎麼跳轉都會在)</p>
+
+<pre><code class="language-Html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Book Reviews&lt;/title&gt;
+        &lt;%= csrf_meta_tags %&gt;
+        &lt;%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %&gt;
+        &lt;%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;%= render &quot;common/navbar&quot; %&gt;
+            &lt;%= yield %&gt;
+        &lt;/div&gt;
+        &lt;%= render &quot;common/footer&quot; %&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p><code>&lt;%= yield %&gt;</code> 是其他程式碼輸出的地方，也就是網頁的主要內容，會一直跳轉。</p>
+
+<p>另外值得一提的是，</p>
+
+<ol>
+<li>雖然檔名是<code>_navbar</code>  ，但路徑卻是<code>common/navbar</code></li>
+<li>把header變成partial後，開了<code>rails server</code> 後會發現無法全頁面延展。這時只要把<code>&lt;div class=&quot;container-fluid&quot;&gt;</code> 的 class拿掉就好了(也就是變成只有<code>&lt;div&gt;</code> )</li>
+</ol>
+
+<hr />
+
+<h2 id="如何置底">如何置底</h2>
+
+<p>把bar置底或置頂</p>
+
+<pre><code class="language-html">&lt;nav class=&quot;navbar navbar-default navbar-fixed-bottom&quot; role=&quot;navigation&quot;&gt;
+  ...
+&lt;/nav&gt;
+</code></pre>
+
+<p>置頂：navbar-fixed-top</p>
+
+<hr />
+
+<h2 id="external-css">External css</h2>
+
+<p>每次產生一個View以後，總是有一些想要微調的部分，此時的CSS code要寫在哪裡呢？</p>
+
+<p><code>rails generate controller groups</code> 後，在 app/assets/stylesheets/ 下會有自動產生的 groups.scss</p>
+
+<p>把css寫在這，但因為最後都會套用進(?) application.css</p>
+
+<p>因此在html中要指定個別的<code>&lt;div id=&quot; &quot;&gt;</code> ，不要直接用body下指令，不然會連帶改到其他的頁面。</p>
+
+<hr />
+
+<h2 id="移到頁面中的某一段">移到頁面中的某一段</h2>
+
+<p>有點像是標籤的功能，直接在區塊中指定name</p>
+
+<pre><code class="language-html">&lt;a name=&quot;latest&quot;&gt;&lt;/a&gt;
+    &lt;div class=&quot;content-section-a&quot;&gt;
+      ......
+</code></pre>
+
+<p>頁尾標籤：</p>
+
+<pre><code class="language-html">&lt;ul class=&quot;list-inline&quot;&gt;
+  &lt;li&gt;
+  &lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class=&quot;footer-menu-divider&quot;&gt;&amp;sdot;&lt;/li&gt;
+  &lt;li&gt;
+  &lt;a href=#latest&gt;What's news&lt;/a&gt;  # 不用“ ”
+  &lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<hr />
+
+<h2 id="link-button">Link button</h2>
+
+<p>不像一般HTML用<code>&lt;a href = &gt; &lt;/a&gt;</code> 來操作超連結和按鈕，在Rails當中可以用一套特別的寫法</p>
+
+<p><code>&lt;%= link_to(&quot;Cancel&quot;, groups_path, class: &quot;btn btn-md btn-default&quot;)%&gt;</code></p>
+
+<p>其中，<code>&quot;Cancel&quot;</code> 是出現在按鈕上的字，<code>groups_path</code> 是按鈕按下去之後會連結到的路徑，按鈕的class有很多種大小可以選：</p>
+
+<p>btn-xs, btn-sm, btn-md, btn-lg</p>
+
+<p>更詳細的設定可以參考bootstrap的網站 : <a href="https://getbootstrap.com/">https://getbootstrap.com/</a></p>
+
+<hr />
+
+<h2 id="查看目前的action">查看目前的action</h2>
+
+<p>欸，那如果不知道要連過去的那個頁面的路徑怎麼辦？！</p>
+
+<p>因為Rails通常會一下子自動產生好多個檔案，有時候頁面一多自己也頭昏腦脹搞不清楚。</p>
+
+<p>不過還好有個指令可以幫大家列出所有目前存在的路徑：</p>
+
+<pre><code class="language-Shell">$ rake routes
+                  Prefix Verb   URI Pattern                    Controller#Action
+        new_user_session GET    /users/sign_in(.:format)       devise/sessions#new
+            user_session POST   /users/sign_in(.:format)       devise/sessions#create
+    destroy_user_session DELETE /users/sign_out(.:format)      devise/sessions#destroy
+           user_password POST   /users/password(.:format)      devise/passwords#create
+       new_user_password GET    /users/password/new(.:format)  devise/passwords#new
+      edit_user_password GET    /users/password/edit(.:format) devise/passwords#edit
+      .
+      .
+      .
+</code></pre>
+
+<p>路徑就是prefix那欄，假設要連到第一欄的<code>new_user_session</code> ，路徑就是<code>new_user_session_path</code></p>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://ichennn.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+

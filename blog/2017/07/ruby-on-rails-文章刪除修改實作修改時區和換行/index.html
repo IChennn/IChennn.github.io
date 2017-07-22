@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>[Ruby on Rails] 文章刪除修改實作、修改時區和換行 &middot; IChen Hung</title>
+
+  
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/highlight/solarized_dark.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://ichennn.github.io/touch-icon-144-precomposed.png">
+  <link href="https://ichennn.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="記錄一些學習rails 過程中碰到的疑難雜症與新學到的用法part2。實作Rails 101教程當中的文章刪除修改功能、如何修改時區（時間顯示），以及如何換行">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-08 layout-reverse">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>Murmuring</h1>
+      <p class="lead">心身之外，順其自然；順其自然，花落果成。</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/about-me/">About ME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/learning/">Learning</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/%E4%BA%AC%E9%83%BD%E7%94%9F%E6%B4%BB/">Life in Kyoto</a></li>
+      
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/IChennn"><i class="fa fa-github-square fa-2x"></i></a>
+      
+      
+      
+      
+      
+      
+      
+      
+      </li>
+    </ul>
+
+    
+
+    <p><font size=2>Copyright &copy; 2017 <a href="https://ichennn.github.io/LICENSE">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></font></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">[Ruby on Rails] 文章刪除修改實作、修改時區和換行</h1>
+    <span class="post-date">Jul 22, 2017
+    
+    <br/>
+    <a class="label" href="https://ichennn.github.io/categories/learning">Learning</a><a class="label" href="https://ichennn.github.io/categories/rails">Rails</a>
+    </span>
+    
+
+<p>網站傳送門：  <a href="https://gentle-inlet-97986.herokuapp.com/">https://gentle-inlet-97986.herokuapp.com/</a></p>
+
+<p>主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。</p>
+
+<p>（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）</p>
+
+<hr />
+
+<p>此篇主要紀錄如何實作Rails 101教程當中沒有提供答案的文章修改刪除功能。</p>
+
+<h2 id="文章刪除修改實作">文章刪除修改實作</h2>
+
+<p>在<code>app/controllers/posts_controller.rb</code> 下定義<code>edit</code> method</p>
+
+<pre><code class="language-ruby">def edit
+	@group = Group.find(params[:group_id]) 
+	@post = Post.find(params[:id])
+end
+</code></pre>
+
+<p>要記得<code>@group</code> 跟 <code>@post</code> 都要定義！不然會出現 NoMethodError</p>
+
+<p>無論是Edit, update, destroy都需要</p>
+
+<p>另外，edit介面也要同時加上<code>@group</code>跟<code>@post</code>，用array 方式表示，系統才能判斷是哪一個group裡面的哪一個post</p>
+
+<pre><code class="language-html">&lt;%= simple_form_for [@group, @post] do |f| %&gt;
+  .....
+</code></pre>
+
+<hr />
+
+<h2 id="simple-format-日期顯示">Simple_format ＆日期顯示</h2>
+
+<p>換行用，只要將要換行的內容放入<code>simple_format()</code> 當中就可以了</p>
+
+<pre><code class="language-html">&lt;% @posts.each do |post| %&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;%= simple_format(post.content) %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= post.user.email %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= post.created_at.to_date %&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;% end %&gt;
+</code></pre>
+
+<p>關於日期的顯示方式，若是只使用最簡單的<code>post.created_at</code> 會以這樣的方式呈現：</p>
+
+<p><img src="https://ichennn.github.io/img/201707-default_timestamp.jpg" alt="default_timestamp" /></p>
+
+<p>若想要讓樣式看起來簡潔一些，可以加上<code>created_at.to_date</code> （或是 <code>created_at.strftime(&quot;%Y-%m-%d&quot;)</code> ）就會只顯示到日期，不會出現後面的UTC之類的</p>
+
+<p><img src="https://ichennn.github.io/img/201707-strtime_timestamp.jpg" alt="strtime_timestamp" /></p>
+
+<hr />
+
+<h2 id="時區更改">時區更改</h2>
+
+<p>想要改到自己地區的時區，到<code>config/application.rb</code> 改設定：</p>
+
+<pre><code class="language-Ruby">config.time_zone = 'Osaka'
+config.active_record.default_timezone = :local
+</code></pre>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://ichennn.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+

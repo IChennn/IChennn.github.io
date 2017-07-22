@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>[Ruby on Rails] 好用的will_paginate及simpl_ form_for &middot; IChen Hung</title>
+
+  
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/highlight/solarized_dark.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://ichennn.github.io/touch-icon-144-precomposed.png">
+  <link href="https://ichennn.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="記錄一些學習rails 過程中碰到的疑難雜症與新學到的用法part3。此篇主要紀錄will paginate及simple_form_for這兩個好用的gem">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-08 layout-reverse">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>Murmuring</h1>
+      <p class="lead">心身之外，順其自然；順其自然，花落果成。</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/about-me/">About ME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/learning/">Learning</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/%E4%BA%AC%E9%83%BD%E7%94%9F%E6%B4%BB/">Life in Kyoto</a></li>
+      
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/IChennn"><i class="fa fa-github-square fa-2x"></i></a>
+      
+      
+      
+      
+      
+      
+      
+      
+      </li>
+    </ul>
+
+    
+
+    <p><font size=2>Copyright &copy; 2017 <a href="https://ichennn.github.io/LICENSE">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></font></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">[Ruby on Rails] 好用的will_paginate及simpl_ form_for</h1>
+    <span class="post-date">Jul 22, 2017
+    
+    <br/>
+    <a class="label" href="https://ichennn.github.io/categories/learning">Learning</a><a class="label" href="https://ichennn.github.io/categories/rails">Rails</a><a class="label" href="https://ichennn.github.io/categories/gem">Gem</a>
+    </span>
+    
+
+<p>網站傳送門：  <a href="https://gentle-inlet-97986.herokuapp.com/">https://gentle-inlet-97986.herokuapp.com/</a></p>
+
+<p>主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。</p>
+
+<p>（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）</p>
+
+<hr />
+
+<p>此篇主要紀錄如何使用will paginate 及 simple form for這兩個方便又好用的gem來使網站變得更美觀。</p>
+
+<h2 id="use-simple-form-for">use simple_form_for</h2>
+
+<p>Simple_form_for 是一個好用的gem，可以自動調整格式</p>
+
+<p>如果還沒安裝的話，記得先在gemfile裡面新增<code>gem &quot;simple_form&quot;</code> ，然後 <code>bundle install</code></p>
+
+<p>下一步：</p>
+
+<p><code>rails generate simple_form:install --bootstrap</code> 執行boostrap的設定</p>
+
+<p>就可以使用simple_form_for了！</p>
+
+<p>使用方法也很簡單，只要將原本是<code>form_for</code> 的部分都替換成<code>simple_form_for</code> 並照著規定的格式更改內容就行了。</p>
+
+<pre><code class="language-html">&lt;%= simple_form_for @group do |f| %&gt;
+	&lt;%= f.input :description, input_html: { class: &quot;form-horizontal&quot;, :rows =&gt; 4} %&gt;
+&lt;% end %&gt;
+</code></pre>
+
+<p><code>:rows</code>  可以用來調輸入框的高度</p>
+
+<p>這是使用simple_form_for的效果：</p>
+
+<p><img src="https://ichennn.github.io/img/201707-simple_form_for_before.jpg" alt="simple_form_for_before" /></p>
+
+<p>Simple_form_for會自動偵測不可空白的欄位，並給出警告：</p>
+
+<p><img src="https://ichennn.github.io/img/201707-simple_form_for_adjustment.jpg" alt="simple_form_for_adjustment" /></p>
+
+<ul>
+<li>Reference  : use <code>form_for</code></li>
+</ul>
+
+<pre><code class="language-html">  &lt;%= form_for @group do |f| %&gt;
+      &lt;%= f.label &quot;description&quot;, :class =&gt; &quot;string optional control-label&quot; %&gt;
+      &lt;%= f.text_area :description, :class =&gt; &quot;string optional form-control&quot; %&gt;
+   &lt;% end %&gt;   
+</code></pre>
+
+<p>這段和上面的simple_form_for能達到的效果幾乎是一模一樣的，但明顯就囉唆了點ＸＤ</p>
+
+<hr />
+
+<h2 id="will-paginate">will paginate</h2>
+
+<p>不管是什麼網站，紀錄一多，就會落落長讓人眼花撩亂，這時候有個好看簡單的分頁功能就顯得格外重要了！</p>
+
+<p>安裝完will_paginate後，也要記得在寫進<code>Gemfile</code> 裡面</p>
+
+<p>首先，在<code>App/controllers/groups_controller.rb</code>  當中加入</p>
+
+<pre><code class="language-ruby">@posts = @group.posts.recent.paginate(:page =&gt; params[:page], :per_page =&gt; 10)
+</code></pre>
+
+<p>此時若是直接<code>rails server</code> 的話會一直出現undefined method &ldquo;recent&rdquo;</p>
+
+<p>這是因為系統當中並沒有名為recent的方法，要自己去<code>app/models/post.rb</code> 中加入</p>
+
+<pre><code class="language-ruby">scope :recent, -&gt; {order(&quot;created_at DESC&quot;)}
+</code></pre>
+
+<p>此時應該就可以順利看到分頁了！</p>
+
+<p><img src="https://ichennn.github.io/img/201707-paginate.jpg" alt="paginate" /></p>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://ichennn.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+

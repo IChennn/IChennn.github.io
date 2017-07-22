@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>[Ruby on Rails] 部署到Heroku囉！ &middot; IChen Hung</title>
+
+  
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/highlight/solarized_dark.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://ichennn.github.io/touch-icon-144-precomposed.png">
+  <link href="https://ichennn.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="記錄一些學習rails 過程中碰到的疑難雜症與新學到的用法part6。主要紀錄一些和上傳到Heroku上有關的設定和技巧，包含如何利用AWS S3實現在Heroku上傳圖片的功能">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-08 layout-reverse">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>Murmuring</h1>
+      <p class="lead">心身之外，順其自然；順其自然，花落果成。</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/about-me/">About ME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/learning/">Learning</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/%E4%BA%AC%E9%83%BD%E7%94%9F%E6%B4%BB/">Life in Kyoto</a></li>
+      
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/IChennn"><i class="fa fa-github-square fa-2x"></i></a>
+      
+      
+      
+      
+      
+      
+      
+      
+      </li>
+    </ul>
+
+    
+
+    <p><font size=2>Copyright &copy; 2017 <a href="https://ichennn.github.io/LICENSE">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></font></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">[Ruby on Rails] 部署到Heroku囉！</h1>
+    <span class="post-date">Jul 22, 2017
+    
+    <br/>
+    <a class="label" href="https://ichennn.github.io/categories/learning">Learning</a><a class="label" href="https://ichennn.github.io/categories/rails">Rails</a>
+    </span>
+    
+
+<p>網站傳送門：  <a href="https://gentle-inlet-97986.herokuapp.com/">https://gentle-inlet-97986.herokuapp.com/</a></p>
+
+<p>主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。</p>
+
+<p>（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）</p>
+
+<hr />
+
+<p>此篇主要紀錄如何解決上傳到Heroku時可能碰到的一些亂七八糟的小毛病。以及如何在Heroku上實現使用者上傳圖片的功能。</p>
+
+<h2 id="第一次部署到heroku">第一次部署到Heroku</h2>
+
+<p>首先，安裝Heroku的 gem。再來，註冊一個Heroku帳號。</p>
+
+<p>接下來照著這篇：<a href="https://www.railstutorial.org/book/beginning">https://www.railstutorial.org/book/beginning</a> 的1.5章將Rails的設定都弄好就行了！</p>
+
+<p>網路上有一些聲音認為Heroku實在是太囉唆麻煩，一大堆設定，搞不好又會上傳失敗，作為一個server實在是讓人惱火。</p>
+
+<p>嘛，確實ＸＤ不過以一個新手的觀點來說，因為是免費的（當然，需要更大的空間的話就要付費的），而且玩過Heroku的人多，就算碰到什麼問題也總是能估狗到答案的，就這兩點來說還是滿不錯的啦。</p>
+
+<hr />
+
+<h2 id="heroku-update">heroku update</h2>
+
+<p>在一般情況下，要將專案push到Heroku上，是這樣下指令的：</p>
+
+<p><code>git push heroku master</code></p>
+
+<p>但在進行Rails專案時，可能會開好幾個branch，假設今天要把branch h03 push到heroku 上面的話也很簡單，只要：</p>
+
+<p><code>git push heroku h03:master</code></p>
+
+<p>然後 <code>heroku run rake db:migrate</code></p>
+
+<p>就可以用 <code>heroku open</code> 打開熱騰騰的網站了！</p>
+
+<p>-</p>
+
+<p>另外，經過實測，有幾點問題值得紀錄：</p>
+
+<ul>
+<li>heroku上無法顯示flashes (解決方式未知，因為覺得flash很醜，乾脆就不用了ＸＤ)</li>
+<li>在<code>app/assets/stylesheets/application.scss</code> 當中加入</li>
+</ul>
+
+<pre><code class="language-scss">@import &quot;bootstrap-sprockets&quot;;
+@import &quot;bootstrap&quot;;
+</code></pre>
+
+<p>會使heroku無法push (原因未知)</p>
+
+<p>這兩點因為沒什麼必須性，因此為了省麻煩我就都直接刪掉了ＸＤ</p>
+
+<hr />
+
+<h2 id="解決在heroku上圖片無法顯示的問題">解決在heroku上圖片無法顯示的問題</h2>
+
+<p>好不容易上傳成功，結果一打開——哇，所有的圖片都不見惹～～～的這種惱火感真的很讓人難忘啊&hellip;</p>
+
+<p>不過解決方法也不複雜，把設定改一下就行了。只要到<code>Config/environments/production.rb</code> 當中，將</p>
+
+<pre><code>config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
+</code></pre>
+
+<p>改成</p>
+
+<pre><code>config.serve_static_assets = true
+</code></pre>
+
+<hr />
+
+<h2 id="上傳圖片-heroku">上傳圖片＋Heroku</h2>
+
+<p>好的，終於辛辛苦苦把上傳圖片的功能做好了，想要傳到heroku上面自己看著爽一下，殊不知&hellip;&hellip;</p>
+
+<p><strong>heroku不能儲存使用者自己上傳的圖片啊！！！！</strong></p>
+
+<p>（抱頭痛哭</p>
+
+<p>好的，哭完了還是要來想想辦法</p>
+
+<p>-</p>
+
+<p>1.<strong>AWS S3</strong></p>
+
+<p>先說結論，利用AWS S3儲存圖片就可以解決這個問題了</p>
+
+<p>步驟參照這篇：<a href="http://blog.qinfeng.io/posts/1383092">http://blog.qinfeng.io/posts/1383092</a></p>
+
+<p>建立一個AWS帳號，然後新增一組IAM user，拿到credentials.csv</p>
+
+<p>最後建立一個S3 bucket來裝圖片</p>
+
+<p>2.<strong>安裝gem</strong></p>
+
+<p>在<code>Gemfile</code> 當中增加兩個gem</p>
+
+<pre><code>gem &quot;figaro&quot; 
+gem &quot;fog&quot;
+</code></pre>
+
+<p>然後</p>
+
+<pre><code>bunle install
+figaro install
+</code></pre>
+
+<p>此時會產生<code>config/application.yml</code> 這份文件</p>
+
+<p>3.<strong>S3 Acccess key</strong></p>
+
+<p>在<code>application.yml</code> 當中輸入剛剛從下載的csv檔當中得到的key id跟secret key</p>
+
+<pre><code class="language-yml">production:
+  aws_access_key_id: &quot;key id&quot;
+  aws_secret_access_key: &quot; secret key&quot;
+  aws_bucket_name: &quot;bucket name&quot;
+
+development:
+  aws_access_key_id: &quot;key id&quot;
+  aws_secret_access_key: &quot; secret key&quot;
+  aws_bucket_name: &quot;bucket name&quot;
+</code></pre>
+
+<p>接下來在<code>config/initializers</code> 當中新增 <code>carrierwave.rb</code>  :</p>
+
+<pre><code class="language-shell">$ touch config/initializers/carrierwave.rb
+</code></pre>
+
+<p>加上：</p>
+
+<pre><code class="language-ruby">CarrierWave.configure do |config|
+    config.storage :fog                       
+    config.fog_credentials = {
+      provider:              'AWS',                        
+      aws_access_key_id:     ENV[&quot;aws_access_key_id&quot;],                 
+
+
+      aws_secret_access_key: ENV[&quot;aws_secret_access_key&quot;],    
+
+
+      region:                'ap-northeast-1'    
+
+
+    }
+    config.fog_directory  = ENV[&quot;aws_bucket_name&quot;] 
+    config.cache_dir = &quot;#{Rails.root}/tmp/uploads&quot;
+end
+</code></pre>
+
+<p><code>ap-northeast-1</code> 是日本時區，其他地區要再去查</p>
+
+<p>要注意<code>ENV[ ]</code>  當中的名稱必須要跟在<code>application.yml</code> 取的別名一樣，不然會錯誤</p>
+
+<p>4.<strong>更改uploader的設定</strong></p>
+
+<p>最後到<code>app/uploaders/image_uploader.rb</code> 中第九行：</p>
+
+<pre><code class="language-ruby"># Choose what kind of storage to use for this uploader:
+  storage :file
+  #storage :fog
+</code></pre>
+
+<p>把<code>storage :file</code> 改成<code>storage :fog</code></p>
+
+<p>5.<strong>更改Heroku設定</strong></p>
+
+<p>進入Heroku中的application當中，在setting當中點選Reveal Config Vars</p>
+
+<p>把剛剛設定的</p>
+
+<pre><code>aws_access_key_id: &quot;key id&quot;
+aws_secret_access_key: &quot; secret key&quot;
+aws_bucket_name: &quot;bucket name&quot;
+</code></pre>
+
+<p>這三項加進去</p>
+
+<p>最後就可以<code>git push heroku master</code> 試試看了！</p>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://ichennn.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+
