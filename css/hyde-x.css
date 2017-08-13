@@ -132,12 +132,12 @@ a.label:focus {
 
 /* Red */
 .theme-base-08 .label {
-  background-color: #823939;
+  background-color: #648984;
 }
 
 .theme-base-08 .pagination > li > a,
 .theme-base-08 .pagination > li > span {
-  color: #a34444;
+  color: #648984;
 }
 
 .theme-base-08 .pagination > .active > a,
@@ -146,8 +146,8 @@ a.label:focus {
 .theme-base-08 .pagination > .active > span:hover,
 .theme-base-08 .pagination > .active > a:focus,
 .theme-base-08 .pagination > .active > span:focus {
-  background-color: #d68989;
-  border-color: #d68989;
+  background-color: #a0c1bd;
+  border-color: #a0c1bd;
 }
 
 .theme-base-08 .pagination > .disabled > span,
