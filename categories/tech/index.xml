@@ -9,6 +9,105 @@
     <atom:link href="https://ichennn.github.io/categories/tech/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>用google cloud platform 開jupyter notebook!</title>
+      <link>https://ichennn.github.io/blog/2018/01/%E7%94%A8google-cloud-platform-%E9%96%8Bjupyter-notebook/</link>
+      <pubDate>Mon, 29 Jan 2018 14:49:08 +0900</pubDate>
+      
+      <guid>https://ichennn.github.io/blog/2018/01/%E7%94%A8google-cloud-platform-%E9%96%8Bjupyter-notebook/</guid>
+      <description>
+
+&lt;p&gt;參照這篇，做個紀錄以免我以後又忘了（真的很金魚腦 該怎麼辦&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://towardsdatascience.com/running-jupyter-notebook-in-google-cloud-platform-in-15-min-61e16da34d52&#34;&gt;https://towardsdatascience.com/running-jupyter-notebook-in-google-cloud-platform-in-15-min-61e16da34d52&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;創建google-cloud-platform-帳號&#34;&gt;創建google cloud platform 帳號&lt;/h3&gt;
+
+&lt;p&gt;直接用自己的google帳號就可以惹，一年有300美試用額度，對一般人而言真的是綽綽有餘了&lt;/p&gt;
+
+&lt;h3 id=&#34;建立vm-instance&#34;&gt;建立vm instance :&lt;/h3&gt;
+
+&lt;p&gt;compute&amp;gt; compute engine&lt;/p&gt;
+
+&lt;h3 id=&#34;安裝google-cloud-sdk&#34;&gt;安裝google cloud sdk:&lt;/h3&gt;
+
+&lt;p&gt;可以使用本地terminal利用SSH連線登入google cloud platform的server，不一定要使用，也可以直接網頁上點一下SSH開啟console&lt;/p&gt;
+
+&lt;p&gt;不過用gcloud指令的話傳檔案比較快ＸＤ&lt;/p&gt;
+
+&lt;p&gt;解壓縮之後，執行install.sh&lt;/p&gt;
+
+&lt;p&gt;我自己就莫名其妙一直有奇怪的錯誤訊息（不過好像還是有安裝成功&amp;hellip;吧），接著要認證帳戶&lt;/p&gt;
+
+&lt;p&gt;輸入&lt;code&gt;gcloud auth login&lt;/code&gt; ，瀏覽器會自動跳出google帳號的頁面讓你點選登入的帳號&lt;/p&gt;
+
+&lt;p&gt;接下來就可以使用gcloud了&lt;/p&gt;
+
+&lt;p&gt;到google cloud platform的vm那邊，點選SSH連線旁邊小三角形後再選查看gcloud指令&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201801-gcp.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;會出現類似&lt;code&gt;gcloud compute --project &amp;quot;&amp;lt;project-id&amp;gt;&amp;quot; ssh --zone &amp;quot;&amp;lt;your-zone&amp;gt;&amp;quot; &amp;quot;&amp;lt;instance-name&amp;gt;&amp;quot;&lt;/code&gt; 的指令，在terminal輸入後就可以用SSH連線到google cloud platform&lt;/p&gt;
+
+&lt;h3 id=&#34;安裝anaconda3&#34;&gt;安裝anaconda3&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;wget http://repo.continuum.io/archive/Anaconda3-4.3.0-Linux-x86_64.sh
+bash Anaconda3-4.0.0-Linux-x86_64.sh
+source ~/.bashrc
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;設定網路&#34;&gt;設定網路&lt;/h3&gt;
+
+&lt;p&gt;Network &amp;gt; VPC network&lt;/p&gt;
+
+&lt;p&gt;External IP address :先將網路改成static&lt;/p&gt;
+
+&lt;p&gt;Firewall rule: 建立一個新的rule允許port &lt;code&gt;tcp:5000&lt;/code&gt; (or 任何一個想要指定開啟notebook 的port)&lt;/p&gt;
+
+&lt;h3 id=&#34;設定jupyter-notebok&#34;&gt;設定jupyter notebok&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;jupyter notebook --generate-config&lt;/code&gt; 建立config檔（若沒有的話）&lt;/p&gt;
+
+&lt;p&gt;在configurable configuration 輸入&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;c = get_config()
+c.NotebookApp.ip = &#39;*&#39;
+c.NotebookApp.open_browser = False
+c.NotebookApp.port = &amp;lt;上一步允許的Port &amp;gt;  （ex. 5000）
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;打開Jupiter notebook 囉！&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;jupyter-notebook --no-browser --port=&amp;lt;PORT-NUMBER&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;只要輸入一次，之後就跟一般一樣輸入&lt;code&gt;jupyter notebook&lt;/code&gt;  就好了！&lt;/p&gt;
+
+&lt;h3 id=&#34;傳檔案&#34;&gt;傳檔案&lt;/h3&gt;
+
+&lt;p&gt;傳檔案進去google could platform的server&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gcloud compute scp [LOCAL_FILE_PATH] [INSTANCE_NAME]:~＃
+# example: bin/gcloud compute scp &amp;quot;/Users/Hung/cosine_sim_ver2.py&amp;quot; &amp;quot;my02&amp;quot;:~/ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;從server傳檔案出來&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gcloud compute scp [INSTANCE_NAME]:[REMOTE_FILE_PATH] [LOCAL_FILE_PATH]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;.&lt;/p&gt;
+
+&lt;p&gt;.&lt;/p&gt;
+
+&lt;p&gt;ps.  題外話，要如何在terminal中讓python script print出有顏色的訊息呢&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from termcolor import colored
+print(colored(&#39;hello&#39;, &#39;red&#39;))
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
       <title>在Hugo寫完文章，卻push不上github怎麼辦？</title>
       <link>https://ichennn.github.io/blog/2017/03/%E5%9C%A8hugo%E5%AF%AB%E5%AE%8C%E6%96%87%E7%AB%A0%E5%8D%BBpush%E4%B8%8D%E4%B8%8Agithub%E6%80%8E%E9%BA%BC%E8%BE%A6/</link>
       <pubDate>Tue, 21 Mar 2017 00:33:37 +0800</pubDate>

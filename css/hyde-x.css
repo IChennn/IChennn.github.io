@@ -130,7 +130,7 @@ a.label:focus {
   cursor: pointer;
 }
 
-/* Red */
+/* customized color */
 .theme-base-08 .label {
   background-color: #648984;
 }
@@ -146,8 +146,8 @@ a.label:focus {
 .theme-base-08 .pagination > .active > span:hover,
 .theme-base-08 .pagination > .active > a:focus,
 .theme-base-08 .pagination > .active > span:focus {
-  background-color: #a0c1bd;
-  border-color: #a0c1bd;
+  background-color: #bed2c3;
+  border-color: #bed2c3;
 }
 
 .theme-base-08 .pagination > .disabled > span,

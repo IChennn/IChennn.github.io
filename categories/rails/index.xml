@@ -26,7 +26,7 @@
 
 &lt;p&gt;此篇主要紀錄如何解決上傳到Heroku時可能碰到的一些亂七八糟的小毛病。以及如何在Heroku上實現使用者上傳圖片的功能。&lt;/p&gt;
 
-&lt;h2 id=&#34;第一次部署到heroku&#34;&gt;第一次部署到Heroku&lt;/h2&gt;
+&lt;p&gt;##第一次部署到Heroku&lt;/p&gt;
 
 &lt;p&gt;首先，安裝Heroku的 gem。再來，註冊一個Heroku帳號。&lt;/p&gt;
 
