@@ -187,19 +187,9 @@ a.sidebar-nav-item:focus {
 
 /* customized */
 .theme-base-08 .sidebar {
-  background-color: #648984;
+    /* background-color: #648984; */
+    background-image: linear-gradient(to top, #50726e 0%, #a5c6c2 100%);
 }
-
-/* .post-title a, */
-/* .post-title a:link, */
-/* .post-title a:visited { */
-/*     color: #648984 !important; */
-/*     text-decoration: none !important; */
-/* } */
-/* .post-title a:hover { */
-/*     color: black !important; */
-/*     text-decoration: none !important; */
-/* } */
 
 .theme-base-08 .content a,
 .theme-base-08 .content a:link,
