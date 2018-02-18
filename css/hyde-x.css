@@ -37,7 +37,7 @@
   font-size: 75%;
   font-weight: bold;
   line-height: 1;
-  color: #fff;
+  color: #fff ! important;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
@@ -45,7 +45,7 @@
 }
 a.label:hover,
 a.label:focus {
-  color: #fff;
+  background-color: #3a5b52 !important;
   text-decoration: none;
   cursor: pointer;
 }
@@ -126,9 +126,20 @@ a.label:focus {
 .posts a.label,
 .post-date a.label {
   color: #fff;
+  background-color: rgba(58, 91, 82, .9) !important;
   text-decoration: none;
   cursor: pointer;
 }
+.post-date a.label:hover,
+.post-date a.label:focus {
+  background-color: #648984 !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+.label:empty {
+  display: none;
+}
+
 
 /* customized color */
 .theme-base-08 .label {
