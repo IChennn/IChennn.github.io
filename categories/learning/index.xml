@@ -974,13 +974,15 @@ export PS1=&amp;quot;\[\e[0;33m\]\u\[\033[m\]@\[\033[2;93m\]\h:\[\033[0;32m\]\w\
 &lt;p&gt;其中&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;u&lt;/code&gt; 是user name&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;h&lt;/code&gt; 是host name&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;w&lt;/code&gt; 是working directory&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\u&lt;/code&gt; 是user name&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\h&lt;/code&gt; 是host name&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\w&lt;/code&gt; 是working directory&lt;/li&gt;
 &lt;li&gt;$ 和 ＠ 看個人喜好，也可以換成其他喜歡的符號&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;字母後面的是顏色的色碼，一樣可以在網路上查到各式各樣的顏色 （關鍵字：terminal color code）&lt;/p&gt;
+
+&lt;p&gt;最後別忘了 &lt;code&gt;source ~/.bash_profile&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;按照上面的設定，最後的成果長這樣：&lt;/p&gt;
 
