@@ -6,7 +6,28 @@
     <description>Recent content in Learning on Murmuring</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 29 Jan 2018 14:49:08 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/categories/learning/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 07 Apr 2023 09:03:08 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/categories/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>讓Hyde-X theme重新動起來</title>
+      <link>https://ichennn.github.io/blog/2023/04/%E8%AE%93hyde-x-theme%E9%87%8D%E6%96%B0%E5%8B%95%E8%B5%B7%E4%BE%86/</link>
+      <pubDate>Fri, 07 Apr 2023 09:03:08 +0900</pubDate>
+      
+      <guid>https://ichennn.github.io/blog/2023/04/%E8%AE%93hyde-x-theme%E9%87%8D%E6%96%B0%E5%8B%95%E8%B5%B7%E4%BE%86/</guid>
+      <description>距離上一次更新文章，不知不覺已經過了四年。最近想要重新振作起來，整理自己的生活，一方面希望能繼續保持生活中有所output的習慣，另一方面也是希望能有條理地回顧自己過去四年當中究竟有哪些成長與改變。
+然而，就在我興致勃勃地將hugo重新載了回來之後（是的，這四年當中經歷了太多，連電腦都換了，當然也沒記得要裝hugo），發現我使用的Hyde-X模板竟然&amp;hellip;&amp;hellip;已經壞了（哭
+原本也想過要不要乾脆換個模板，或是沿用Hyde，但是換成其他的fork版本。畢竟Hyde-X自從2018年起就沒有再更新維護了，以後應該只會越壞越多吧ＱＱ
+不過最後峰迴路轉，實在是懶得再去調整CSS，也覺得Hyde-X有一些我滿喜歡的功能（像是label），最後決定還是自己來修吧！
+其實仔細看render error，只需要修改幾個小地方，並沒有想像中的整組壞光光ＸＤ因此做個紀錄，也為之後重新寫文章做個熱身＝）
+layouts/partials/sidebar.html 這裡的寫法是從另一個Hyde repo直接借過來用的
+https://github.com/spf13/hyde/blob/master/layouts/partials/sidebar.html
+- &amp;lt;p&amp;gt;&amp;lt;font size=2&amp;gt;Copyright &amp;amp;copy; {{ .Now.Format &amp;#34;2006&amp;#34; }} &amp;lt;a href=&amp;#34;{{ &amp;#34;/LICENSE&amp;#34; | absURL }}&amp;#34;&amp;gt;License&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt; + &amp;lt;p&amp;gt;&amp;lt;font size=2&amp;gt;{{ with .Site.Params.copyright }}{{.}}{{ else }}&amp;amp;copy; {{ now.Format &amp;#34;2006&amp;#34;}}. All rights reserved. {{end}}&amp;lt;br/&amp;gt; Note： 這一行後來在Hyde-X中被移動到layouts/partials/sidebar/footer.html中了。我也忘了當初是出於什麼理由，一直將他留在我的override的sidebar.html中
+layouts/index.html 這裡是Home page裡呈現出來的全部文章列表。
+原本的寫法已經deprecated，在Hyde-X的issue中也有提到。
+https://github.com/zyro/hyde-x/issues/84
+- {{ $paginator := .Paginate (where .Data.Pages &amp;#34;Type&amp;#34; &amp;#34;post&amp;#34;) }} + {{ $paginator := .Paginate (where .Site.RegularPages &amp;#34;Type&amp;#34; &amp;#34;post&amp;#34;) }} layouts/partials/head.html 我沒有需要使用這個功能（也不知道修改前後的使用上差異），因此也只是從上面提到的另一個Hyde repo找到同一個段落然後複製貼上，確保render會成功而已。
+錯誤訊息如下：</description>
+    </item>
+    
     <item>
       <title>用google cloud platform 開jupyter notebook!</title>
       <link>https://ichennn.github.io/blog/2018/01/%E7%94%A8google-cloud-platform-%E9%96%8Bjupyter-notebook/</link>
@@ -342,27 +363,6 @@ Hosting on Github 然後呢？總不能這麼簡單漂亮的網站只有我自�
 最後在各種英文日文網站的教學拼拼湊湊下，終於成功使用user page放上去惹～（也就是網址是github.io結尾）：
 Step1: 準備兩個repository 一個命名為&amp;lt;username&amp;gt;.github.io，用來放產生的靜態頁面；另一個隨意，用來放Hugo site的source code。
 Step2: 利用hugo架網站囉 $ hugo new site &amp;lt;sitename&amp;gt; $ cd &amp;lt;sitename&amp;gt; $ hugo new post/&amp;lt;title&amp;gt;.md #文章會放在content/post裡 $ git init $ git remote add origin &amp;lt;隨意&amp;gt;.</description>
-    </item>
-    
-    <item>
-      <title>讓Hyde-X theme重新動起來</title>
-      <link>https://ichennn.github.io/blog/1/01/%E8%AE%93hyde-x-theme%E9%87%8D%E6%96%B0%E5%8B%95%E8%B5%B7%E4%BE%86/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://ichennn.github.io/blog/1/01/%E8%AE%93hyde-x-theme%E9%87%8D%E6%96%B0%E5%8B%95%E8%B5%B7%E4%BE%86/</guid>
-      <description>距離上一次更新文章，不知不覺已經過了四年。最近想要重新振作起來，整理自己的生活，一方面希望能繼續保持生活中有所output的習慣，另一方面也是希望能有條理地回顧自己過去四年當中究竟有哪些成長與改變。
-然而，就在我興致勃勃地將hugo重新載了回來之後（是的，這四年當中經歷了太多，連電腦都換了，當然也沒記得要裝hugo），發現我使用的Hyde-X模板竟然&amp;hellip;&amp;hellip;已經壞了（哭
-原本也想過要不要乾脆換個模板，或是沿用Hyde，但是換成其他的fork版本。畢竟Hyde-X自從2018年起就沒有再更新維護了，以後應該只會越壞越多吧ＱＱ
-不過最後峰迴路轉，實在是懶得再去調整CSS，也覺得Hyde-X有一些我滿喜歡的功能（像是label），最後決定還是自己來修吧！
-其實仔細看render error，只需要修改幾個小地方，並沒有想像中的整組壞光光ＸＤ因此做個紀錄，也為之後重新寫文章做個熱身＝）
-layouts/partials/sidebar.html 這裡的寫法是從另一個Hyde repo直接借過來用的
-https://github.com/spf13/hyde/blob/master/layouts/partials/sidebar.html
-- &amp;lt;p&amp;gt;&amp;lt;font size=2&amp;gt;Copyright &amp;amp;copy; {{ .Now.Format &amp;#34;2006&amp;#34; }} &amp;lt;a href=&amp;#34;{{ &amp;#34;/LICENSE&amp;#34; | absURL }}&amp;#34;&amp;gt;License&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt; + &amp;lt;p&amp;gt;&amp;lt;font size=2&amp;gt;{{ with .Site.Params.copyright }}{{.}}{{ else }}&amp;amp;copy; {{ now.Format &amp;#34;2006&amp;#34;}}. All rights reserved. {{end}}&amp;lt;br/&amp;gt; Note： 這一行後來在Hyde-X中被移動到layouts/partials/sidebar/footer.html中了。我也忘了當初是出於什麼理由，一直將他留在我的override的sidebar.html中
-layouts/index.html 這裡是Home page裡呈現出來的全部文章列表。
-原本的寫法已經deprecated，在Hyde-X的issue中也有提到。
-https://github.com/zyro/hyde-x/issues/84
-- {{ $paginator := .Paginate (where .Data.Pages &amp;#34;Type&amp;#34; &amp;#34;post&amp;#34;) }} + {{ $paginator := .Paginate (where .Site.RegularPages &amp;#34;Type&amp;#34; &amp;#34;post&amp;#34;) }} layouts/partials/head.html 我沒有需要使用這個功能（也不知道修改前後的使用上差異），因此也只是從上面提到的另一個Hyde repo找到同一個段落然後複製貼上，確保render會成功而已。
-錯誤訊息如下：</description>
     </item>
     
   </channel>
