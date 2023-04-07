@@ -198,9 +198,10 @@ View/layouts/application.html.erb
       <description>每天都去辦公室的話，自然就會想要把座位妝點的溫馨舒適：每天都開電腦，也自然就會想著要換個賞心悅目的漂亮桌面。
 同理可證，每天都開terminal，怎麼捨得讓他黑壓壓一片字又小不拉機的還不去處理呢！
 其實稍微爬一下國外的網站，就有很多如何客製化終端機的教學，但為了不要讓自己每次改過就忘，在此做個紀錄。
-首先，叫出.bash_profile. 這個檔案
-$ subl ~/.bash_profile 加上這兩段：
-#enable color export CLICOLOR=&amp;#39;true&amp;#39; export LSCOLORS=&amp;#34;gxfxcxdxcxegedabagacad&amp;#34; #change hostname color shown in terminal export PS1=&amp;#34;\[\e[0;33m\]\u\[\033[m\]@\[\033[2;93m\]\h:\[\033[0;32m\]\w\[\033[m\]\$ &amp;#34; 其中
+首先，叫出.bash_profile. 這個檔案 (或是.zshrc)
+$ subl ~/.bash_profile (~/.zshrc) 加上這兩段：
+#enable color export CLICOLOR=&amp;#39;true&amp;#39; export LSCOLORS=&amp;#34;gxfxcxdxcxegedabagacad&amp;#34; #change hostname color shown in terminal export PS1=&amp;#34;\[\e[0;33m\]\u\[\033[m\]@\[\033[2;93m\]\h:\[\033[0;32m\]\w\[\033[m\]\$ &amp;#34; 若是zsh的話：
+export PROMPT=&amp;#34;%F{green}%n@%m%f: %F{yellow}%.%f $ &amp;#34; 其中
 \u 是user name \h 是host name \w 是working directory $ 和 ＠ 看個人喜好，也可以換成其他喜歡的符號 字母後面的是顏色的色碼，一樣可以在網路上查到各式各樣的顏色 （關鍵字：terminal color code）
 最後別忘了 source ~/.bash_profile
 按照上面的設定，最後的成果長這樣：</description>
