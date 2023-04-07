@@ -1,110 +1,34 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tech on Murmuring</title>
-    <link>https://ichennn.github.io/categories/tech/index.xml</link>
+    <link>https://ichennn.github.io/categories/tech/</link>
     <description>Recent content in Tech on Murmuring</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="https://ichennn.github.io/categories/tech/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Mon, 29 Jan 2018 14:49:08 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/categories/tech/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>用google cloud platform 開jupyter notebook!</title>
       <link>https://ichennn.github.io/blog/2018/01/%E7%94%A8google-cloud-platform-%E9%96%8Bjupyter-notebook/</link>
       <pubDate>Mon, 29 Jan 2018 14:49:08 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2018/01/%E7%94%A8google-cloud-platform-%E9%96%8Bjupyter-notebook/</guid>
-      <description>
-
-&lt;p&gt;參照這篇，做個紀錄以免我以後又忘了（真的很金魚腦 該怎麼辦&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://towardsdatascience.com/running-jupyter-notebook-in-google-cloud-platform-in-15-min-61e16da34d52&#34;&gt;https://towardsdatascience.com/running-jupyter-notebook-in-google-cloud-platform-in-15-min-61e16da34d52&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;創建google-cloud-platform-帳號&#34;&gt;創建google cloud platform 帳號&lt;/h3&gt;
-
-&lt;p&gt;直接用自己的google帳號就可以惹，一年有300美試用額度，對一般人而言真的是綽綽有餘了&lt;/p&gt;
-
-&lt;h3 id=&#34;建立vm-instance&#34;&gt;建立vm instance :&lt;/h3&gt;
-
-&lt;p&gt;compute&amp;gt; compute engine&lt;/p&gt;
-
-&lt;h3 id=&#34;安裝google-cloud-sdk&#34;&gt;安裝google cloud sdk:&lt;/h3&gt;
-
-&lt;p&gt;可以使用本地terminal利用SSH連線登入google cloud platform的server，不一定要使用，也可以直接網頁上點一下SSH開啟console&lt;/p&gt;
-
-&lt;p&gt;不過用gcloud指令的話傳檔案比較快ＸＤ&lt;/p&gt;
-
-&lt;p&gt;解壓縮之後，執行install.sh&lt;/p&gt;
-
-&lt;p&gt;我自己就莫名其妙一直有奇怪的錯誤訊息（不過好像還是有安裝成功&amp;hellip;吧），接著要認證帳戶&lt;/p&gt;
-
-&lt;p&gt;輸入&lt;code&gt;gcloud auth login&lt;/code&gt; ，瀏覽器會自動跳出google帳號的頁面讓你點選登入的帳號&lt;/p&gt;
-
-&lt;p&gt;接下來就可以使用gcloud了&lt;/p&gt;
-
-&lt;p&gt;到google cloud platform的vm那邊，點選SSH連線旁邊小三角形後再選查看gcloud指令&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201801-gcp.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;會出現類似&lt;code&gt;gcloud compute --project &amp;quot;&amp;lt;project-id&amp;gt;&amp;quot; ssh --zone &amp;quot;&amp;lt;your-zone&amp;gt;&amp;quot; &amp;quot;&amp;lt;instance-name&amp;gt;&amp;quot;&lt;/code&gt; 的指令，在terminal輸入後就可以用SSH連線到google cloud platform&lt;/p&gt;
-
-&lt;h3 id=&#34;安裝anaconda3&#34;&gt;安裝anaconda3&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;wget http://repo.continuum.io/archive/Anaconda3-4.3.0-Linux-x86_64.sh
-bash Anaconda3-4.0.0-Linux-x86_64.sh
-source ~/.bashrc
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;設定網路&#34;&gt;設定網路&lt;/h3&gt;
-
-&lt;p&gt;Network &amp;gt; VPC network&lt;/p&gt;
-
-&lt;p&gt;External IP address :先將網路改成static&lt;/p&gt;
-
-&lt;p&gt;Firewall rule: 建立一個新的rule允許port &lt;code&gt;tcp:5000&lt;/code&gt; (or 任何一個想要指定開啟notebook 的port)&lt;/p&gt;
-
-&lt;h3 id=&#34;設定jupyter-notebok&#34;&gt;設定jupyter notebok&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;jupyter notebook --generate-config&lt;/code&gt; 建立config檔（若沒有的話）&lt;/p&gt;
-
-&lt;p&gt;在configurable configuration 輸入&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;c = get_config()
-c.NotebookApp.ip = &#39;*&#39;
-c.NotebookApp.open_browser = False
-c.NotebookApp.port = &amp;lt;上一步允許的Port &amp;gt;  （ex. 5000）
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;打開Jupiter notebook 囉！&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;jupyter-notebook --no-browser --port=&amp;lt;PORT-NUMBER&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;只要輸入一次，之後就跟一般一樣輸入&lt;code&gt;jupyter notebook&lt;/code&gt;  就好了！&lt;/p&gt;
-
-&lt;h3 id=&#34;傳檔案&#34;&gt;傳檔案&lt;/h3&gt;
-
-&lt;p&gt;傳檔案進去google could platform的server&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gcloud compute scp [LOCAL_FILE_PATH] [INSTANCE_NAME]:~＃
-# example: bin/gcloud compute scp &amp;quot;/Users/Hung/cosine_sim_ver2.py&amp;quot; &amp;quot;my02&amp;quot;:~/ 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;從server傳檔案出來&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gcloud compute scp [INSTANCE_NAME]:[REMOTE_FILE_PATH] [LOCAL_FILE_PATH]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;ps.  題外話，要如何在terminal中讓python script print出有顏色的訊息呢&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from termcolor import colored
-print(colored(&#39;hello&#39;, &#39;red&#39;))
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>參照這篇，做個紀錄以免我以後又忘了（真的很金魚腦 該怎麼辦
+https://towardsdatascience.com/running-jupyter-notebook-in-google-cloud-platform-in-15-min-61e16da34d52
+創建google cloud platform 帳號 直接用自己的google帳號就可以惹，一年有300美試用額度，對一般人而言真的是綽綽有餘了
+建立vm instance : compute&amp;gt; compute engine
+安裝google cloud sdk: 可以使用本地terminal利用SSH連線登入google cloud platform的server，不一定要使用，也可以直接網頁上點一下SSH開啟console
+不過用gcloud指令的話傳檔案比較快ＸＤ
+解壓縮之後，執行install.sh
+我自己就莫名其妙一直有奇怪的錯誤訊息（不過好像還是有安裝成功&amp;hellip;吧），接著要認證帳戶
+輸入gcloud auth login ，瀏覽器會自動跳出google帳號的頁面讓你點選登入的帳號
+接下來就可以使用gcloud了
+到google cloud platform的vm那邊，點選SSH連線旁邊小三角形後再選查看gcloud指令
+會出現類似gcloud compute --project &amp;quot;&amp;lt;project-id&amp;gt;&amp;quot; ssh --zone &amp;quot;&amp;lt;your-zone&amp;gt;&amp;quot; &amp;quot;&amp;lt;instance-name&amp;gt;&amp;quot; 的指令，在terminal輸入後就可以用SSH連線到google cloud platform
+安裝anaconda3 wget http://repo.continuum.io/archive/Anaconda3-4.3.0-Linux-x86_64.sh bash Anaconda3-4.0.0-Linux-x86_64.sh source ~/.bashrc 設定網路 Network &amp;gt; VPC network
+External IP address :先將網路改成static
+Firewall rule: 建立一個新的rule允許port tcp:5000 (or 任何一個想要指定開啟notebook 的port)
+設定jupyter notebok jupyter notebook --generate-config 建立config檔（若沒有的話）</description>
     </item>
     
     <item>
@@ -113,112 +37,21 @@ print(colored(&#39;hello&#39;, &#39;red&#39;))
       <pubDate>Tue, 21 Mar 2017 00:33:37 +0800</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/03/%E5%9C%A8hugo%E5%AF%AB%E5%AE%8C%E6%96%87%E7%AB%A0%E5%8D%BBpush%E4%B8%8D%E4%B8%8Agithub%E6%80%8E%E9%BA%BC%E8%BE%A6/</guid>
-      <description>
-
-&lt;p&gt;今天突然心血來潮想說自己來改改看hugo theme的樣式，CSS門外漢的我，就每個檔案都給它打開來研究研究，然後手賤的塗塗改改，想說反正&lt;code&gt;hugo server&lt;/code&gt; 上面看爽的就好，改壞了大不了重新&lt;code&gt;git clone&lt;/code&gt;下來就好惹～～&lt;/p&gt;
-
-&lt;p&gt;結果，門外漢的我還是手賤，push了一些也不知道自己在改啥的東西上去後&amp;hellip;&amp;hellip;就發現放hugo souce的repo裡的submodule好像不同步&amp;hellip;&amp;hellip;？&lt;/p&gt;
-
-&lt;p&gt;…&amp;hellip;我真的不知道我剛剛做了什麼（崩潰&lt;/p&gt;
-
-&lt;p&gt;為什麼public裡面的靜態網頁push不上去ＱＱＱ救命哦&lt;/p&gt;
-
-&lt;p&gt;想當然，就算喊破喉嚨應該也是沒人能救我  囧&lt;/p&gt;
-
-&lt;p&gt;自己的手賤自己救，拜過估狗大神後還是把它弄好了（雙手合十&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;u-所以我到底對他做了什麼呢-u&#34;&gt;&lt;strong&gt;&lt;u&gt;所以我到底對他做了什麼呢&lt;/u&gt;？&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;…….我真的不知道啦（哭&lt;/p&gt;
-
-&lt;h5 id=&#34;可能原因-font-color-red-push順序錯誤-font&#34;&gt;→可能原因： &lt;font color=&#34;red&#34;&gt;&lt;strong&gt;push順序錯誤：&lt;/strong&gt;&lt;font&gt;&lt;/h5&gt;
-
-&lt;p&gt;&lt;font color=&#34;black&#34;&gt;因為submodule的內容不會被連帶更新，所以要先push submodule再push上一層（如果有需要的話），不然從上一層repo連結過去會是前一次push的內容。&lt;font&gt;&lt;/p&gt;
-
-&lt;p&gt;只要連過去後發現，在顯示&lt;code&gt;branch:master&lt;/code&gt;的地方會顯示&lt;code&gt;tree:&amp;lt;上一次的commit&amp;gt;&lt;/code&gt;，應該就是不小心忘了先push submodule的目錄。&lt;/p&gt;
-
-&lt;p&gt;此時在submodule裡面嘗試push的話，就會顯示：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Everything up-to-date
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;一開始看到我真的是滿頭問號orz明明最新的內容都push不上去你還騙我說什麼up-to-date&amp;hellip;.&lt;/p&gt;
-
-&lt;h3 id=&#34;u-解決方法-u&#34;&gt;&lt;strong&gt;&lt;u&gt;解決方法&lt;/u&gt;&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;參照&lt;a href=&#34;http://stackoverflow.com/questions/4445738/unable-to-push-commits-from-a-git-submodule&#34;&gt;這篇&lt;/a&gt; [註一]，總結來說就是：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ cd &amp;lt;submodule directory&amp;gt;
-$ git checkout master
-$ git merge HEAD@{1}
-$ git push origin master
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;因為現在其實有兩個branch。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ git branch
-* (HEAD detached from &amp;lt;上一次的commit&amp;gt;)
-  master
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;除了&lt;code&gt;master&lt;/code&gt;以外，另一個就是我們現在所處的branch 。所以解決方法就是要把這兩個莫名其妙被我搞出來的東西merge在一起。當輸入merge指令之後，會看到：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ git merge HEAD@{1}
-Updating 300cd65..08987fb
-Fast-forward
- blog/.DS_Store                              | Bin 6148 -&amp;gt; 6148 bytes
- blog/{year-month-day =&amp;gt; 2017}/.DS_Store     | Bin 6148 -&amp;gt; 6148 bytes
- blog/year-month-day/day_1/index.html        |  96 ----------------
- blog/year-month-day/day_2/index.html        |  96 ----------------
- .
- .
- #下接一串要update的檔案
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;耶，然後就正常了！我以後還是乖乖寫東西更新就好了，不要再亂動裡面的檔案orz&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;git-add-的時候碰到奇怪的錯誤訊息&#34;&gt;&lt;code&gt;git add&lt;/code&gt;的時候碰到奇怪的錯誤訊息：&lt;/h3&gt;
-
-&lt;p&gt;如果第一步要&lt;code&gt;add&lt;/code&gt;就不幸發生錯誤了&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git add .
-fatal: Unable to create &#39;/Users/.../.git/index.lock&#39;: File exists.
-
-Another git process seems to be running in this repository, e.g.
-an editor opened by &#39;git commit&#39;. Please make sure all processes
-are terminated then try again. If it still fails, a git process
-may have crashed in this repository earlier:
-remove the file manually to continue.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;就直接把&lt;code&gt;index.lock&lt;/code&gt;刪除即可。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ rm -f ./.git/index.lock
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;若無法&lt;code&gt;git add&lt;/code&gt;的是submodule的話，訊息應該是這樣的：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ git add .
-Assertion failed: (item-&amp;gt;nowildcard_len &amp;lt;= item-&amp;gt;len &amp;amp;&amp;amp; item-&amp;gt;prefix &amp;lt;= item-&amp;gt;len), function prefix_pathspec, file pathspec.c, line 308.
-Abort trap: 6
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;此時解決方法就不太一樣，要回到上一層處理：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git submodule init
-$ git submodule update
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;因為自己真的很常手賤，又腦袋不太清楚就亂push東西&amp;hellip;&amp;hellip;這些問題從一開始很慌張地去估狗，甚至考慮把整個repo砍掉重練，到現在已經見怪不怪了～～（好像沒什麼好得意XD）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;[註一] 在stackoverflow的連結裡的狀況是headless-branch，跟我碰到的似乎有點不太一樣，不過提供的方法一樣有效就是了。&lt;/p&gt;
-</description>
+      <description>今天突然心血來潮想說自己來改改看hugo theme的樣式，CSS門外漢的我，就每個檔案都給它打開來研究研究，然後手賤的塗塗改改，想說反正hugo server 上面看爽的就好，改壞了大不了重新git clone下來就好惹～～
+結果，門外漢的我還是手賤，push了一些也不知道自己在改啥的東西上去後&amp;hellip;&amp;hellip;就發現放hugo souce的repo裡的submodule好像不同步&amp;hellip;&amp;hellip;？
+…&amp;hellip;我真的不知道我剛剛做了什麼（崩潰
+為什麼public裡面的靜態網頁push不上去ＱＱＱ救命哦
+想當然，就算喊破喉嚨應該也是沒人能救我 囧
+自己的手賤自己救，拜過估狗大神後還是把它弄好了（雙手合十
+所以我到底對他做了什麼呢？ …….我真的不知道啦（哭
+→可能原因： push順序錯誤： 因為submodule的內容不會被連帶更新，所以要先push submodule再push上一層（如果有需要的話），不然從上一層repo連結過去會是前一次push的內容。
+只要連過去後發現，在顯示branch:master的地方會顯示tree:&amp;lt;上一次的commit&amp;gt;，應該就是不小心忘了先push submodule的目錄。
+此時在submodule裡面嘗試push的話，就會顯示：
+Everything up-to-date 一開始看到我真的是滿頭問號orz明明最新的內容都push不上去你還騙我說什麼up-to-date&amp;hellip;.
+解決方法 參照這篇 [註一]，總結來說就是：
+$ cd &amp;lt;submodule directory&amp;gt; $ git checkout master $ git merge HEAD@{1} $ git push origin master 因為現在其實有兩個branch。
+$ git branch * (HEAD detached from &amp;lt;上一次的commit&amp;gt;) master 除了master以外，另一個就是我們現在所處的branch 。所以解決方法就是要把這兩個莫名其妙被我搞出來的東西merge在一起。當輸入merge指令之後，會看到：
+$ git merge HEAD@{1} Updating 300cd65..08987fb Fast-forward blog/.DS_Store | Bin 6148 -&amp;gt; 6148 bytes blog/{year-month-day =&amp;gt; 2017}/.</description>
     </item>
     
     <item>
@@ -227,96 +60,42 @@ $ git submodule update
       <pubDate>Mon, 20 Mar 2017 20:28:57 +0800</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/03/%E5%A6%82%E4%BD%95%E7%94%A8hugo%E6%9E%B6%E5%87%BA%E4%B9%BE%E6%B7%A8%E7%B0%A1%E6%BD%94%E7%9A%84%E9%83%A8%E8%90%BD%E6%A0%BC/</guid>
-      <description>
-
-&lt;p&gt;從小時候就一直覺得寫自己的部落格是一件很潮很厲害的事，當然也經營過好幾個，從最一開始的yahoo部落格、無名小站到天空部落，前前後後也寫了好幾年，可是最後都虎頭蛇尾收場ＸＤ還是別提了&lt;/p&gt;
-
-&lt;p&gt;但是從很早之前，我就一直對這些部落格平台有一些小小的不滿（？&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;首先，樣板很固定，用過的幾個當中，大概只有天空算比較自由，其他就&amp;hellip;&amp;hellip;xd&lt;/li&gt;
-&lt;li&gt;很多時候只是想寫一些自己的碎碎念，並不想要知道有多少人看過，也不想要有人對此發表評論。&lt;/li&gt;
-&lt;li&gt;有廣告有廣告有廣告啊啊啊&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;直到最近開始學著用github之後，意外發現可以利用github pages存放靜態頁面。於是又重新燃起了我寫部落格的熊熊大火啊&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;hugo是什麼&#34;&gt;Hugo是什麼？&lt;/h2&gt;
-
-&lt;p&gt;簡單來說就是一個靜態網頁生成器，簡單快速好用。&lt;/p&gt;
-
-&lt;p&gt;可以放在任何可host網站的空間，如github或FTP。
-用Go語言寫成，據說比Jekyll穩定且快（當然也比較簡單ＸＤ&lt;/p&gt;
-
-&lt;h2 id=&#34;這個網站怎麼生出來的&#34;&gt;這個網站怎麼生出來的？&lt;/h2&gt;
-
-&lt;p&gt;有多簡單好用呢？用Hugo架一個部落格，大概需要以下幾個步驟，根據官網的&lt;a href=&#34;http://gohugo.io/overview/quickstart/&#34;&gt;Quick start&lt;/a&gt;這個過程大概只要2分鐘：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;下載hugo&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;hugo new site &amp;lt;sitename&amp;gt;&lt;/code&gt;，然後&lt;code&gt;cd&lt;/code&gt;進&lt;code&gt;themes&lt;/code&gt;，網路上隨便找個順眼的主題，把它&lt;code&gt;git clone&lt;/code&gt;下來（ps. 如果想放github上的話，這邊請用submodule）&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;hugo new post/&amp;lt;title&amp;gt;.md&lt;/code&gt; ，寫點什麼東西進去&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;hugo server&lt;/code&gt; 就可以在本地看到熱騰騰的網站了&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;好了，結束收工（欸&lt;/p&gt;
-
-&lt;p&gt;不是啦，其實還是有很多細節可以設定，在&lt;code&gt;config.toml&lt;/code&gt; 當中可以客製化一些細節，也可自己寫一個css覆蓋原本的主題做微調。真的要鑽研也是研究不完，像是short code我到現在還是沒弄懂 囧&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://gohugo.io/&#34;&gt;Hugo官網&lt;/a&gt;裡面有很多好玩的設定，留著日後慢慢看ＸＤ&lt;/p&gt;
-
-&lt;h2 id=&#34;hosting-on-github&#34;&gt;Hosting on Github&lt;/h2&gt;
-
-&lt;p&gt;然後呢？總不能這麼簡單漂亮的網站只有我自己看得到吧？&lt;/p&gt;
-
-&lt;p&gt;我當初為了研究怎麼把它放上github，搞了一天一夜快要瘋掉，&lt;a href=&#34;http://gohugo.io/tutorials/github-pages-blog/&#34;&gt;官網上的教學&lt;/a&gt;一個很複雜不想看懂（欸），一個怎麼試都失敗搞得我很火大ry&lt;/p&gt;
-
-&lt;p&gt;順帶一提github pages有分成user page跟project page兩種，托hugo的福，我之前一直不知道原來有分別，詳細差別參見&lt;a href=&#34;https://help.github.com/articles/user-organization-and-project-pages/&#34;&gt;官方&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;最後在各種英文日文網站的教學拼拼湊湊下，終於成功使用user page放上去惹～（也就是網址是github.io結尾）：&lt;/p&gt;
-
-&lt;h5 id=&#34;step1-準備兩個repository&#34;&gt;Step1: 準備兩個repository&lt;/h5&gt;
-
-&lt;p&gt;一個命名為&lt;code&gt;&amp;lt;username&amp;gt;.github.io&lt;/code&gt;，用來放產生的靜態頁面；另一個隨意，用來放Hugo site的source code。&lt;/p&gt;
-
-&lt;h5 id=&#34;step2-利用hugo架網站囉&#34;&gt;Step2: 利用hugo架網站囉&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ hugo new site &amp;lt;sitename&amp;gt;
-$ cd &amp;lt;sitename&amp;gt;
-$ hugo new post/&amp;lt;title&amp;gt;.md  #文章會放在content/post裡
-$ git init
-$ git remote add origin &amp;lt;隨意&amp;gt;.git. #對應到另一個隨意命名的repo
-$ git submodule add &amp;lt;theme url&amp;gt; theme/&amp;lt;theme name&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;submodule大概就是git裡的超連結，可以連到另一個獨立的repository裏，這樣原作者有什麼更新的話，就不用再手動更新了。&lt;/p&gt;
-
-&lt;p&gt;不過直接&lt;code&gt;git clone&lt;/code&gt;下來也是可以的，只要本地有檔案還是可以產生靜態頁面。真要說有什麼不方便的話，大概就是某天想要換電腦寫文章的時候，要再額外到theme作者的頁面git clone一次而已。&lt;/p&gt;
-
-&lt;h5 id=&#34;step3-生成網頁&#34;&gt;Step3:  生成網頁&lt;/h5&gt;
-
-&lt;p&gt;先填寫好&lt;code&gt;config.toml&lt;/code&gt;內的設定，準備好要發表的文章，&lt;code&gt;hugo&lt;/code&gt;後會產生一個存放靜態頁面的資料夾，預設是叫public&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ hugo
-$ git submodule add &amp;lt;username&amp;gt;.github.io.git public
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;將public對應到&lt;code&gt;&amp;lt;username&amp;gt;.github.io&lt;/code&gt;，這樣之後就可以直接將public中的靜態頁面push上去了&lt;/p&gt;
-
-&lt;h5 id=&#34;step4-準備放上github&#34;&gt;Step4:  準備放上GitHub&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cd public #很重要！！
-$ git add .
-$ git commit -m &amp;quot;message&amp;quot;
-$ git push origin master
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;為什麼說很重要呢？因為不&lt;code&gt;cd&lt;/code&gt;進public，裡面的東西是不會被連帶push上去的啊！！&lt;/p&gt;
-
-&lt;p&gt;之後要新增文章，只要寫好之後執行&lt;code&gt;hugo&lt;/code&gt;，再把public資料夾裡的東西push上去就可以更新了💕&lt;/p&gt;
-</description>
+      <description>從小時候就一直覺得寫自己的部落格是一件很潮很厲害的事，當然也經營過好幾個，從最一開始的yahoo部落格、無名小站到天空部落，前前後後也寫了好幾年，可是最後都虎頭蛇尾收場ＸＤ還是別提了
+但是從很早之前，我就一直對這些部落格平台有一些小小的不滿（？
+首先，樣板很固定，用過的幾個當中，大概只有天空算比較自由，其他就&amp;hellip;&amp;hellip;xd 很多時候只是想寫一些自己的碎碎念，並不想要知道有多少人看過，也不想要有人對此發表評論。 有廣告有廣告有廣告啊啊啊 直到最近開始學著用github之後，意外發現可以利用github pages存放靜態頁面。於是又重新燃起了我寫部落格的熊熊大火啊
+Hugo是什麼？ 簡單來說就是一個靜態網頁生成器，簡單快速好用。
+可以放在任何可host網站的空間，如github或FTP。 用Go語言寫成，據說比Jekyll穩定且快（當然也比較簡單ＸＤ
+這個網站怎麼生出來的？ 有多簡單好用呢？用Hugo架一個部落格，大概需要以下幾個步驟，根據官網的Quick start這個過程大概只要2分鐘：
+下載hugo hugo new site &amp;lt;sitename&amp;gt;，然後cd進themes，網路上隨便找個順眼的主題，把它git clone下來（ps. 如果想放github上的話，這邊請用submodule） hugo new post/&amp;lt;title&amp;gt;.md ，寫點什麼東西進去 hugo server 就可以在本地看到熱騰騰的網站了 好了，結束收工（欸
+不是啦，其實還是有很多細節可以設定，在config.toml 當中可以客製化一些細節，也可自己寫一個css覆蓋原本的主題做微調。真的要鑽研也是研究不完，像是short code我到現在還是沒弄懂 囧
+Hugo官網裡面有很多好玩的設定，留著日後慢慢看ＸＤ
+Hosting on Github 然後呢？總不能這麼簡單漂亮的網站只有我自己看得到吧？
+我當初為了研究怎麼把它放上github，搞了一天一夜快要瘋掉，官網上的教學一個很複雜不想看懂（欸），一個怎麼試都失敗搞得我很火大ry
+順帶一提github pages有分成user page跟project page兩種，托hugo的福，我之前一直不知道原來有分別，詳細差別參見官方。
+最後在各種英文日文網站的教學拼拼湊湊下，終於成功使用user page放上去惹～（也就是網址是github.io結尾）：
+Step1: 準備兩個repository 一個命名為&amp;lt;username&amp;gt;.github.io，用來放產生的靜態頁面；另一個隨意，用來放Hugo site的source code。
+Step2: 利用hugo架網站囉 $ hugo new site &amp;lt;sitename&amp;gt; $ cd &amp;lt;sitename&amp;gt; $ hugo new post/&amp;lt;title&amp;gt;.md #文章會放在content/post裡 $ git init $ git remote add origin &amp;lt;隨意&amp;gt;.</description>
+    </item>
+    
+    <item>
+      <title>讓Hyde-X theme重新動起來</title>
+      <link>https://ichennn.github.io/blog/1/01/%E8%AE%93hyde-x-theme%E9%87%8D%E6%96%B0%E5%8B%95%E8%B5%B7%E4%BE%86/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ichennn.github.io/blog/1/01/%E8%AE%93hyde-x-theme%E9%87%8D%E6%96%B0%E5%8B%95%E8%B5%B7%E4%BE%86/</guid>
+      <description>距離上一次更新文章，不知不覺已經過了四年。最近想要重新振作起來，整理自己的生活，一方面希望能繼續保持生活中有所output的習慣，另一方面也是希望能有條理地回顧自己過去四年當中究竟有哪些成長與改變。
+然而，就在我興致勃勃地將hugo重新載了回來之後（是的，這四年當中經歷了太多，連電腦都換了，當然也沒記得要裝hugo），發現我使用的Hyde-X模板竟然&amp;hellip;&amp;hellip;已經壞了（哭
+原本也想過要不要乾脆換個模板，或是沿用Hyde，但是換成其他的fork版本。畢竟Hyde-X自從2018年起就沒有再更新維護了，以後應該只會越壞越多吧ＱＱ
+不過最後峰迴路轉，實在是懶得再去調整CSS，也覺得Hyde-X有一些我滿喜歡的功能（像是label），最後決定還是自己來修吧！
+其實仔細看render error，只需要修改幾個小地方，並沒有想像中的整組壞光光ＸＤ因此做個紀錄，也為之後重新寫文章做個熱身＝）
+layouts/partials/sidebar.html 這裡的寫法是從另一個Hyde repo直接借過來用的
+https://github.com/spf13/hyde/blob/master/layouts/partials/sidebar.html
+- &amp;lt;p&amp;gt;&amp;lt;font size=2&amp;gt;Copyright &amp;amp;copy; {{ .Now.Format &amp;#34;2006&amp;#34; }} &amp;lt;a href=&amp;#34;{{ &amp;#34;/LICENSE&amp;#34; | absURL }}&amp;#34;&amp;gt;License&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt; + &amp;lt;p&amp;gt;&amp;lt;font size=2&amp;gt;{{ with .Site.Params.copyright }}{{.}}{{ else }}&amp;amp;copy; {{ now.Format &amp;#34;2006&amp;#34;}}. All rights reserved. {{end}}&amp;lt;br/&amp;gt; Note： 這一行後來在Hyde-X中被移動到layouts/partials/sidebar/footer.html中了。我也忘了當初是出於什麼理由，一直將他留在我的override的sidebar.html中
+layouts/index.html 這裡是Home page裡呈現出來的全部文章列表。
+原本的寫法已經deprecated，在Hyde-X的issue中也有提到。
+https://github.com/zyro/hyde-x/issues/84
+- {{ $paginator := .Paginate (where .Data.Pages &amp;#34;Type&amp;#34; &amp;#34;post&amp;#34;) }} + {{ $paginator := .Paginate (where .Site.RegularPages &amp;#34;Type&amp;#34; &amp;#34;post&amp;#34;) }} layouts/partials/head.html 我沒有需要使用這個功能（也不知道修改前後的使用上差異），因此也只是從上面提到的另一個Hyde repo找到同一個段落然後複製貼上，確保render會成功而已。
+錯誤訊息如下：</description>
     </item>
     
   </channel>

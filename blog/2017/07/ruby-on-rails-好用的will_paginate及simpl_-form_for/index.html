@@ -27,8 +27,6 @@
   
   
   
-  
-
   <meta name="description" content="記錄一些學習rails 過程中碰到的疑難雜症與新學到的用法part3。此篇主要紀錄will paginate及simple_form_for這兩個好用的gem">
   <meta name="keywords" content="">
   
@@ -72,7 +70,7 @@
 
     
 
-    <p><font size=2>Copyright &copy; 2019 <a href="https://ichennn.github.io/LICENSE">License</a><br/>
+    <p><font size=2>&copy; 2023. All rights reserved. <br/>
        Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></font></p>
   </div>
 </div>
@@ -86,82 +84,47 @@
     <br/>
     <a class="label" href="https://ichennn.github.io/categories/learning">Learning</a><a class="label" href="https://ichennn.github.io/categories/rails">Rails</a><a class="label" href="https://ichennn.github.io/categories/gem">Gem</a>
     </span>
-    
-
-<p>網站傳送門：  <a href="https://gentle-inlet-97986.herokuapp.com/">https://gentle-inlet-97986.herokuapp.com/</a></p>
-
+    <p>網站傳送門：  <a href="https://gentle-inlet-97986.herokuapp.com/">https://gentle-inlet-97986.herokuapp.com/</a></p>
 <p>主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。</p>
-
 <p>（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）</p>
-
-<hr />
-
+<hr>
 <p>此篇主要紀錄如何使用will paginate 及 simple form for這兩個方便又好用的gem來使網站變得更美觀。</p>
-
-<h2 id="use-simple-form-for">use simple_form_for</h2>
-
+<h2 id="use-simple_form_for">use simple_form_for</h2>
 <p>Simple_form_for 是一個好用的gem，可以自動調整格式</p>
-
 <p>如果還沒安裝的話，記得先在gemfile裡面新增<code>gem &quot;simple_form&quot;</code> ，然後 <code>bundle install</code></p>
-
 <p>下一步：</p>
-
 <p><code>rails generate simple_form:install --bootstrap</code> 執行boostrap的設定</p>
-
 <p>就可以使用simple_form_for了！</p>
-
 <p>使用方法也很簡單，只要將原本是<code>form_for</code> 的部分都替換成<code>simple_form_for</code> 並照著規定的格式更改內容就行了。</p>
-
-<pre><code class="language-html">&lt;%= simple_form_for @group do |f| %&gt;
-	&lt;%= f.input :description, input_html: { class: &quot;form-horizontal&quot;, :rows =&gt; 4} %&gt;
-&lt;% end %&gt;
-</code></pre>
-
-<p><code>:rows</code>  可以用來調輸入框的高度</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;</span>%= simple_form_for @group do |f| %&gt;
+</span></span><span style="display:flex;"><span>	<span style="color:#960050;background-color:#1e0010">&lt;</span>%= f.input :description, input_html: { class: &#34;form-horizontal&#34;, :rows =&gt; 4} %&gt;
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;</span>% end %&gt;
+</span></span></code></pre></div><p><code>:rows</code>  可以用來調輸入框的高度</p>
 <p>這是使用simple_form_for的效果：</p>
-
-<p><img src="https://ichennn.github.io/img/201707-simple_form_for_before.jpg" alt="simple_form_for_before" /></p>
-
+<p><img src="https://ichennn.github.io/img/201707-simple_form_for_before.jpg" alt="simple_form_for_before"></p>
 <p>Simple_form_for會自動偵測不可空白的欄位，並給出警告：</p>
-
-<p><img src="https://ichennn.github.io/img/201707-simple_form_for_adjustment.jpg" alt="simple_form_for_adjustment" /></p>
-
+<p><img src="https://ichennn.github.io/img/201707-simple_form_for_adjustment.jpg" alt="simple_form_for_adjustment"></p>
 <ul>
-<li>Reference  : use <code>form_for</code></li>
+<li>
+<p>Reference  : use <code>form_for</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;</span>%= form_for @group do |f| %&gt;
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">&lt;</span>%= f.label &#34;description&#34;, :class =&gt; &#34;string optional control-label&#34; %&gt;
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">&lt;</span>%= f.text_area :description, :class =&gt; &#34;string optional form-control&#34; %&gt;
+</span></span><span style="display:flex;"><span> <span style="color:#960050;background-color:#1e0010">&lt;</span>% end %&gt;   
+</span></span></code></pre></div></li>
 </ul>
-
-<pre><code class="language-html">  &lt;%= form_for @group do |f| %&gt;
-      &lt;%= f.label &quot;description&quot;, :class =&gt; &quot;string optional control-label&quot; %&gt;
-      &lt;%= f.text_area :description, :class =&gt; &quot;string optional form-control&quot; %&gt;
-   &lt;% end %&gt;   
-</code></pre>
-
 <p>這段和上面的simple_form_for能達到的效果幾乎是一模一樣的，但明顯就囉唆了點ＸＤ</p>
-
-<hr />
-
+<hr>
 <h2 id="will-paginate">will paginate</h2>
-
 <p>不管是什麼網站，紀錄一多，就會落落長讓人眼花撩亂，這時候有個好看簡單的分頁功能就顯得格外重要了！</p>
-
 <p>安裝完will_paginate後，也要記得在寫進<code>Gemfile</code> 裡面</p>
-
 <p>首先，在<code>App/controllers/groups_controller.rb</code>  當中加入</p>
-
-<pre><code class="language-ruby">@posts = @group.posts.recent.paginate(:page =&gt; params[:page], :per_page =&gt; 10)
-</code></pre>
-
-<p>此時若是直接<code>rails server</code> 的話會一直出現undefined method &ldquo;recent&rdquo;</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span>@posts <span style="color:#f92672">=</span> @group<span style="color:#f92672">.</span>posts<span style="color:#f92672">.</span>recent<span style="color:#f92672">.</span>paginate(<span style="color:#e6db74">:page</span> <span style="color:#f92672">=&gt;</span> params<span style="color:#f92672">[</span><span style="color:#e6db74">:page</span><span style="color:#f92672">]</span>, <span style="color:#e6db74">:per_page</span> <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">10</span>)
+</span></span></code></pre></div><p>此時若是直接<code>rails server</code> 的話會一直出現undefined method &ldquo;recent&rdquo;</p>
 <p>這是因為系統當中並沒有名為recent的方法，要自己去<code>app/models/post.rb</code> 中加入</p>
-
-<pre><code class="language-ruby">scope :recent, -&gt; {order(&quot;created_at DESC&quot;)}
-</code></pre>
-
-<p>此時應該就可以順利看到分頁了！</p>
-
-<p><img src="https://ichennn.github.io/img/201707-paginate.jpg" alt="paginate" /></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span>scope <span style="color:#e6db74">:recent</span>, <span style="color:#f92672">-&gt;</span> {order(<span style="color:#e6db74">&#34;created_at DESC&#34;</span>)}
+</span></span></code></pre></div><p>此時應該就可以順利看到分頁了！</p>
+<p><img src="https://ichennn.github.io/img/201707-paginate.jpg" alt="paginate"></p>
 
   </div>
   

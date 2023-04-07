@@ -27,8 +27,6 @@
   
   
   
-  
-
   <meta name="description" content="記錄一下在Hugo裡塗塗改改後，卻push不上去的困境以及如何被估狗拯救。">
   <meta name="keywords" content="">
   
@@ -72,7 +70,7 @@
 
     
 
-    <p><font size=2>Copyright &copy; 2019 <a href="https://ichennn.github.io/LICENSE">License</a><br/>
+    <p><font size=2>&copy; 2023. All rights reserved. <br/>
        Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></font></p>
   </div>
 </div>
@@ -86,110 +84,65 @@
     <br/>
     <a class="label" href="https://ichennn.github.io/categories/learning">Learning</a><a class="label" href="https://ichennn.github.io/categories/tech">Tech</a><a class="label" href="https://ichennn.github.io/categories/hugo">Hugo</a>
     </span>
-    
-
-<p>今天突然心血來潮想說自己來改改看hugo theme的樣式，CSS門外漢的我，就每個檔案都給它打開來研究研究，然後手賤的塗塗改改，想說反正<code>hugo server</code> 上面看爽的就好，改壞了大不了重新<code>git clone</code>下來就好惹～～</p>
-
+    <p>今天突然心血來潮想說自己來改改看hugo theme的樣式，CSS門外漢的我，就每個檔案都給它打開來研究研究，然後手賤的塗塗改改，想說反正<code>hugo server</code> 上面看爽的就好，改壞了大不了重新<code>git clone</code>下來就好惹～～</p>
 <p>結果，門外漢的我還是手賤，push了一些也不知道自己在改啥的東西上去後&hellip;&hellip;就發現放hugo souce的repo裡的submodule好像不同步&hellip;&hellip;？</p>
-
 <p>…&hellip;我真的不知道我剛剛做了什麼（崩潰</p>
-
 <p>為什麼public裡面的靜態網頁push不上去ＱＱＱ救命哦</p>
-
 <p>想當然，就算喊破喉嚨應該也是沒人能救我  囧</p>
-
 <p>自己的手賤自己救，拜過估狗大神後還是把它弄好了（雙手合十</p>
-
-<hr />
-
-<h3 id="u-所以我到底對他做了什麼呢-u"><strong><u>所以我到底對他做了什麼呢</u>？</strong></h3>
-
+<hr>
+<h3 id="u所以我到底對他做了什麼呢u"><strong><!-- raw HTML omitted -->所以我到底對他做了什麼呢<!-- raw HTML omitted -->？</strong></h3>
 <p>…….我真的不知道啦（哭</p>
-
-<h5 id="可能原因-font-color-red-push順序錯誤-font">→可能原因： <font color="red"><strong>push順序錯誤：</strong><font></h5>
-
-<p><font color="black">因為submodule的內容不會被連帶更新，所以要先push submodule再push上一層（如果有需要的話），不然從上一層repo連結過去會是前一次push的內容。<font></p>
-
+<h5 id="可能原因-font-colorredpush順序錯誤font">→可能原因： <!-- raw HTML omitted --><strong>push順序錯誤：</strong><!-- raw HTML omitted --></h5>
+<p><!-- raw HTML omitted -->因為submodule的內容不會被連帶更新，所以要先push submodule再push上一層（如果有需要的話），不然從上一層repo連結過去會是前一次push的內容。<!-- raw HTML omitted --></p>
 <p>只要連過去後發現，在顯示<code>branch:master</code>的地方會顯示<code>tree:&lt;上一次的commit&gt;</code>，應該就是不小心忘了先push submodule的目錄。</p>
-
 <p>此時在submodule裡面嘗試push的話，就會顯示：</p>
-
-<pre><code>Everything up-to-date
-</code></pre>
-
-<p>一開始看到我真的是滿頭問號orz明明最新的內容都push不上去你還騙我說什麼up-to-date&hellip;.</p>
-
-<h3 id="u-解決方法-u"><strong><u>解決方法</u></strong></h3>
-
+<pre tabindex="0"><code>Everything up-to-date
+</code></pre><p>一開始看到我真的是滿頭問號orz明明最新的內容都push不上去你還騙我說什麼up-to-date&hellip;.</p>
+<h3 id="u解決方法u"><strong><!-- raw HTML omitted -->解決方法<!-- raw HTML omitted --></strong></h3>
 <p>參照<a href="http://stackoverflow.com/questions/4445738/unable-to-push-commits-from-a-git-submodule">這篇</a> [註一]，總結來說就是：</p>
-
-<pre><code class="language-Bash">$ cd &lt;submodule directory&gt;
-$ git checkout master
-$ git merge HEAD@{1}
-$ git push origin master
-</code></pre>
-
-<p>因為現在其實有兩個branch。</p>
-
-<pre><code class="language-Bash">$ git branch
-* (HEAD detached from &lt;上一次的commit&gt;)
-  master
-</code></pre>
-
-<p>除了<code>master</code>以外，另一個就是我們現在所處的branch 。所以解決方法就是要把這兩個莫名其妙被我搞出來的東西merge在一起。當輸入merge指令之後，會看到：</p>
-
-<pre><code class="language-Bash">$ git merge HEAD@{1}
-Updating 300cd65..08987fb
-Fast-forward
- blog/.DS_Store                              | Bin 6148 -&gt; 6148 bytes
- blog/{year-month-day =&gt; 2017}/.DS_Store     | Bin 6148 -&gt; 6148 bytes
- blog/year-month-day/day_1/index.html        |  96 ----------------
- blog/year-month-day/day_2/index.html        |  96 ----------------
- .
- .
- #下接一串要update的檔案
-</code></pre>
-
-<p>耶，然後就正常了！我以後還是乖乖寫東西更新就好了，不要再亂動裡面的檔案orz</p>
-
-<hr />
-
-<h3 id="git-add-的時候碰到奇怪的錯誤訊息"><code>git add</code>的時候碰到奇怪的錯誤訊息：</h3>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>$ cd &lt;submodule directory&gt;
+</span></span><span style="display:flex;"><span>$ git checkout master
+</span></span><span style="display:flex;"><span>$ git merge HEAD@<span style="color:#f92672">{</span>1<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>$ git push origin master
+</span></span></code></pre></div><p>因為現在其實有兩個branch。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>$ git branch
+</span></span><span style="display:flex;"><span>* <span style="color:#f92672">(</span>HEAD detached from &lt;上一次的commit&gt;<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  master
+</span></span></code></pre></div><p>除了<code>master</code>以外，另一個就是我們現在所處的branch 。所以解決方法就是要把這兩個莫名其妙被我搞出來的東西merge在一起。當輸入merge指令之後，會看到：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>$ git merge HEAD@<span style="color:#f92672">{</span>1<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>Updating 300cd65..08987fb
+</span></span><span style="display:flex;"><span>Fast-forward
+</span></span><span style="display:flex;"><span> blog/.DS_Store                              | Bin <span style="color:#ae81ff">6148</span> -&gt; <span style="color:#ae81ff">6148</span> bytes
+</span></span><span style="display:flex;"><span> blog/<span style="color:#f92672">{</span>year-month-day <span style="color:#f92672">=</span>&gt; 2017<span style="color:#f92672">}</span>/.DS_Store     | Bin <span style="color:#ae81ff">6148</span> -&gt; <span style="color:#ae81ff">6148</span> bytes
+</span></span><span style="display:flex;"><span> blog/year-month-day/day_1/index.html        |  <span style="color:#ae81ff">96</span> ----------------
+</span></span><span style="display:flex;"><span> blog/year-month-day/day_2/index.html        |  <span style="color:#ae81ff">96</span> ----------------
+</span></span><span style="display:flex;"><span> .
+</span></span><span style="display:flex;"><span> .
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">#下接一串要update的檔案</span>
+</span></span></code></pre></div><p>耶，然後就正常了！我以後還是乖乖寫東西更新就好了，不要再亂動裡面的檔案orz</p>
+<hr>
+<h3 id="git-add的時候碰到奇怪的錯誤訊息"><code>git add</code>的時候碰到奇怪的錯誤訊息：</h3>
 <p>如果第一步要<code>add</code>就不幸發生錯誤了</p>
-
-<pre><code class="language-bash">$ git add .
-fatal: Unable to create '/Users/.../.git/index.lock': File exists.
-
-Another git process seems to be running in this repository, e.g.
-an editor opened by 'git commit'. Please make sure all processes
-are terminated then try again. If it still fails, a git process
-may have crashed in this repository earlier:
-remove the file manually to continue.
-</code></pre>
-
-<p>就直接把<code>index.lock</code>刪除即可。</p>
-
-<pre><code class="language-Bash">$ rm -f ./.git/index.lock
-</code></pre>
-
-<p>若無法<code>git add</code>的是submodule的話，訊息應該是這樣的：</p>
-
-<pre><code class="language-Bash">$ git add .
-Assertion failed: (item-&gt;nowildcard_len &lt;= item-&gt;len &amp;&amp; item-&gt;prefix &lt;= item-&gt;len), function prefix_pathspec, file pathspec.c, line 308.
-Abort trap: 6
-</code></pre>
-
-<p>此時解決方法就不太一樣，要回到上一層處理：</p>
-
-<pre><code class="language-bash">$ git submodule init
-$ git submodule update
-</code></pre>
-
-<p>因為自己真的很常手賤，又腦袋不太清楚就亂push東西&hellip;&hellip;這些問題從一開始很慌張地去估狗，甚至考慮把整個repo砍掉重練，到現在已經見怪不怪了～～（好像沒什麼好得意XD）</p>
-
-<hr />
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ git add .
+</span></span><span style="display:flex;"><span>fatal: Unable to create <span style="color:#e6db74">&#39;/Users/.../.git/index.lock&#39;</span>: File exists.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Another git process seems to be running in this repository, e.g.
+</span></span><span style="display:flex;"><span>an editor opened by <span style="color:#e6db74">&#39;git commit&#39;</span>. Please make sure all processes
+</span></span><span style="display:flex;"><span>are terminated <span style="color:#66d9ef">then</span> try again. If it still fails, a git process
+</span></span><span style="display:flex;"><span>may have crashed in this repository earlier:
+</span></span><span style="display:flex;"><span>remove the file manually to <span style="color:#66d9ef">continue</span>.
+</span></span></code></pre></div><p>就直接把<code>index.lock</code>刪除即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>$ rm -f ./.git/index.lock
+</span></span></code></pre></div><p>若無法<code>git add</code>的是submodule的話，訊息應該是這樣的：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>$ git add .
+</span></span><span style="display:flex;"><span>Assertion failed: <span style="color:#f92672">(</span>item-&gt;nowildcard_len &lt;<span style="color:#f92672">=</span> item-&gt;len <span style="color:#f92672">&amp;&amp;</span> item-&gt;prefix &lt;<span style="color:#f92672">=</span> item-&gt;len<span style="color:#f92672">)</span>, <span style="color:#66d9ef">function</span> prefix_pathspec, file pathspec.c, line 308.
+</span></span><span style="display:flex;"><span>Abort trap: <span style="color:#ae81ff">6</span>
+</span></span></code></pre></div><p>此時解決方法就不太一樣，要回到上一層處理：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ git submodule init
+</span></span><span style="display:flex;"><span>$ git submodule update
+</span></span></code></pre></div><p>因為自己真的很常手賤，又腦袋不太清楚就亂push東西&hellip;&hellip;這些問題從一開始很慌張地去估狗，甚至考慮把整個repo砍掉重練，到現在已經見怪不怪了～～（好像沒什麼好得意XD）</p>
+<hr>
 <p>[註一] 在stackoverflow的連結裡的狀況是headless-branch，跟我碰到的似乎有點不太一樣，不過提供的方法一樣有效就是了。</p>
 
   </div>

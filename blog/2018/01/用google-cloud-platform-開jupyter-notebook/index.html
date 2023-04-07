@@ -27,8 +27,6 @@
   
   
   
-  
-
   <meta name="description" content="為了要跑研究上一筆有點大的資料，開始研究怎麼用google cloud platform。此篇介紹如何在gcp的虛擬機器上面跑Jupiter notebook">
   <meta name="keywords" content="">
   
@@ -72,7 +70,7 @@
 
     
 
-    <p><font size=2>Copyright &copy; 2019 <a href="https://ichennn.github.io/LICENSE">License</a><br/>
+    <p><font size=2>&copy; 2023. All rights reserved. <br/>
        Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></font></p>
   </div>
 </div>
@@ -86,97 +84,52 @@
     <br/>
     <a class="label" href="https://ichennn.github.io/categories/learning">Learning</a><a class="label" href="https://ichennn.github.io/categories/tech">Tech</a><a class="label" href="https://ichennn.github.io/categories/google-cloud-platform">google cloud platform</a>
     </span>
-    
-
-<p>參照這篇，做個紀錄以免我以後又忘了（真的很金魚腦 該怎麼辦</p>
-
+    <p>參照這篇，做個紀錄以免我以後又忘了（真的很金魚腦 該怎麼辦</p>
 <p><a href="https://towardsdatascience.com/running-jupyter-notebook-in-google-cloud-platform-in-15-min-61e16da34d52">https://towardsdatascience.com/running-jupyter-notebook-in-google-cloud-platform-in-15-min-61e16da34d52</a></p>
-
 <h3 id="創建google-cloud-platform-帳號">創建google cloud platform 帳號</h3>
-
 <p>直接用自己的google帳號就可以惹，一年有300美試用額度，對一般人而言真的是綽綽有餘了</p>
-
-<h3 id="建立vm-instance">建立vm instance :</h3>
-
+<h3 id="建立vm-instance-">建立vm instance :</h3>
 <p>compute&gt; compute engine</p>
-
 <h3 id="安裝google-cloud-sdk">安裝google cloud sdk:</h3>
-
 <p>可以使用本地terminal利用SSH連線登入google cloud platform的server，不一定要使用，也可以直接網頁上點一下SSH開啟console</p>
-
 <p>不過用gcloud指令的話傳檔案比較快ＸＤ</p>
-
 <p>解壓縮之後，執行install.sh</p>
-
 <p>我自己就莫名其妙一直有奇怪的錯誤訊息（不過好像還是有安裝成功&hellip;吧），接著要認證帳戶</p>
-
 <p>輸入<code>gcloud auth login</code> ，瀏覽器會自動跳出google帳號的頁面讓你點選登入的帳號</p>
-
 <p>接下來就可以使用gcloud了</p>
-
 <p>到google cloud platform的vm那邊，點選SSH連線旁邊小三角形後再選查看gcloud指令</p>
-
-<p><img src="https://ichennn.github.io/img/201801-gcp.jpg" alt="" /></p>
-
+<p><img src="https://ichennn.github.io/img/201801-gcp.jpg" alt=""></p>
 <p>會出現類似<code>gcloud compute --project &quot;&lt;project-id&gt;&quot; ssh --zone &quot;&lt;your-zone&gt;&quot; &quot;&lt;instance-name&gt;&quot;</code> 的指令，在terminal輸入後就可以用SSH連線到google cloud platform</p>
-
 <h3 id="安裝anaconda3">安裝anaconda3</h3>
-
-<pre><code class="language-shell">wget http://repo.continuum.io/archive/Anaconda3-4.3.0-Linux-x86_64.sh
-bash Anaconda3-4.0.0-Linux-x86_64.sh
-source ~/.bashrc
-</code></pre>
-
-<h3 id="設定網路">設定網路</h3>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>wget http://repo.continuum.io/archive/Anaconda3-4.3.0-Linux-x86_64.sh
+</span></span><span style="display:flex;"><span>bash Anaconda3-4.0.0-Linux-x86_64.sh
+</span></span><span style="display:flex;"><span>source ~/.bashrc
+</span></span></code></pre></div><h3 id="設定網路">設定網路</h3>
 <p>Network &gt; VPC network</p>
-
 <p>External IP address :先將網路改成static</p>
-
 <p>Firewall rule: 建立一個新的rule允許port <code>tcp:5000</code> (or 任何一個想要指定開啟notebook 的port)</p>
-
 <h3 id="設定jupyter-notebok">設定jupyter notebok</h3>
-
 <p><code>jupyter notebook --generate-config</code> 建立config檔（若沒有的話）</p>
-
 <p>在configurable configuration 輸入</p>
-
-<pre><code>c = get_config()
-c.NotebookApp.ip = '*'
+<pre tabindex="0"><code>c = get_config()
+c.NotebookApp.ip = &#39;*&#39;
 c.NotebookApp.open_browser = False
 c.NotebookApp.port = &lt;上一步允許的Port &gt;  （ex. 5000）
-</code></pre>
-
-<p>打開Jupiter notebook 囉！</p>
-
-<pre><code class="language-shell">jupyter-notebook --no-browser --port=&lt;PORT-NUMBER&gt;
-</code></pre>
-
-<p>只要輸入一次，之後就跟一般一樣輸入<code>jupyter notebook</code>  就好了！</p>
-
+</code></pre><p>打開Jupiter notebook 囉！</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>jupyter-notebook --no-browser --port<span style="color:#f92672">=</span>&lt;PORT-NUMBER&gt;
+</span></span></code></pre></div><p>只要輸入一次，之後就跟一般一樣輸入<code>jupyter notebook</code>  就好了！</p>
 <h3 id="傳檔案">傳檔案</h3>
-
 <p>傳檔案進去google could platform的server</p>
-
-<pre><code class="language-shell">gcloud compute scp [LOCAL_FILE_PATH] [INSTANCE_NAME]:~＃
-# example: bin/gcloud compute scp &quot;/Users/Hung/cosine_sim_ver2.py&quot; &quot;my02&quot;:~/ 
-</code></pre>
-
-<p>從server傳檔案出來</p>
-
-<pre><code class="language-shell">gcloud compute scp [INSTANCE_NAME]:[REMOTE_FILE_PATH] [LOCAL_FILE_PATH]
-</code></pre>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>gcloud compute scp <span style="color:#f92672">[</span>LOCAL_FILE_PATH<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>INSTANCE_NAME<span style="color:#f92672">]</span>:~＃
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># example: bin/gcloud compute scp &#34;/Users/Hung/cosine_sim_ver2.py&#34; &#34;my02&#34;:~/ </span>
+</span></span></code></pre></div><p>從server傳檔案出來</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>gcloud compute scp <span style="color:#f92672">[</span>INSTANCE_NAME<span style="color:#f92672">]</span>:<span style="color:#f92672">[</span>REMOTE_FILE_PATH<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>LOCAL_FILE_PATH<span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>.</p>
 <p>.</p>
-
-<p>.</p>
-
 <p>ps.  題外話，要如何在terminal中讓python script print出有顏色的訊息呢</p>
-
-<pre><code class="language-python">from termcolor import colored
-print(colored('hello', 'red'))
-</code></pre>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> termcolor <span style="color:#f92672">import</span> colored
+</span></span><span style="display:flex;"><span>print(colored(<span style="color:#e6db74">&#39;hello&#39;</span>, <span style="color:#e6db74">&#39;red&#39;</span>))
+</span></span></code></pre></div>
   </div>
   
 </div>

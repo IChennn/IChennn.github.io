@@ -1,178 +1,32 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Htmlcss on Murmuring</title>
-    <link>https://ichennn.github.io/categories/htmlcss/index.xml</link>
-    <description>Recent content in Htmlcss on Murmuring</description>
+    <title>HTML&amp;CSS on Murmuring</title>
+    <link>https://ichennn.github.io/categories/htmlcss/</link>
+    <description>Recent content in HTML&amp;CSS on Murmuring</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="https://ichennn.github.io/categories/htmlcss/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Sat, 22 Jul 2017 15:43:37 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/categories/htmlcss/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[Ruby on Rails] 基本View構成——HTML&amp;CSS</title>
       <link>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E5%9F%BA%E6%9C%ACview%E6%A7%8B%E6%88%90htmlcss/</link>
       <pubDate>Sat, 22 Jul 2017 15:43:37 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E5%9F%BA%E6%9C%ACview%E6%A7%8B%E6%88%90htmlcss/</guid>
-      <description>
-
-&lt;p&gt;這是第一次用Ruby on Rails 做出一個完整的網站。&lt;/p&gt;
-
-&lt;p&gt;已經架在Heroku上了：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;可能跑的有點慢，畢竟整個專案很肥ＸＤ&lt;/p&gt;
-
-&lt;p&gt;這次的主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄一些和View構成有關的部分。&lt;/p&gt;
-
-&lt;h2 id=&#34;html-partial&#34;&gt;HTML partial&lt;/h2&gt;
-
-&lt;p&gt;顧名思義，就是把一份html檔拆成好多部分來組合&lt;/p&gt;
-
-&lt;p&gt;基本上，一個頁面可以拆成三個部分：navbar, footer, 中間的內容。這麼拆的好處是，可以將上下兩條bar設定成全域樣式，中間的內容無論怎麼跳轉，都不會影響到上下方的bar&lt;/p&gt;
-
-&lt;p&gt;網站上頭的bar：&lt;code&gt;View/common/_navbar.html.erb&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;!-- Navigation --&amp;gt;
-&amp;lt;nav class=&amp;quot;navbar navbar-default navbar-fixed-top topnav&amp;quot; role=&amp;quot;navigation&amp;quot;&amp;gt;
-  ....
-&amp;lt;/nav&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;網站下方的footer：&lt;code&gt;View/commom/_footer.html.erb&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;!-- Footer --&amp;gt;
-&amp;lt;footer&amp;gt;
-   ...
-&amp;lt;/footer&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然後修改&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;View/layouts/application.html.erb&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;(html全域樣式，不管頁面怎麼跳轉都會在)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Html&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;
-&amp;lt;html&amp;gt;
-    &amp;lt;head&amp;gt;
-        &amp;lt;title&amp;gt;Book Reviews&amp;lt;/title&amp;gt;
-        &amp;lt;%= csrf_meta_tags %&amp;gt;
-        &amp;lt;%= stylesheet_link_tag    &#39;application&#39;, media: &#39;all&#39;, &#39;data-turbolinks-track&#39;: &#39;reload&#39; %&amp;gt;
-        &amp;lt;%= javascript_include_tag &#39;application&#39;, &#39;data-turbolinks-track&#39;: &#39;reload&#39; %&amp;gt;
-    &amp;lt;/head&amp;gt;
-    &amp;lt;body&amp;gt;
-        &amp;lt;div class=&amp;quot;container-fluid&amp;quot;&amp;gt;
-            &amp;lt;%= render &amp;quot;common/navbar&amp;quot; %&amp;gt;
-            &amp;lt;%= yield %&amp;gt;
-        &amp;lt;/div&amp;gt;
-        &amp;lt;%= render &amp;quot;common/footer&amp;quot; %&amp;gt;
-    &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;&amp;lt;%= yield %&amp;gt;&lt;/code&gt; 是其他程式碼輸出的地方，也就是網頁的主要內容，會一直跳轉。&lt;/p&gt;
-
-&lt;p&gt;另外值得一提的是，&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;雖然檔名是&lt;code&gt;_navbar&lt;/code&gt;  ，但路徑卻是&lt;code&gt;common/navbar&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;把header變成partial後，開了&lt;code&gt;rails server&lt;/code&gt; 後會發現無法全頁面延展。這時只要把&lt;code&gt;&amp;lt;div class=&amp;quot;container-fluid&amp;quot;&amp;gt;&lt;/code&gt; 的 class拿掉就好了(也就是變成只有&lt;code&gt;&amp;lt;div&amp;gt;&lt;/code&gt; )&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;如何置底&#34;&gt;如何置底&lt;/h2&gt;
-
-&lt;p&gt;把bar置底或置頂&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;nav class=&amp;quot;navbar navbar-default navbar-fixed-bottom&amp;quot; role=&amp;quot;navigation&amp;quot;&amp;gt;
-  ...
-&amp;lt;/nav&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;置頂：navbar-fixed-top&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;external-css&#34;&gt;External css&lt;/h2&gt;
-
-&lt;p&gt;每次產生一個View以後，總是有一些想要微調的部分，此時的CSS code要寫在哪裡呢？&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;rails generate controller groups&lt;/code&gt; 後，在 app/assets/stylesheets/ 下會有自動產生的 groups.scss&lt;/p&gt;
-
-&lt;p&gt;把css寫在這，但因為最後都會套用進(?) application.css&lt;/p&gt;
-
-&lt;p&gt;因此在html中要指定個別的&lt;code&gt;&amp;lt;div id=&amp;quot; &amp;quot;&amp;gt;&lt;/code&gt; ，不要直接用body下指令，不然會連帶改到其他的頁面。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;移到頁面中的某一段&#34;&gt;移到頁面中的某一段&lt;/h2&gt;
-
-&lt;p&gt;有點像是標籤的功能，直接在區塊中指定name&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;a name=&amp;quot;latest&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;
-    &amp;lt;div class=&amp;quot;content-section-a&amp;quot;&amp;gt;
-      ......
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;頁尾標籤：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;ul class=&amp;quot;list-inline&amp;quot;&amp;gt;
-  &amp;lt;li&amp;gt;
-  &amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;Home&amp;lt;/a&amp;gt;
-  &amp;lt;/li&amp;gt;
-  &amp;lt;li class=&amp;quot;footer-menu-divider&amp;quot;&amp;gt;&amp;amp;sdot;&amp;lt;/li&amp;gt;
-  &amp;lt;li&amp;gt;
-  &amp;lt;a href=#latest&amp;gt;What&#39;s news&amp;lt;/a&amp;gt;  # 不用“ ”
-  &amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;link-button&#34;&gt;Link button&lt;/h2&gt;
-
-&lt;p&gt;不像一般HTML用&lt;code&gt;&amp;lt;a href = &amp;gt; &amp;lt;/a&amp;gt;&lt;/code&gt; 來操作超連結和按鈕，在Rails當中可以用一套特別的寫法&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;&amp;lt;%= link_to(&amp;quot;Cancel&amp;quot;, groups_path, class: &amp;quot;btn btn-md btn-default&amp;quot;)%&amp;gt;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;其中，&lt;code&gt;&amp;quot;Cancel&amp;quot;&lt;/code&gt; 是出現在按鈕上的字，&lt;code&gt;groups_path&lt;/code&gt; 是按鈕按下去之後會連結到的路徑，按鈕的class有很多種大小可以選：&lt;/p&gt;
-
-&lt;p&gt;btn-xs, btn-sm, btn-md, btn-lg&lt;/p&gt;
-
-&lt;p&gt;更詳細的設定可以參考bootstrap的網站 : &lt;a href=&#34;https://getbootstrap.com/&#34;&gt;https://getbootstrap.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;查看目前的action&#34;&gt;查看目前的action&lt;/h2&gt;
-
-&lt;p&gt;欸，那如果不知道要連過去的那個頁面的路徑怎麼辦？！&lt;/p&gt;
-
-&lt;p&gt;因為Rails通常會一下子自動產生好多個檔案，有時候頁面一多自己也頭昏腦脹搞不清楚。&lt;/p&gt;
-
-&lt;p&gt;不過還好有個指令可以幫大家列出所有目前存在的路徑：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Shell&#34;&gt;$ rake routes
-                  Prefix Verb   URI Pattern                    Controller#Action
-        new_user_session GET    /users/sign_in(.:format)       devise/sessions#new
-            user_session POST   /users/sign_in(.:format)       devise/sessions#create
-    destroy_user_session DELETE /users/sign_out(.:format)      devise/sessions#destroy
-           user_password POST   /users/password(.:format)      devise/passwords#create
-       new_user_password GET    /users/password/new(.:format)  devise/passwords#new
-      edit_user_password GET    /users/password/edit(.:format) devise/passwords#edit
-      .
-      .
-      .
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;路徑就是prefix那欄，假設要連到第一欄的&lt;code&gt;new_user_session&lt;/code&gt; ，路徑就是&lt;code&gt;new_user_session_path&lt;/code&gt;&lt;/p&gt;
-</description>
+      <description>這是第一次用Ruby on Rails 做出一個完整的網站。
+已經架在Heroku上了： https://gentle-inlet-97986.herokuapp.com/
+可能跑的有點慢，畢竟整個專案很肥ＸＤ
+這次的主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄一些和View構成有關的部分。
+HTML partial 顧名思義，就是把一份html檔拆成好多部分來組合
+基本上，一個頁面可以拆成三個部分：navbar, footer, 中間的內容。這麼拆的好處是，可以將上下兩條bar設定成全域樣式，中間的內容無論怎麼跳轉，都不會影響到上下方的bar
+網站上頭的bar：View/common/_navbar.html.erb
+&amp;lt;!-- Navigation --&amp;gt; &amp;lt;nav class=&amp;#34;navbar navbar-default navbar-fixed-top topnav&amp;#34; role=&amp;#34;navigation&amp;#34;&amp;gt; .... &amp;lt;/nav&amp;gt; 網站下方的footer：View/commom/_footer.html.erb
+&amp;lt;!-- Footer --&amp;gt; &amp;lt;footer&amp;gt; ... &amp;lt;/footer&amp;gt; 然後修改
+View/layouts/application.html.erb
+(html全域樣式，不管頁面怎麼跳轉都會在)
+&amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;Book Reviews&amp;lt;/title&amp;gt; &amp;lt;%= csrf_meta_tags %&amp;gt; &amp;lt;%= stylesheet_link_tag &amp;#39;application&amp;#39;, media: &amp;#39;all&amp;#39;, &amp;#39;data-turbolinks-track&amp;#39;: &amp;#39;reload&amp;#39; %&amp;gt; &amp;lt;%= javascript_include_tag &amp;#39;application&amp;#39;, &amp;#39;data-turbolinks-track&amp;#39;: &amp;#39;reload&amp;#39; %&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;div class=&amp;#34;container-fluid&amp;#34;&amp;gt; &amp;lt;%= render &amp;#34;common/navbar&amp;#34; %&amp;gt; &amp;lt;%= yield %&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;%= render &amp;#34;common/footer&amp;#34; %&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt; &amp;lt;%= yield %&amp;gt; 是其他程式碼輸出的地方，也就是網頁的主要內容，會一直跳轉。</description>
     </item>
     
   </channel>

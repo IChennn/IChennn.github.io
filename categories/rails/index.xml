@@ -1,201 +1,46 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rails on Murmuring</title>
-    <link>https://ichennn.github.io/categories/rails/index.xml</link>
+    <link>https://ichennn.github.io/categories/rails/</link>
     <description>Recent content in Rails on Murmuring</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="https://ichennn.github.io/categories/rails/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Sat, 22 Jul 2017 17:54:54 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/categories/rails/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[Ruby on Rails] 部署到Heroku囉！</title>
       <link>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E9%83%A8%E7%BD%B2%E5%88%B0heroku%E5%9B%89/</link>
       <pubDate>Sat, 22 Jul 2017 17:54:54 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E9%83%A8%E7%BD%B2%E5%88%B0heroku%E5%9B%89/</guid>
-      <description>
-
-&lt;p&gt;網站傳送門：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄如何解決上傳到Heroku時可能碰到的一些亂七八糟的小毛病。以及如何在Heroku上實現使用者上傳圖片的功能。&lt;/p&gt;
-
-&lt;p&gt;##第一次部署到Heroku&lt;/p&gt;
-
-&lt;p&gt;首先，安裝Heroku的 gem。再來，註冊一個Heroku帳號。&lt;/p&gt;
-
-&lt;p&gt;接下來照著這篇：&lt;a href=&#34;https://www.railstutorial.org/book/beginning&#34;&gt;https://www.railstutorial.org/book/beginning&lt;/a&gt; 的1.5章將Rails的設定都弄好就行了！&lt;/p&gt;
-
-&lt;p&gt;網路上有一些聲音認為Heroku實在是太囉唆麻煩，一大堆設定，搞不好又會上傳失敗，作為一個server實在是讓人惱火。&lt;/p&gt;
-
-&lt;p&gt;嘛，確實ＸＤ不過以一個新手的觀點來說，因為是免費的（當然，需要更大的空間的話就要付費的），而且玩過Heroku的人多，就算碰到什麼問題也總是能估狗到答案的，就這兩點來說還是滿不錯的啦。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;heroku-update&#34;&gt;heroku update&lt;/h2&gt;
-
-&lt;p&gt;在一般情況下，要將專案push到Heroku上，是這樣下指令的：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;git push heroku master&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;但在進行Rails專案時，可能會開好幾個branch，假設今天要把branch h03 push到heroku 上面的話也很簡單，只要：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;git push heroku h03:master&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;然後 &lt;code&gt;heroku run rake db:migrate&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;就可以用 &lt;code&gt;heroku open&lt;/code&gt; 打開熱騰騰的網站了！&lt;/p&gt;
-
-&lt;p&gt;-&lt;/p&gt;
-
-&lt;p&gt;另外，經過實測，有幾點問題值得紀錄：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;heroku上無法顯示flashes (解決方式未知，因為覺得flash很醜，乾脆就不用了ＸＤ)&lt;/li&gt;
-&lt;li&gt;在&lt;code&gt;app/assets/stylesheets/application.scss&lt;/code&gt; 當中加入&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-scss&#34;&gt;@import &amp;quot;bootstrap-sprockets&amp;quot;;
-@import &amp;quot;bootstrap&amp;quot;;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;會使heroku無法push (原因未知)&lt;/p&gt;
-
-&lt;p&gt;這兩點因為沒什麼必須性，因此為了省麻煩我就都直接刪掉了ＸＤ&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;解決在heroku上圖片無法顯示的問題&#34;&gt;解決在heroku上圖片無法顯示的問題&lt;/h2&gt;
-
-&lt;p&gt;好不容易上傳成功，結果一打開——哇，所有的圖片都不見惹～～～的這種惱火感真的很讓人難忘啊&amp;hellip;&lt;/p&gt;
-
-&lt;p&gt;不過解決方法也不複雜，把設定改一下就行了。只要到&lt;code&gt;Config/environments/production.rb&lt;/code&gt; 當中，將&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;config.serve_static_files = ENV[&#39;RAILS_SERVE_STATIC_FILES&#39;].present?
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;改成&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;config.serve_static_assets = true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;上傳圖片-heroku&#34;&gt;上傳圖片＋Heroku&lt;/h2&gt;
-
-&lt;p&gt;好的，終於辛辛苦苦把上傳圖片的功能做好了，想要傳到heroku上面自己看著爽一下，殊不知&amp;hellip;&amp;hellip;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;heroku不能儲存使用者自己上傳的圖片啊！！！！&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;（抱頭痛哭&lt;/p&gt;
-
-&lt;p&gt;好的，哭完了還是要來想想辦法&lt;/p&gt;
-
-&lt;p&gt;-&lt;/p&gt;
-
-&lt;p&gt;1.&lt;strong&gt;AWS S3&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;先說結論，利用AWS S3儲存圖片就可以解決這個問題了&lt;/p&gt;
-
-&lt;p&gt;步驟參照這篇：&lt;a href=&#34;http://blog.qinfeng.io/posts/1383092&#34;&gt;http://blog.qinfeng.io/posts/1383092&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;建立一個AWS帳號，然後新增一組IAM user，拿到credentials.csv&lt;/p&gt;
-
-&lt;p&gt;最後建立一個S3 bucket來裝圖片&lt;/p&gt;
-
-&lt;p&gt;2.&lt;strong&gt;安裝gem&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;在&lt;code&gt;Gemfile&lt;/code&gt; 當中增加兩個gem&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;gem &amp;quot;figaro&amp;quot; 
-gem &amp;quot;fog&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然後&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;bunle install
-figaro install
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;此時會產生&lt;code&gt;config/application.yml&lt;/code&gt; 這份文件&lt;/p&gt;
-
-&lt;p&gt;3.&lt;strong&gt;S3 Acccess key&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;在&lt;code&gt;application.yml&lt;/code&gt; 當中輸入剛剛從下載的csv檔當中得到的key id跟secret key&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;production:
-  aws_access_key_id: &amp;quot;key id&amp;quot;
-  aws_secret_access_key: &amp;quot; secret key&amp;quot;
-  aws_bucket_name: &amp;quot;bucket name&amp;quot;
-
-development:
-  aws_access_key_id: &amp;quot;key id&amp;quot;
-  aws_secret_access_key: &amp;quot; secret key&amp;quot;
-  aws_bucket_name: &amp;quot;bucket name&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;接下來在&lt;code&gt;config/initializers&lt;/code&gt; 當中新增 &lt;code&gt;carrierwave.rb&lt;/code&gt;  :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ touch config/initializers/carrierwave.rb
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;加上：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;CarrierWave.configure do |config|
-    config.storage :fog                       
-    config.fog_credentials = {
-      provider:              &#39;AWS&#39;,                        
-      aws_access_key_id:     ENV[&amp;quot;aws_access_key_id&amp;quot;],                 
-
-
-      aws_secret_access_key: ENV[&amp;quot;aws_secret_access_key&amp;quot;],    
-
-
-      region:                &#39;ap-northeast-1&#39;    
-
-
-    }
-    config.fog_directory  = ENV[&amp;quot;aws_bucket_name&amp;quot;] 
-    config.cache_dir = &amp;quot;#{Rails.root}/tmp/uploads&amp;quot;
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;ap-northeast-1&lt;/code&gt; 是日本時區，其他地區要再去查&lt;/p&gt;
-
-&lt;p&gt;要注意&lt;code&gt;ENV[ ]&lt;/code&gt;  當中的名稱必須要跟在&lt;code&gt;application.yml&lt;/code&gt; 取的別名一樣，不然會錯誤&lt;/p&gt;
-
-&lt;p&gt;4.&lt;strong&gt;更改uploader的設定&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;最後到&lt;code&gt;app/uploaders/image_uploader.rb&lt;/code&gt; 中第九行：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# Choose what kind of storage to use for this uploader:
-  storage :file
-  #storage :fog
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;把&lt;code&gt;storage :file&lt;/code&gt; 改成&lt;code&gt;storage :fog&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;5.&lt;strong&gt;更改Heroku設定&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;進入Heroku中的application當中，在setting當中點選Reveal Config Vars&lt;/p&gt;
-
-&lt;p&gt;把剛剛設定的&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;aws_access_key_id: &amp;quot;key id&amp;quot;
-aws_secret_access_key: &amp;quot; secret key&amp;quot;
-aws_bucket_name: &amp;quot;bucket name&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;這三項加進去&lt;/p&gt;
-
-&lt;p&gt;最後就可以&lt;code&gt;git push heroku master&lt;/code&gt; 試試看了！&lt;/p&gt;
-</description>
+      <description>網站傳送門： https://gentle-inlet-97986.herokuapp.com/
+主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄如何解決上傳到Heroku時可能碰到的一些亂七八糟的小毛病。以及如何在Heroku上實現使用者上傳圖片的功能。
+##第一次部署到Heroku
+首先，安裝Heroku的 gem。再來，註冊一個Heroku帳號。
+接下來照著這篇：https://www.railstutorial.org/book/beginning 的1.5章將Rails的設定都弄好就行了！
+網路上有一些聲音認為Heroku實在是太囉唆麻煩，一大堆設定，搞不好又會上傳失敗，作為一個server實在是讓人惱火。
+嘛，確實ＸＤ不過以一個新手的觀點來說，因為是免費的（當然，需要更大的空間的話就要付費的），而且玩過Heroku的人多，就算碰到什麼問題也總是能估狗到答案的，就這兩點來說還是滿不錯的啦。
+heroku update 在一般情況下，要將專案push到Heroku上，是這樣下指令的：
+git push heroku master
+但在進行Rails專案時，可能會開好幾個branch，假設今天要把branch h03 push到heroku 上面的話也很簡單，只要：
+git push heroku h03:master
+然後 heroku run rake db:migrate
+就可以用 heroku open 打開熱騰騰的網站了！
+另外，經過實測，有幾點問題值得紀錄：
+heroku上無法顯示flashes (解決方式未知，因為覺得flash很醜，乾脆就不用了ＸＤ) 在app/assets/stylesheets/application.scss 當中加入 @import &amp;#34;bootstrap-sprockets&amp;#34;; @import &amp;#34;bootstrap&amp;#34;; 會使heroku無法push (原因未知)
+這兩點因為沒什麼必須性，因此為了省麻煩我就都直接刪掉了ＸＤ
+解決在heroku上圖片無法顯示的問題 好不容易上傳成功，結果一打開——哇，所有的圖片都不見惹～～～的這種惱火感真的很讓人難忘啊&amp;hellip;
+不過解決方法也不複雜，把設定改一下就行了。只要到Config/environments/production.rb 當中，將
+config.serve_static_files = ENV[&amp;#39;RAILS_SERVE_STATIC_FILES&amp;#39;].present? 改成
+config.serve_static_assets = true 上傳圖片＋Heroku 好的，終於辛辛苦苦把上傳圖片的功能做好了，想要傳到heroku上面自己看著爽一下，殊不知&amp;hellip;&amp;hellip;
+heroku不能儲存使用者自己上傳的圖片啊！！！！
+（抱頭痛哭
+好的，哭完了還是要來想想辦法
+1.AWS S3
+先說結論，利用AWS S3儲存圖片就可以解決這個問題了
+步驟參照這篇：http://blog.qinfeng.io/posts/1383092</description>
     </item>
     
     <item>
@@ -204,216 +49,15 @@ aws_bucket_name: &amp;quot;bucket name&amp;quot;
       <pubDate>Sat, 22 Jul 2017 17:54:35 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-carrierwave%E5%AF%A6%E4%BD%9C%E5%9C%96%E7%89%87%E4%B8%8A%E5%82%B3%E5%8A%9F%E8%83%BD/</guid>
-      <description>
-
-&lt;p&gt;網站傳送門：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄如何用Carrierwave這個gem實作圖片上傳功能。&lt;/p&gt;
-
-&lt;h2 id=&#34;上傳圖片功能&#34;&gt;上傳圖片功能&lt;/h2&gt;
-
-&lt;p&gt;首先要安裝&lt;code&gt;carrierwave&lt;/code&gt; 跟&lt;code&gt;rmagick&lt;/code&gt; 這兩個gem&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Gemfile&lt;/code&gt; :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;gem &#39;carrierwave&#39;
-gem &#39;rmagick&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5 id=&#34;小插曲&#34;&gt;小插曲&lt;/h5&gt;
-
-&lt;p&gt;在安裝rmagick之前，要先用homebrew 安裝imagemagick&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Shell&#34;&gt;$ brew install imagemagick
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然後安裝&lt;code&gt;rmagick&lt;/code&gt; 的時候，可能會出現這樣的錯誤訊息：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Building native extensions.  This could take a while...
-ERROR:  Error installing rmagick-2.16.0.gem:
-	ERROR: Failed to build gem native extension.
-
-    /Users/Hung/.tokaido/Rubies/2.2.2-p95/bin/ruby -r ./siteconf20170629-2407-7s934e.rb extconf.rb
-checking for clang... yes
-checking for Magick-config... no
-checking for pkg-config... no
-Can&#39;t install RMagick 2.16.0. Can&#39;t find Magick-config or pkg-config in /Users/Hung/.tokaido/bin:/Users/Hung/.tokaido/Rubies/2.2.2-p95/bin:/Users/Hung/.tokaido/Gems/2.2.0/bin:/Users/Hung/anaconda2/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
-
-*** extconf.rb failed ***
-Could not create Makefile due to some reason, probably lack of necessary
-libraries and/or headers.  Check the mkmf.log file for more details.  You may
-need configuration options.
-
-Provided configuration options:
-	--with-opt-dir
-	--without-opt-dir
-	--with-opt-include
-	--without-opt-include=${opt-dir}/include
-	--with-opt-lib
-	--without-opt-lib=${opt-dir}/lib
-	--with-make-prog
-	--without-make-prog
-	--srcdir=.
-	--curdir
-	--ruby=/Users/Hung/.tokaido/Rubies/2.2.2-p95/bin/$(RUBY_BASE_NAME)
-
-extconf failed, exit code 1
-
-Gem files will remain installed in /Users/Hung/.tokaido/Gems/2.2.0/gems/rmagick-2.16.0 for inspection.
-Results logged to /Users/Hung/.tokaido/Gems/2.2.0/extensions/x86_64-darwin-12/2.2.0-static/rmagick-2.16.0/gem_make.out
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;讀了錯誤訊息之後，問題應該在&lt;code&gt;Can&#39;t install RMagick 2.16.0. Can&#39;t find Magick-config or pkg-config&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;所以我又安裝了&lt;code&gt;pkg-confg&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;brew install pkg-config
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;但是依然有錯誤訊息，只不過這次的訊息變成&lt;code&gt;Can&#39;t install RMagick 2.16.0. Can&#39;t find MagickWand.h.&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;解決辦法：照著這篇 &lt;a href=&#34;https://stackoverflow.com/questions/39494672/rmagick-installation-cant-find-magickwand-h&#34;&gt;https://stackoverflow.com/questions/39494672/rmagick-installation-cant-find-magickwand-h&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;brew unlink imagemagick
-brew install imagemagick@6 &amp;amp;&amp;amp; brew link imagemagick@6 --force
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;之後&lt;code&gt;gem install rmagick&lt;/code&gt; 應該就會成功了&lt;/p&gt;
-
-&lt;p&gt;Ps. 不過後來網路上有消息指出RMagick有洩漏訊息的問題，因此後來就改用MiniMagick了 （我那麼辛苦debug究竟是&amp;hellip;XD&lt;/p&gt;
-
-&lt;p&gt;&amp;ndash;&lt;/p&gt;
-
-&lt;p&gt;1.&lt;strong&gt;用carrierwave建立image uploader&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ rails generate uploader image
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;2.&lt;strong&gt;新增model的欄位&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;如果此時要儲存圖片的model都還沒建置的話，只要在generate的時候新增一個欄位給圖片就可以了。&lt;/p&gt;
-
-&lt;p&gt;這邊的情況是，我之前已經有了一個名為&lt;code&gt;group&lt;/code&gt; 的model，但裡面沒有存放圖片的欄位，因此要另外新增&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ rails generate uploader image
-$ rails generate migration add_image_to_groups
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;＊注意group有沒有s，可以在&lt;code&gt;db/migrate&lt;/code&gt; 的檔名裡面找到資料表名稱&lt;/p&gt;
-
-&lt;p&gt;到&lt;code&gt;db/migrate/&lt;/code&gt; 中新增的migrate檔裡面添加column：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Ruby&#34;&gt;class AddImageToGroups &amp;lt; ActiveRecord::Migration
-  def change
-  	add_column :groups, :image, :string
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;最後&lt;code&gt;rake db:migrate&lt;/code&gt; 就完成更新欄位&lt;/p&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;3.&lt;strong&gt;連結model和uploader&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;來到&lt;code&gt;app/model/group.rb&lt;/code&gt; 當中，加上：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;mount_uploader :image, ImageUploader
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;:image&lt;/code&gt; 是剛剛在model當中添加的欄位名，&lt;code&gt;ImageUploader&lt;/code&gt; 的Image是uploader的名稱&lt;/p&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;4.&lt;strong&gt;在controller當中允許更新&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;來到&lt;code&gt;app/controllers/groups_controller.rb&lt;/code&gt; 當中，在private的部分加上&lt;code&gt;:image&lt;/code&gt; ：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;private
-
- 	def group_params
-   		params.require(:group).permit(:title, :description, :image)
- 	end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;5.&lt;strong&gt;更改views&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;在需要上傳圖片的部分，加上&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;%= f.file_field :image %&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;就會自動生成上傳的按鈕了：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-img_uploader_add.jpg&#34; alt=&#34;img_uploader_add&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在需要顯示圖片的地方，則加入：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;%= image_tag group.image.thumb %&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;thumb是限制圖片大小的，下一步會提到&lt;/p&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;6.&lt;strong&gt;限制圖片大小&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;如果沒有這一步，圖片就會以原始大小呈現在網頁上，有時候會很令人驚嚇（？&lt;/p&gt;
-
-&lt;p&gt;來到&lt;code&gt;app/uploaders/image_uploader.rb&lt;/code&gt; 當中，大概第六行的地方&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# Include RMagick or MiniMagick support:
-  #include CarrierWave::RMagick
-  #include CarrierWave::MiniMagick
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;選一個解除註解&lt;/p&gt;
-
-&lt;p&gt;第九行：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# Choose what kind of storage to use for this uploader:
-  #storage :file
-  #storage :fog
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;把&lt;code&gt;storage :file&lt;/code&gt; 解除註解&lt;/p&gt;
-
-&lt;p&gt;第35行左右：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# Create different versions of your uploaded files:
-  version :thumb do
-    process resize_to_fit: [400, 400]
-  end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以改成任何自己喜歡的大小，&lt;code&gt;:thumb&lt;/code&gt; 也可以換成別的，上一步驟圖片顯示的地方也要跟著更動就好&lt;/p&gt;
-
-&lt;p&gt;這時試著上傳圖片，應該就會成功了！&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-img_uploader_show.jpg&#34; alt=&#34;img_uploader_show&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;上傳圖片的功能很大部分是參考這篇(&lt;a href=&#34;http://motion-express.com/blog/20140708-ruby-gem-carrierwave&#34;&gt;http://motion-express.com/blog/20140708-ruby-gem-carrierwave&lt;/a&gt;)&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;上傳圖片-heroku&#34;&gt;上傳圖片＋Heroku&lt;/h2&gt;
-
-&lt;p&gt;如果選擇Heroku做為部署工具就要注意了，因為&amp;hellip;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;heroku不能儲存使用者自己上傳的圖片啊！！！！&lt;/strong&gt;（登愣&lt;/p&gt;
-
-&lt;p&gt;如何解決？傳送門： &lt;a href=&#34;https://ichennn.github.io/blog/2017/07/ruby-on-rails-部署到heroku囉/&#34;&gt;[Ruby on Rails] 部署到Heroku囉！&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>網站傳送門： https://gentle-inlet-97986.herokuapp.com/
+主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄如何用Carrierwave這個gem實作圖片上傳功能。
+上傳圖片功能 首先要安裝carrierwave 跟rmagick 這兩個gem
+Gemfile :
+gem &amp;#39;carrierwave&amp;#39; gem &amp;#39;rmagick&amp;#39; 小插曲 在安裝rmagick之前，要先用homebrew 安裝imagemagick
+$ brew install imagemagick 然後安裝rmagick 的時候，可能會出現這樣的錯誤訊息：
+Building native extensions. This could take a while... ERROR: Error installing rmagick-2.16.0.gem: ERROR: Failed to build gem native extension. /Users/Hung/.tokaido/Rubies/2.2.2-p95/bin/ruby -r ./siteconf20170629-2407-7s934e.rb extconf.rb checking for clang... yes checking for Magick-config... no checking for pkg-config... no Can&amp;#39;t install RMagick 2.16.0. Can&amp;#39;t find Magick-config or pkg-config in /Users/Hung/.</description>
     </item>
     
     <item>
@@ -422,100 +66,17 @@ end
       <pubDate>Sat, 22 Jul 2017 17:40:26 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E5%AF%A6%E4%BD%9C%E7%B0%A1%E6%98%93%E7%9A%84%E6%90%9C%E5%B0%8B%E5%92%8C%E6%9C%80%E6%96%B0%E6%B6%88%E6%81%AF%E5%8A%9F%E8%83%BD/</guid>
-      <description>
-
-&lt;p&gt;網站傳送門：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄如何實作最新消息功能和簡易的搜尋功能，不使用任何gem。當然，有很多現成的gem可以達到非常強大的搜尋功能，若有需要也想找機會試試（可是功能越強大說明通常也就越難懂ＸＤ（哭）。&lt;/p&gt;
-
-&lt;h2 id=&#34;簡易搜尋功能&#34;&gt;簡易搜尋功能&lt;/h2&gt;
-
-&lt;p&gt;以搜尋書本為例：&lt;/p&gt;
-
-&lt;p&gt;想達到的功能是在書本列表當中可以搜尋想要的書（title和description都可以對應）&lt;/p&gt;
-
-&lt;p&gt;首先，找到想放置搜尋bar的頁面：&lt;code&gt;app/views/groups/index.html.erb&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;加入下面這一段code，做一個陽春的搜尋框&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div&amp;gt;
-	&amp;lt;%= form_tag groups_path, id: &amp;quot;search-form&amp;quot;, :method =&amp;gt; &amp;quot;get&amp;quot; do %&amp;gt;  
-	&amp;lt;%= text_field_tag :search, params[:search], class: &#39;btn btn-default&#39;, placeholder: &amp;quot;Search Books&amp;quot; %&amp;gt;
-	&amp;lt;%= submit_tag &amp;quot;Search&amp;quot;, class: &#39;btn btn-default&#39;, name: nil %&amp;gt;
-	&amp;lt;% end %&amp;gt;
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再來找到controller：&lt;code&gt;app/controllers/groups_controller.rb&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;更改index的部分，這樣才會顯示搜尋結果。記得paginate的部分也要寫，不然搜尋結果的頁面會報錯&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;def index
-    if params[:search]
-      @groups = Group.search(params[:search]).recent.paginate(:page =&amp;gt; params[:page], :per_page =&amp;gt; 10)
-    else 
-      @groups = Group.all.recent.paginate(:page =&amp;gt; params[:page], :per_page =&amp;gt; 10)
-    end
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;最後是model的部分：&lt;code&gt;app/models/group.rb&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;定義搜尋的動作，這邊我想要可以同時搜尋書的title跟description&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;def self.search(search)
-  		if search
-    		#where(&amp;quot;title LIKE ?&amp;quot;, &amp;quot;%#{search}%&amp;quot;) 
-  			where(&amp;quot;title LIKE :search OR description LIKE :search&amp;quot;, search: &amp;quot;%#{search}%&amp;quot;)
-  		else
-    		all
-    	end
-    end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果只想要搜尋一個欄位（例如title的話），就用註解掉的那行就可以了。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;最新消息-只想要顯示n個結果&#34;&gt;最新消息：只想要顯示n個結果&lt;/h2&gt;
-
-&lt;p&gt;概念：最新消息＝按照時間排序後的前n筆資料。不得不說，是有點土法煉鋼，很陽春的方法ＸＤＤ&lt;/p&gt;
-
-&lt;p&gt;首先，在view當中，就和一般顯示清單一樣：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;table class=&amp;quot;table table-hover&amp;quot;&amp;gt;
-	&amp;lt;thead&amp;gt;
-    	&amp;lt;tr&amp;gt;
-          &amp;lt;td&amp;gt;&amp;lt;/td&amp;gt;
-          &amp;lt;td&amp;gt;&amp;lt;h4&amp;gt;Title&amp;lt;/h4&amp;gt;&amp;lt;/td&amp;gt;
-         &amp;lt;/tr&amp;gt;
-    &amp;lt;/thead&amp;gt;
-    &amp;lt;tbody&amp;gt;   
-         &amp;lt;% @groups.each do |group|  %&amp;gt;
-         &amp;lt;tr&amp;gt;
-         &amp;lt;td&amp;gt;&amp;lt;/td&amp;gt;
-         &amp;lt;td class=&amp;quot;text-success&amp;quot;&amp;gt;&amp;lt;%= group.title %&amp;gt;&amp;lt;/td&amp;gt;
-         &amp;lt;/tr&amp;gt;
-         &amp;lt;% end %&amp;gt;
-     &amp;lt;/tbody&amp;gt;
-&amp;lt;/table&amp;gt;       
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;重點在於controller當中，記得要限制返回的數量：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;def index  	
-  	@groups = Group.all.limit(5).recent
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;對的，清單和最新消息真的只是一線之隔啊ＸＤ&lt;/p&gt;
-</description>
+      <description>網站傳送門： https://gentle-inlet-97986.herokuapp.com/
+主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄如何實作最新消息功能和簡易的搜尋功能，不使用任何gem。當然，有很多現成的gem可以達到非常強大的搜尋功能，若有需要也想找機會試試（可是功能越強大說明通常也就越難懂ＸＤ（哭）。
+簡易搜尋功能 以搜尋書本為例：
+想達到的功能是在書本列表當中可以搜尋想要的書（title和description都可以對應）
+首先，找到想放置搜尋bar的頁面：app/views/groups/index.html.erb
+加入下面這一段code，做一個陽春的搜尋框
+&amp;lt;div&amp;gt; &amp;lt;%= form_tag groups_path, id: &amp;#34;search-form&amp;#34;, :method =&amp;gt; &amp;#34;get&amp;#34; do %&amp;gt; &amp;lt;%= text_field_tag :search, params[:search], class: &amp;#39;btn btn-default&amp;#39;, placeholder: &amp;#34;Search Books&amp;#34; %&amp;gt; &amp;lt;%= submit_tag &amp;#34;Search&amp;#34;, class: &amp;#39;btn btn-default&amp;#39;, name: nil %&amp;gt; &amp;lt;% end %&amp;gt; &amp;lt;/div&amp;gt; 再來找到controller：app/controllers/groups_controller.rb
+更改index的部分，這樣才會顯示搜尋結果。記得paginate的部分也要寫，不然搜尋結果的頁面會報錯
+def index if params[:search] @groups = Group.search(params[:search]).recent.paginate(:page =&amp;gt; params[:page], :per_page =&amp;gt; 10) else @groups = Group.all.recent.paginate(:page =&amp;gt; params[:page], :per_page =&amp;gt; 10) end end 最後是model的部分：app/models/group.</description>
     </item>
     
     <item>
@@ -524,83 +85,21 @@ end
       <pubDate>Sat, 22 Jul 2017 17:10:16 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E5%A5%BD%E7%94%A8%E7%9A%84will_paginate%E5%8F%8Asimpl_-form_for/</guid>
-      <description>
-
-&lt;p&gt;網站傳送門：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄如何使用will paginate 及 simple form for這兩個方便又好用的gem來使網站變得更美觀。&lt;/p&gt;
-
-&lt;h2 id=&#34;use-simple-form-for&#34;&gt;use simple_form_for&lt;/h2&gt;
-
-&lt;p&gt;Simple_form_for 是一個好用的gem，可以自動調整格式&lt;/p&gt;
-
-&lt;p&gt;如果還沒安裝的話，記得先在gemfile裡面新增&lt;code&gt;gem &amp;quot;simple_form&amp;quot;&lt;/code&gt; ，然後 &lt;code&gt;bundle install&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;下一步：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;rails generate simple_form:install --bootstrap&lt;/code&gt; 執行boostrap的設定&lt;/p&gt;
-
-&lt;p&gt;就可以使用simple_form_for了！&lt;/p&gt;
-
-&lt;p&gt;使用方法也很簡單，只要將原本是&lt;code&gt;form_for&lt;/code&gt; 的部分都替換成&lt;code&gt;simple_form_for&lt;/code&gt; 並照著規定的格式更改內容就行了。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;%= simple_form_for @group do |f| %&amp;gt;
-	&amp;lt;%= f.input :description, input_html: { class: &amp;quot;form-horizontal&amp;quot;, :rows =&amp;gt; 4} %&amp;gt;
-&amp;lt;% end %&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;:rows&lt;/code&gt;  可以用來調輸入框的高度&lt;/p&gt;
-
-&lt;p&gt;這是使用simple_form_for的效果：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-simple_form_for_before.jpg&#34; alt=&#34;simple_form_for_before&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Simple_form_for會自動偵測不可空白的欄位，並給出警告：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-simple_form_for_adjustment.jpg&#34; alt=&#34;simple_form_for_adjustment&#34; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Reference  : use &lt;code&gt;form_for&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;  &amp;lt;%= form_for @group do |f| %&amp;gt;
-      &amp;lt;%= f.label &amp;quot;description&amp;quot;, :class =&amp;gt; &amp;quot;string optional control-label&amp;quot; %&amp;gt;
-      &amp;lt;%= f.text_area :description, :class =&amp;gt; &amp;quot;string optional form-control&amp;quot; %&amp;gt;
-   &amp;lt;% end %&amp;gt;   
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;這段和上面的simple_form_for能達到的效果幾乎是一模一樣的，但明顯就囉唆了點ＸＤ&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;will-paginate&#34;&gt;will paginate&lt;/h2&gt;
-
-&lt;p&gt;不管是什麼網站，紀錄一多，就會落落長讓人眼花撩亂，這時候有個好看簡單的分頁功能就顯得格外重要了！&lt;/p&gt;
-
-&lt;p&gt;安裝完will_paginate後，也要記得在寫進&lt;code&gt;Gemfile&lt;/code&gt; 裡面&lt;/p&gt;
-
-&lt;p&gt;首先，在&lt;code&gt;App/controllers/groups_controller.rb&lt;/code&gt;  當中加入&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;@posts = @group.posts.recent.paginate(:page =&amp;gt; params[:page], :per_page =&amp;gt; 10)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;此時若是直接&lt;code&gt;rails server&lt;/code&gt; 的話會一直出現undefined method &amp;ldquo;recent&amp;rdquo;&lt;/p&gt;
-
-&lt;p&gt;這是因為系統當中並沒有名為recent的方法，要自己去&lt;code&gt;app/models/post.rb&lt;/code&gt; 中加入&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;scope :recent, -&amp;gt; {order(&amp;quot;created_at DESC&amp;quot;)}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;此時應該就可以順利看到分頁了！&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-paginate.jpg&#34; alt=&#34;paginate&#34; /&gt;&lt;/p&gt;
-</description>
+      <description>網站傳送門： https://gentle-inlet-97986.herokuapp.com/
+主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄如何使用will paginate 及 simple form for這兩個方便又好用的gem來使網站變得更美觀。
+use simple_form_for Simple_form_for 是一個好用的gem，可以自動調整格式
+如果還沒安裝的話，記得先在gemfile裡面新增gem &amp;quot;simple_form&amp;quot; ，然後 bundle install
+下一步：
+rails generate simple_form:install --bootstrap 執行boostrap的設定
+就可以使用simple_form_for了！
+使用方法也很簡單，只要將原本是form_for 的部分都替換成simple_form_for 並照著規定的格式更改內容就行了。
+&amp;lt;%= simple_form_for @group do |f| %&amp;gt; &amp;lt;%= f.input :description, input_html: { class: &amp;#34;form-horizontal&amp;#34;, :rows =&amp;gt; 4} %&amp;gt; &amp;lt;% end %&amp;gt; :rows 可以用來調輸入框的高度
+這是使用simple_form_for的效果：
+Simple_form_for會自動偵測不可空白的欄位，並給出警告：
+Reference : use form_for
+&amp;lt;%= form_for @group do |f| %&amp;gt; &amp;lt;%= f.label &amp;#34;description&amp;#34;, :class =&amp;gt; &amp;#34;string optional control-label&amp;#34; %&amp;gt; &amp;lt;%= f.</description>
     </item>
     
     <item>
@@ -609,71 +108,18 @@ end
       <pubDate>Sat, 22 Jul 2017 16:52:00 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E6%96%87%E7%AB%A0%E5%88%AA%E9%99%A4%E4%BF%AE%E6%94%B9%E5%AF%A6%E4%BD%9C%E4%BF%AE%E6%94%B9%E6%99%82%E5%8D%80%E5%92%8C%E6%8F%9B%E8%A1%8C/</guid>
-      <description>
-
-&lt;p&gt;網站傳送門：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄如何實作Rails 101教程當中沒有提供答案的文章修改刪除功能。&lt;/p&gt;
-
-&lt;h2 id=&#34;文章刪除修改實作&#34;&gt;文章刪除修改實作&lt;/h2&gt;
-
-&lt;p&gt;在&lt;code&gt;app/controllers/posts_controller.rb&lt;/code&gt; 下定義&lt;code&gt;edit&lt;/code&gt; method&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;def edit
-	@group = Group.find(params[:group_id]) 
-	@post = Post.find(params[:id])
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;要記得&lt;code&gt;@group&lt;/code&gt; 跟 &lt;code&gt;@post&lt;/code&gt; 都要定義！不然會出現 NoMethodError&lt;/p&gt;
-
-&lt;p&gt;無論是Edit, update, destroy都需要&lt;/p&gt;
-
-&lt;p&gt;另外，edit介面也要同時加上&lt;code&gt;@group&lt;/code&gt;跟&lt;code&gt;@post&lt;/code&gt;，用array 方式表示，系統才能判斷是哪一個group裡面的哪一個post&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;%= simple_form_for [@group, @post] do |f| %&amp;gt;
-  .....
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;simple-format-日期顯示&#34;&gt;Simple_format ＆日期顯示&lt;/h2&gt;
-
-&lt;p&gt;換行用，只要將要換行的內容放入&lt;code&gt;simple_format()&lt;/code&gt; 當中就可以了&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;% @posts.each do |post| %&amp;gt;
-        &amp;lt;tr&amp;gt;
-          &amp;lt;td&amp;gt;&amp;lt;%= simple_format(post.content) %&amp;gt;&amp;lt;/td&amp;gt;
-          &amp;lt;td&amp;gt;&amp;lt;%= post.user.email %&amp;gt;&amp;lt;/td&amp;gt;
-          &amp;lt;td&amp;gt;&amp;lt;%= post.created_at.to_date %&amp;gt;&amp;lt;/td&amp;gt;
-        &amp;lt;/tr&amp;gt;
-      &amp;lt;% end %&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;關於日期的顯示方式，若是只使用最簡單的&lt;code&gt;post.created_at&lt;/code&gt; 會以這樣的方式呈現：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-default_timestamp.jpg&#34; alt=&#34;default_timestamp&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;若想要讓樣式看起來簡潔一些，可以加上&lt;code&gt;created_at.to_date&lt;/code&gt; （或是 &lt;code&gt;created_at.strftime(&amp;quot;%Y-%m-%d&amp;quot;)&lt;/code&gt; ）就會只顯示到日期，不會出現後面的UTC之類的&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-strtime_timestamp.jpg&#34; alt=&#34;strtime_timestamp&#34; /&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;時區更改&#34;&gt;時區更改&lt;/h2&gt;
-
-&lt;p&gt;想要改到自己地區的時區，到&lt;code&gt;config/application.rb&lt;/code&gt; 改設定：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Ruby&#34;&gt;config.time_zone = &#39;Osaka&#39;
-config.active_record.default_timezone = :local
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>網站傳送門： https://gentle-inlet-97986.herokuapp.com/
+主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄如何實作Rails 101教程當中沒有提供答案的文章修改刪除功能。
+文章刪除修改實作 在app/controllers/posts_controller.rb 下定義edit method
+def edit @group = Group.find(params[:group_id]) @post = Post.find(params[:id]) end 要記得@group 跟 @post 都要定義！不然會出現 NoMethodError
+無論是Edit, update, destroy都需要
+另外，edit介面也要同時加上@group跟@post，用array 方式表示，系統才能判斷是哪一個group裡面的哪一個post
+&amp;lt;%= simple_form_for [@group, @post] do |f| %&amp;gt; ..... Simple_format ＆日期顯示 換行用，只要將要換行的內容放入simple_format() 當中就可以了
+&amp;lt;% @posts.each do |post| %&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;td&amp;gt;&amp;lt;%= simple_format(post.content) %&amp;gt;&amp;lt;/td&amp;gt; &amp;lt;td&amp;gt;&amp;lt;%= post.user.email %&amp;gt;&amp;lt;/td&amp;gt; &amp;lt;td&amp;gt;&amp;lt;%= post.created_at.to_date %&amp;gt;&amp;lt;/td&amp;gt; &amp;lt;/tr&amp;gt; &amp;lt;% end %&amp;gt; 關於日期的顯示方式，若是只使用最簡單的post.created_at 會以這樣的方式呈現：
+若想要讓樣式看起來簡潔一些，可以加上created_at.to_date （或是 created_at.strftime(&amp;quot;%Y-%m-%d&amp;quot;) ）就會只顯示到日期，不會出現後面的UTC之類的
+時區更改 想要改到自己地區的時區，到config/application.rb 改設定：</description>
     </item>
     
     <item>
@@ -682,165 +128,20 @@ config.active_record.default_timezone = :local
       <pubDate>Sat, 22 Jul 2017 15:43:37 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E5%9F%BA%E6%9C%ACview%E6%A7%8B%E6%88%90htmlcss/</guid>
-      <description>
-
-&lt;p&gt;這是第一次用Ruby on Rails 做出一個完整的網站。&lt;/p&gt;
-
-&lt;p&gt;已經架在Heroku上了：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;可能跑的有點慢，畢竟整個專案很肥ＸＤ&lt;/p&gt;
-
-&lt;p&gt;這次的主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄一些和View構成有關的部分。&lt;/p&gt;
-
-&lt;h2 id=&#34;html-partial&#34;&gt;HTML partial&lt;/h2&gt;
-
-&lt;p&gt;顧名思義，就是把一份html檔拆成好多部分來組合&lt;/p&gt;
-
-&lt;p&gt;基本上，一個頁面可以拆成三個部分：navbar, footer, 中間的內容。這麼拆的好處是，可以將上下兩條bar設定成全域樣式，中間的內容無論怎麼跳轉，都不會影響到上下方的bar&lt;/p&gt;
-
-&lt;p&gt;網站上頭的bar：&lt;code&gt;View/common/_navbar.html.erb&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;!-- Navigation --&amp;gt;
-&amp;lt;nav class=&amp;quot;navbar navbar-default navbar-fixed-top topnav&amp;quot; role=&amp;quot;navigation&amp;quot;&amp;gt;
-  ....
-&amp;lt;/nav&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;網站下方的footer：&lt;code&gt;View/commom/_footer.html.erb&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;!-- Footer --&amp;gt;
-&amp;lt;footer&amp;gt;
-   ...
-&amp;lt;/footer&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然後修改&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;View/layouts/application.html.erb&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;(html全域樣式，不管頁面怎麼跳轉都會在)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Html&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;
-&amp;lt;html&amp;gt;
-    &amp;lt;head&amp;gt;
-        &amp;lt;title&amp;gt;Book Reviews&amp;lt;/title&amp;gt;
-        &amp;lt;%= csrf_meta_tags %&amp;gt;
-        &amp;lt;%= stylesheet_link_tag    &#39;application&#39;, media: &#39;all&#39;, &#39;data-turbolinks-track&#39;: &#39;reload&#39; %&amp;gt;
-        &amp;lt;%= javascript_include_tag &#39;application&#39;, &#39;data-turbolinks-track&#39;: &#39;reload&#39; %&amp;gt;
-    &amp;lt;/head&amp;gt;
-    &amp;lt;body&amp;gt;
-        &amp;lt;div class=&amp;quot;container-fluid&amp;quot;&amp;gt;
-            &amp;lt;%= render &amp;quot;common/navbar&amp;quot; %&amp;gt;
-            &amp;lt;%= yield %&amp;gt;
-        &amp;lt;/div&amp;gt;
-        &amp;lt;%= render &amp;quot;common/footer&amp;quot; %&amp;gt;
-    &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;&amp;lt;%= yield %&amp;gt;&lt;/code&gt; 是其他程式碼輸出的地方，也就是網頁的主要內容，會一直跳轉。&lt;/p&gt;
-
-&lt;p&gt;另外值得一提的是，&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;雖然檔名是&lt;code&gt;_navbar&lt;/code&gt;  ，但路徑卻是&lt;code&gt;common/navbar&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;把header變成partial後，開了&lt;code&gt;rails server&lt;/code&gt; 後會發現無法全頁面延展。這時只要把&lt;code&gt;&amp;lt;div class=&amp;quot;container-fluid&amp;quot;&amp;gt;&lt;/code&gt; 的 class拿掉就好了(也就是變成只有&lt;code&gt;&amp;lt;div&amp;gt;&lt;/code&gt; )&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;如何置底&#34;&gt;如何置底&lt;/h2&gt;
-
-&lt;p&gt;把bar置底或置頂&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;nav class=&amp;quot;navbar navbar-default navbar-fixed-bottom&amp;quot; role=&amp;quot;navigation&amp;quot;&amp;gt;
-  ...
-&amp;lt;/nav&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;置頂：navbar-fixed-top&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;external-css&#34;&gt;External css&lt;/h2&gt;
-
-&lt;p&gt;每次產生一個View以後，總是有一些想要微調的部分，此時的CSS code要寫在哪裡呢？&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;rails generate controller groups&lt;/code&gt; 後，在 app/assets/stylesheets/ 下會有自動產生的 groups.scss&lt;/p&gt;
-
-&lt;p&gt;把css寫在這，但因為最後都會套用進(?) application.css&lt;/p&gt;
-
-&lt;p&gt;因此在html中要指定個別的&lt;code&gt;&amp;lt;div id=&amp;quot; &amp;quot;&amp;gt;&lt;/code&gt; ，不要直接用body下指令，不然會連帶改到其他的頁面。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;移到頁面中的某一段&#34;&gt;移到頁面中的某一段&lt;/h2&gt;
-
-&lt;p&gt;有點像是標籤的功能，直接在區塊中指定name&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;a name=&amp;quot;latest&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;
-    &amp;lt;div class=&amp;quot;content-section-a&amp;quot;&amp;gt;
-      ......
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;頁尾標籤：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;ul class=&amp;quot;list-inline&amp;quot;&amp;gt;
-  &amp;lt;li&amp;gt;
-  &amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;Home&amp;lt;/a&amp;gt;
-  &amp;lt;/li&amp;gt;
-  &amp;lt;li class=&amp;quot;footer-menu-divider&amp;quot;&amp;gt;&amp;amp;sdot;&amp;lt;/li&amp;gt;
-  &amp;lt;li&amp;gt;
-  &amp;lt;a href=#latest&amp;gt;What&#39;s news&amp;lt;/a&amp;gt;  # 不用“ ”
-  &amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;link-button&#34;&gt;Link button&lt;/h2&gt;
-
-&lt;p&gt;不像一般HTML用&lt;code&gt;&amp;lt;a href = &amp;gt; &amp;lt;/a&amp;gt;&lt;/code&gt; 來操作超連結和按鈕，在Rails當中可以用一套特別的寫法&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;&amp;lt;%= link_to(&amp;quot;Cancel&amp;quot;, groups_path, class: &amp;quot;btn btn-md btn-default&amp;quot;)%&amp;gt;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;其中，&lt;code&gt;&amp;quot;Cancel&amp;quot;&lt;/code&gt; 是出現在按鈕上的字，&lt;code&gt;groups_path&lt;/code&gt; 是按鈕按下去之後會連結到的路徑，按鈕的class有很多種大小可以選：&lt;/p&gt;
-
-&lt;p&gt;btn-xs, btn-sm, btn-md, btn-lg&lt;/p&gt;
-
-&lt;p&gt;更詳細的設定可以參考bootstrap的網站 : &lt;a href=&#34;https://getbootstrap.com/&#34;&gt;https://getbootstrap.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;查看目前的action&#34;&gt;查看目前的action&lt;/h2&gt;
-
-&lt;p&gt;欸，那如果不知道要連過去的那個頁面的路徑怎麼辦？！&lt;/p&gt;
-
-&lt;p&gt;因為Rails通常會一下子自動產生好多個檔案，有時候頁面一多自己也頭昏腦脹搞不清楚。&lt;/p&gt;
-
-&lt;p&gt;不過還好有個指令可以幫大家列出所有目前存在的路徑：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Shell&#34;&gt;$ rake routes
-                  Prefix Verb   URI Pattern                    Controller#Action
-        new_user_session GET    /users/sign_in(.:format)       devise/sessions#new
-            user_session POST   /users/sign_in(.:format)       devise/sessions#create
-    destroy_user_session DELETE /users/sign_out(.:format)      devise/sessions#destroy
-           user_password POST   /users/password(.:format)      devise/passwords#create
-       new_user_password GET    /users/password/new(.:format)  devise/passwords#new
-      edit_user_password GET    /users/password/edit(.:format) devise/passwords#edit
-      .
-      .
-      .
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;路徑就是prefix那欄，假設要連到第一欄的&lt;code&gt;new_user_session&lt;/code&gt; ，路徑就是&lt;code&gt;new_user_session_path&lt;/code&gt;&lt;/p&gt;
-</description>
+      <description>這是第一次用Ruby on Rails 做出一個完整的網站。
+已經架在Heroku上了： https://gentle-inlet-97986.herokuapp.com/
+可能跑的有點慢，畢竟整個專案很肥ＸＤ
+這次的主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄一些和View構成有關的部分。
+HTML partial 顧名思義，就是把一份html檔拆成好多部分來組合
+基本上，一個頁面可以拆成三個部分：navbar, footer, 中間的內容。這麼拆的好處是，可以將上下兩條bar設定成全域樣式，中間的內容無論怎麼跳轉，都不會影響到上下方的bar
+網站上頭的bar：View/common/_navbar.html.erb
+&amp;lt;!-- Navigation --&amp;gt; &amp;lt;nav class=&amp;#34;navbar navbar-default navbar-fixed-top topnav&amp;#34; role=&amp;#34;navigation&amp;#34;&amp;gt; .... &amp;lt;/nav&amp;gt; 網站下方的footer：View/commom/_footer.html.erb
+&amp;lt;!-- Footer --&amp;gt; &amp;lt;footer&amp;gt; ... &amp;lt;/footer&amp;gt; 然後修改
+View/layouts/application.html.erb
+(html全域樣式，不管頁面怎麼跳轉都會在)
+&amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;Book Reviews&amp;lt;/title&amp;gt; &amp;lt;%= csrf_meta_tags %&amp;gt; &amp;lt;%= stylesheet_link_tag &amp;#39;application&amp;#39;, media: &amp;#39;all&amp;#39;, &amp;#39;data-turbolinks-track&amp;#39;: &amp;#39;reload&amp;#39; %&amp;gt; &amp;lt;%= javascript_include_tag &amp;#39;application&amp;#39;, &amp;#39;data-turbolinks-track&amp;#39;: &amp;#39;reload&amp;#39; %&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;div class=&amp;#34;container-fluid&amp;#34;&amp;gt; &amp;lt;%= render &amp;#34;common/navbar&amp;#34; %&amp;gt; &amp;lt;%= yield %&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;%= render &amp;#34;common/footer&amp;#34; %&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt; &amp;lt;%= yield %&amp;gt; 是其他程式碼輸出的地方，也就是網頁的主要內容，會一直跳轉。</description>
     </item>
     
   </channel>

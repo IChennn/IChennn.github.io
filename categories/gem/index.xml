@@ -1,96 +1,33 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Gem on Murmuring</title>
-    <link>https://ichennn.github.io/categories/gem/index.xml</link>
+    <link>https://ichennn.github.io/categories/gem/</link>
     <description>Recent content in Gem on Murmuring</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="https://ichennn.github.io/categories/gem/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Sat, 22 Jul 2017 17:10:16 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/categories/gem/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[Ruby on Rails] 好用的will_paginate及simpl_ form_for</title>
       <link>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E5%A5%BD%E7%94%A8%E7%9A%84will_paginate%E5%8F%8Asimpl_-form_for/</link>
       <pubDate>Sat, 22 Jul 2017 17:10:16 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E5%A5%BD%E7%94%A8%E7%9A%84will_paginate%E5%8F%8Asimpl_-form_for/</guid>
-      <description>
-
-&lt;p&gt;網站傳送門：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄如何使用will paginate 及 simple form for這兩個方便又好用的gem來使網站變得更美觀。&lt;/p&gt;
-
-&lt;h2 id=&#34;use-simple-form-for&#34;&gt;use simple_form_for&lt;/h2&gt;
-
-&lt;p&gt;Simple_form_for 是一個好用的gem，可以自動調整格式&lt;/p&gt;
-
-&lt;p&gt;如果還沒安裝的話，記得先在gemfile裡面新增&lt;code&gt;gem &amp;quot;simple_form&amp;quot;&lt;/code&gt; ，然後 &lt;code&gt;bundle install&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;下一步：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;rails generate simple_form:install --bootstrap&lt;/code&gt; 執行boostrap的設定&lt;/p&gt;
-
-&lt;p&gt;就可以使用simple_form_for了！&lt;/p&gt;
-
-&lt;p&gt;使用方法也很簡單，只要將原本是&lt;code&gt;form_for&lt;/code&gt; 的部分都替換成&lt;code&gt;simple_form_for&lt;/code&gt; 並照著規定的格式更改內容就行了。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;%= simple_form_for @group do |f| %&amp;gt;
-	&amp;lt;%= f.input :description, input_html: { class: &amp;quot;form-horizontal&amp;quot;, :rows =&amp;gt; 4} %&amp;gt;
-&amp;lt;% end %&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;:rows&lt;/code&gt;  可以用來調輸入框的高度&lt;/p&gt;
-
-&lt;p&gt;這是使用simple_form_for的效果：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-simple_form_for_before.jpg&#34; alt=&#34;simple_form_for_before&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Simple_form_for會自動偵測不可空白的欄位，並給出警告：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-simple_form_for_adjustment.jpg&#34; alt=&#34;simple_form_for_adjustment&#34; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Reference  : use &lt;code&gt;form_for&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;  &amp;lt;%= form_for @group do |f| %&amp;gt;
-      &amp;lt;%= f.label &amp;quot;description&amp;quot;, :class =&amp;gt; &amp;quot;string optional control-label&amp;quot; %&amp;gt;
-      &amp;lt;%= f.text_area :description, :class =&amp;gt; &amp;quot;string optional form-control&amp;quot; %&amp;gt;
-   &amp;lt;% end %&amp;gt;   
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;這段和上面的simple_form_for能達到的效果幾乎是一模一樣的，但明顯就囉唆了點ＸＤ&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;will-paginate&#34;&gt;will paginate&lt;/h2&gt;
-
-&lt;p&gt;不管是什麼網站，紀錄一多，就會落落長讓人眼花撩亂，這時候有個好看簡單的分頁功能就顯得格外重要了！&lt;/p&gt;
-
-&lt;p&gt;安裝完will_paginate後，也要記得在寫進&lt;code&gt;Gemfile&lt;/code&gt; 裡面&lt;/p&gt;
-
-&lt;p&gt;首先，在&lt;code&gt;App/controllers/groups_controller.rb&lt;/code&gt;  當中加入&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;@posts = @group.posts.recent.paginate(:page =&amp;gt; params[:page], :per_page =&amp;gt; 10)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;此時若是直接&lt;code&gt;rails server&lt;/code&gt; 的話會一直出現undefined method &amp;ldquo;recent&amp;rdquo;&lt;/p&gt;
-
-&lt;p&gt;這是因為系統當中並沒有名為recent的方法，要自己去&lt;code&gt;app/models/post.rb&lt;/code&gt; 中加入&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;scope :recent, -&amp;gt; {order(&amp;quot;created_at DESC&amp;quot;)}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;此時應該就可以順利看到分頁了！&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-paginate.jpg&#34; alt=&#34;paginate&#34; /&gt;&lt;/p&gt;
-</description>
+      <description>網站傳送門： https://gentle-inlet-97986.herokuapp.com/
+主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄如何使用will paginate 及 simple form for這兩個方便又好用的gem來使網站變得更美觀。
+use simple_form_for Simple_form_for 是一個好用的gem，可以自動調整格式
+如果還沒安裝的話，記得先在gemfile裡面新增gem &amp;quot;simple_form&amp;quot; ，然後 bundle install
+下一步：
+rails generate simple_form:install --bootstrap 執行boostrap的設定
+就可以使用simple_form_for了！
+使用方法也很簡單，只要將原本是form_for 的部分都替換成simple_form_for 並照著規定的格式更改內容就行了。
+&amp;lt;%= simple_form_for @group do |f| %&amp;gt; &amp;lt;%= f.input :description, input_html: { class: &amp;#34;form-horizontal&amp;#34;, :rows =&amp;gt; 4} %&amp;gt; &amp;lt;% end %&amp;gt; :rows 可以用來調輸入框的高度
+這是使用simple_form_for的效果：
+Simple_form_for會自動偵測不可空白的欄位，並給出警告：
+Reference : use form_for
+&amp;lt;%= form_for @group do |f| %&amp;gt; &amp;lt;%= f.label &amp;#34;description&amp;#34;, :class =&amp;gt; &amp;#34;string optional control-label&amp;#34; %&amp;gt; &amp;lt;%= f.</description>
     </item>
     
   </channel>

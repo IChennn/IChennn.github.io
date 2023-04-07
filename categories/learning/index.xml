@@ -1,110 +1,34 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Learning on Murmuring</title>
-    <link>https://ichennn.github.io/categories/learning/index.xml</link>
+    <link>https://ichennn.github.io/categories/learning/</link>
     <description>Recent content in Learning on Murmuring</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="https://ichennn.github.io/categories/learning/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Mon, 29 Jan 2018 14:49:08 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/categories/learning/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>用google cloud platform 開jupyter notebook!</title>
       <link>https://ichennn.github.io/blog/2018/01/%E7%94%A8google-cloud-platform-%E9%96%8Bjupyter-notebook/</link>
       <pubDate>Mon, 29 Jan 2018 14:49:08 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2018/01/%E7%94%A8google-cloud-platform-%E9%96%8Bjupyter-notebook/</guid>
-      <description>
-
-&lt;p&gt;參照這篇，做個紀錄以免我以後又忘了（真的很金魚腦 該怎麼辦&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://towardsdatascience.com/running-jupyter-notebook-in-google-cloud-platform-in-15-min-61e16da34d52&#34;&gt;https://towardsdatascience.com/running-jupyter-notebook-in-google-cloud-platform-in-15-min-61e16da34d52&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;創建google-cloud-platform-帳號&#34;&gt;創建google cloud platform 帳號&lt;/h3&gt;
-
-&lt;p&gt;直接用自己的google帳號就可以惹，一年有300美試用額度，對一般人而言真的是綽綽有餘了&lt;/p&gt;
-
-&lt;h3 id=&#34;建立vm-instance&#34;&gt;建立vm instance :&lt;/h3&gt;
-
-&lt;p&gt;compute&amp;gt; compute engine&lt;/p&gt;
-
-&lt;h3 id=&#34;安裝google-cloud-sdk&#34;&gt;安裝google cloud sdk:&lt;/h3&gt;
-
-&lt;p&gt;可以使用本地terminal利用SSH連線登入google cloud platform的server，不一定要使用，也可以直接網頁上點一下SSH開啟console&lt;/p&gt;
-
-&lt;p&gt;不過用gcloud指令的話傳檔案比較快ＸＤ&lt;/p&gt;
-
-&lt;p&gt;解壓縮之後，執行install.sh&lt;/p&gt;
-
-&lt;p&gt;我自己就莫名其妙一直有奇怪的錯誤訊息（不過好像還是有安裝成功&amp;hellip;吧），接著要認證帳戶&lt;/p&gt;
-
-&lt;p&gt;輸入&lt;code&gt;gcloud auth login&lt;/code&gt; ，瀏覽器會自動跳出google帳號的頁面讓你點選登入的帳號&lt;/p&gt;
-
-&lt;p&gt;接下來就可以使用gcloud了&lt;/p&gt;
-
-&lt;p&gt;到google cloud platform的vm那邊，點選SSH連線旁邊小三角形後再選查看gcloud指令&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201801-gcp.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;會出現類似&lt;code&gt;gcloud compute --project &amp;quot;&amp;lt;project-id&amp;gt;&amp;quot; ssh --zone &amp;quot;&amp;lt;your-zone&amp;gt;&amp;quot; &amp;quot;&amp;lt;instance-name&amp;gt;&amp;quot;&lt;/code&gt; 的指令，在terminal輸入後就可以用SSH連線到google cloud platform&lt;/p&gt;
-
-&lt;h3 id=&#34;安裝anaconda3&#34;&gt;安裝anaconda3&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;wget http://repo.continuum.io/archive/Anaconda3-4.3.0-Linux-x86_64.sh
-bash Anaconda3-4.0.0-Linux-x86_64.sh
-source ~/.bashrc
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;設定網路&#34;&gt;設定網路&lt;/h3&gt;
-
-&lt;p&gt;Network &amp;gt; VPC network&lt;/p&gt;
-
-&lt;p&gt;External IP address :先將網路改成static&lt;/p&gt;
-
-&lt;p&gt;Firewall rule: 建立一個新的rule允許port &lt;code&gt;tcp:5000&lt;/code&gt; (or 任何一個想要指定開啟notebook 的port)&lt;/p&gt;
-
-&lt;h3 id=&#34;設定jupyter-notebok&#34;&gt;設定jupyter notebok&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;jupyter notebook --generate-config&lt;/code&gt; 建立config檔（若沒有的話）&lt;/p&gt;
-
-&lt;p&gt;在configurable configuration 輸入&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;c = get_config()
-c.NotebookApp.ip = &#39;*&#39;
-c.NotebookApp.open_browser = False
-c.NotebookApp.port = &amp;lt;上一步允許的Port &amp;gt;  （ex. 5000）
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;打開Jupiter notebook 囉！&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;jupyter-notebook --no-browser --port=&amp;lt;PORT-NUMBER&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;只要輸入一次，之後就跟一般一樣輸入&lt;code&gt;jupyter notebook&lt;/code&gt;  就好了！&lt;/p&gt;
-
-&lt;h3 id=&#34;傳檔案&#34;&gt;傳檔案&lt;/h3&gt;
-
-&lt;p&gt;傳檔案進去google could platform的server&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gcloud compute scp [LOCAL_FILE_PATH] [INSTANCE_NAME]:~＃
-# example: bin/gcloud compute scp &amp;quot;/Users/Hung/cosine_sim_ver2.py&amp;quot; &amp;quot;my02&amp;quot;:~/ 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;從server傳檔案出來&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;gcloud compute scp [INSTANCE_NAME]:[REMOTE_FILE_PATH] [LOCAL_FILE_PATH]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;ps.  題外話，要如何在terminal中讓python script print出有顏色的訊息呢&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from termcolor import colored
-print(colored(&#39;hello&#39;, &#39;red&#39;))
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>參照這篇，做個紀錄以免我以後又忘了（真的很金魚腦 該怎麼辦
+https://towardsdatascience.com/running-jupyter-notebook-in-google-cloud-platform-in-15-min-61e16da34d52
+創建google cloud platform 帳號 直接用自己的google帳號就可以惹，一年有300美試用額度，對一般人而言真的是綽綽有餘了
+建立vm instance : compute&amp;gt; compute engine
+安裝google cloud sdk: 可以使用本地terminal利用SSH連線登入google cloud platform的server，不一定要使用，也可以直接網頁上點一下SSH開啟console
+不過用gcloud指令的話傳檔案比較快ＸＤ
+解壓縮之後，執行install.sh
+我自己就莫名其妙一直有奇怪的錯誤訊息（不過好像還是有安裝成功&amp;hellip;吧），接著要認證帳戶
+輸入gcloud auth login ，瀏覽器會自動跳出google帳號的頁面讓你點選登入的帳號
+接下來就可以使用gcloud了
+到google cloud platform的vm那邊，點選SSH連線旁邊小三角形後再選查看gcloud指令
+會出現類似gcloud compute --project &amp;quot;&amp;lt;project-id&amp;gt;&amp;quot; ssh --zone &amp;quot;&amp;lt;your-zone&amp;gt;&amp;quot; &amp;quot;&amp;lt;instance-name&amp;gt;&amp;quot; 的指令，在terminal輸入後就可以用SSH連線到google cloud platform
+安裝anaconda3 wget http://repo.continuum.io/archive/Anaconda3-4.3.0-Linux-x86_64.sh bash Anaconda3-4.0.0-Linux-x86_64.sh source ~/.bashrc 設定網路 Network &amp;gt; VPC network
+External IP address :先將網路改成static
+Firewall rule: 建立一個新的rule允許port tcp:5000 (or 任何一個想要指定開啟notebook 的port)
+設定jupyter notebok jupyter notebook --generate-config 建立config檔（若沒有的話）</description>
     </item>
     
     <item>
@@ -113,188 +37,34 @@ print(colored(&#39;hello&#39;, &#39;red&#39;))
       <pubDate>Sat, 22 Jul 2017 17:54:54 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E9%83%A8%E7%BD%B2%E5%88%B0heroku%E5%9B%89/</guid>
-      <description>
-
-&lt;p&gt;網站傳送門：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄如何解決上傳到Heroku時可能碰到的一些亂七八糟的小毛病。以及如何在Heroku上實現使用者上傳圖片的功能。&lt;/p&gt;
-
-&lt;p&gt;##第一次部署到Heroku&lt;/p&gt;
-
-&lt;p&gt;首先，安裝Heroku的 gem。再來，註冊一個Heroku帳號。&lt;/p&gt;
-
-&lt;p&gt;接下來照著這篇：&lt;a href=&#34;https://www.railstutorial.org/book/beginning&#34;&gt;https://www.railstutorial.org/book/beginning&lt;/a&gt; 的1.5章將Rails的設定都弄好就行了！&lt;/p&gt;
-
-&lt;p&gt;網路上有一些聲音認為Heroku實在是太囉唆麻煩，一大堆設定，搞不好又會上傳失敗，作為一個server實在是讓人惱火。&lt;/p&gt;
-
-&lt;p&gt;嘛，確實ＸＤ不過以一個新手的觀點來說，因為是免費的（當然，需要更大的空間的話就要付費的），而且玩過Heroku的人多，就算碰到什麼問題也總是能估狗到答案的，就這兩點來說還是滿不錯的啦。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;heroku-update&#34;&gt;heroku update&lt;/h2&gt;
-
-&lt;p&gt;在一般情況下，要將專案push到Heroku上，是這樣下指令的：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;git push heroku master&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;但在進行Rails專案時，可能會開好幾個branch，假設今天要把branch h03 push到heroku 上面的話也很簡單，只要：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;git push heroku h03:master&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;然後 &lt;code&gt;heroku run rake db:migrate&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;就可以用 &lt;code&gt;heroku open&lt;/code&gt; 打開熱騰騰的網站了！&lt;/p&gt;
-
-&lt;p&gt;-&lt;/p&gt;
-
-&lt;p&gt;另外，經過實測，有幾點問題值得紀錄：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;heroku上無法顯示flashes (解決方式未知，因為覺得flash很醜，乾脆就不用了ＸＤ)&lt;/li&gt;
-&lt;li&gt;在&lt;code&gt;app/assets/stylesheets/application.scss&lt;/code&gt; 當中加入&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-scss&#34;&gt;@import &amp;quot;bootstrap-sprockets&amp;quot;;
-@import &amp;quot;bootstrap&amp;quot;;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;會使heroku無法push (原因未知)&lt;/p&gt;
-
-&lt;p&gt;這兩點因為沒什麼必須性，因此為了省麻煩我就都直接刪掉了ＸＤ&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;解決在heroku上圖片無法顯示的問題&#34;&gt;解決在heroku上圖片無法顯示的問題&lt;/h2&gt;
-
-&lt;p&gt;好不容易上傳成功，結果一打開——哇，所有的圖片都不見惹～～～的這種惱火感真的很讓人難忘啊&amp;hellip;&lt;/p&gt;
-
-&lt;p&gt;不過解決方法也不複雜，把設定改一下就行了。只要到&lt;code&gt;Config/environments/production.rb&lt;/code&gt; 當中，將&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;config.serve_static_files = ENV[&#39;RAILS_SERVE_STATIC_FILES&#39;].present?
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;改成&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;config.serve_static_assets = true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;上傳圖片-heroku&#34;&gt;上傳圖片＋Heroku&lt;/h2&gt;
-
-&lt;p&gt;好的，終於辛辛苦苦把上傳圖片的功能做好了，想要傳到heroku上面自己看著爽一下，殊不知&amp;hellip;&amp;hellip;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;heroku不能儲存使用者自己上傳的圖片啊！！！！&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;（抱頭痛哭&lt;/p&gt;
-
-&lt;p&gt;好的，哭完了還是要來想想辦法&lt;/p&gt;
-
-&lt;p&gt;-&lt;/p&gt;
-
-&lt;p&gt;1.&lt;strong&gt;AWS S3&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;先說結論，利用AWS S3儲存圖片就可以解決這個問題了&lt;/p&gt;
-
-&lt;p&gt;步驟參照這篇：&lt;a href=&#34;http://blog.qinfeng.io/posts/1383092&#34;&gt;http://blog.qinfeng.io/posts/1383092&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;建立一個AWS帳號，然後新增一組IAM user，拿到credentials.csv&lt;/p&gt;
-
-&lt;p&gt;最後建立一個S3 bucket來裝圖片&lt;/p&gt;
-
-&lt;p&gt;2.&lt;strong&gt;安裝gem&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;在&lt;code&gt;Gemfile&lt;/code&gt; 當中增加兩個gem&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;gem &amp;quot;figaro&amp;quot; 
-gem &amp;quot;fog&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然後&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;bunle install
-figaro install
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;此時會產生&lt;code&gt;config/application.yml&lt;/code&gt; 這份文件&lt;/p&gt;
-
-&lt;p&gt;3.&lt;strong&gt;S3 Acccess key&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;在&lt;code&gt;application.yml&lt;/code&gt; 當中輸入剛剛從下載的csv檔當中得到的key id跟secret key&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;production:
-  aws_access_key_id: &amp;quot;key id&amp;quot;
-  aws_secret_access_key: &amp;quot; secret key&amp;quot;
-  aws_bucket_name: &amp;quot;bucket name&amp;quot;
-
-development:
-  aws_access_key_id: &amp;quot;key id&amp;quot;
-  aws_secret_access_key: &amp;quot; secret key&amp;quot;
-  aws_bucket_name: &amp;quot;bucket name&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;接下來在&lt;code&gt;config/initializers&lt;/code&gt; 當中新增 &lt;code&gt;carrierwave.rb&lt;/code&gt;  :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ touch config/initializers/carrierwave.rb
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;加上：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;CarrierWave.configure do |config|
-    config.storage :fog                       
-    config.fog_credentials = {
-      provider:              &#39;AWS&#39;,                        
-      aws_access_key_id:     ENV[&amp;quot;aws_access_key_id&amp;quot;],                 
-
-
-      aws_secret_access_key: ENV[&amp;quot;aws_secret_access_key&amp;quot;],    
-
-
-      region:                &#39;ap-northeast-1&#39;    
-
-
-    }
-    config.fog_directory  = ENV[&amp;quot;aws_bucket_name&amp;quot;] 
-    config.cache_dir = &amp;quot;#{Rails.root}/tmp/uploads&amp;quot;
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;ap-northeast-1&lt;/code&gt; 是日本時區，其他地區要再去查&lt;/p&gt;
-
-&lt;p&gt;要注意&lt;code&gt;ENV[ ]&lt;/code&gt;  當中的名稱必須要跟在&lt;code&gt;application.yml&lt;/code&gt; 取的別名一樣，不然會錯誤&lt;/p&gt;
-
-&lt;p&gt;4.&lt;strong&gt;更改uploader的設定&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;最後到&lt;code&gt;app/uploaders/image_uploader.rb&lt;/code&gt; 中第九行：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# Choose what kind of storage to use for this uploader:
-  storage :file
-  #storage :fog
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;把&lt;code&gt;storage :file&lt;/code&gt; 改成&lt;code&gt;storage :fog&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;5.&lt;strong&gt;更改Heroku設定&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;進入Heroku中的application當中，在setting當中點選Reveal Config Vars&lt;/p&gt;
-
-&lt;p&gt;把剛剛設定的&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;aws_access_key_id: &amp;quot;key id&amp;quot;
-aws_secret_access_key: &amp;quot; secret key&amp;quot;
-aws_bucket_name: &amp;quot;bucket name&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;這三項加進去&lt;/p&gt;
-
-&lt;p&gt;最後就可以&lt;code&gt;git push heroku master&lt;/code&gt; 試試看了！&lt;/p&gt;
-</description>
+      <description>網站傳送門： https://gentle-inlet-97986.herokuapp.com/
+主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄如何解決上傳到Heroku時可能碰到的一些亂七八糟的小毛病。以及如何在Heroku上實現使用者上傳圖片的功能。
+##第一次部署到Heroku
+首先，安裝Heroku的 gem。再來，註冊一個Heroku帳號。
+接下來照著這篇：https://www.railstutorial.org/book/beginning 的1.5章將Rails的設定都弄好就行了！
+網路上有一些聲音認為Heroku實在是太囉唆麻煩，一大堆設定，搞不好又會上傳失敗，作為一個server實在是讓人惱火。
+嘛，確實ＸＤ不過以一個新手的觀點來說，因為是免費的（當然，需要更大的空間的話就要付費的），而且玩過Heroku的人多，就算碰到什麼問題也總是能估狗到答案的，就這兩點來說還是滿不錯的啦。
+heroku update 在一般情況下，要將專案push到Heroku上，是這樣下指令的：
+git push heroku master
+但在進行Rails專案時，可能會開好幾個branch，假設今天要把branch h03 push到heroku 上面的話也很簡單，只要：
+git push heroku h03:master
+然後 heroku run rake db:migrate
+就可以用 heroku open 打開熱騰騰的網站了！
+另外，經過實測，有幾點問題值得紀錄：
+heroku上無法顯示flashes (解決方式未知，因為覺得flash很醜，乾脆就不用了ＸＤ) 在app/assets/stylesheets/application.scss 當中加入 @import &amp;#34;bootstrap-sprockets&amp;#34;; @import &amp;#34;bootstrap&amp;#34;; 會使heroku無法push (原因未知)
+這兩點因為沒什麼必須性，因此為了省麻煩我就都直接刪掉了ＸＤ
+解決在heroku上圖片無法顯示的問題 好不容易上傳成功，結果一打開——哇，所有的圖片都不見惹～～～的這種惱火感真的很讓人難忘啊&amp;hellip;
+不過解決方法也不複雜，把設定改一下就行了。只要到Config/environments/production.rb 當中，將
+config.serve_static_files = ENV[&amp;#39;RAILS_SERVE_STATIC_FILES&amp;#39;].present? 改成
+config.serve_static_assets = true 上傳圖片＋Heroku 好的，終於辛辛苦苦把上傳圖片的功能做好了，想要傳到heroku上面自己看著爽一下，殊不知&amp;hellip;&amp;hellip;
+heroku不能儲存使用者自己上傳的圖片啊！！！！
+（抱頭痛哭
+好的，哭完了還是要來想想辦法
+1.AWS S3
+先說結論，利用AWS S3儲存圖片就可以解決這個問題了
+步驟參照這篇：http://blog.qinfeng.io/posts/1383092</description>
     </item>
     
     <item>
@@ -303,216 +73,15 @@ aws_bucket_name: &amp;quot;bucket name&amp;quot;
       <pubDate>Sat, 22 Jul 2017 17:54:35 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-carrierwave%E5%AF%A6%E4%BD%9C%E5%9C%96%E7%89%87%E4%B8%8A%E5%82%B3%E5%8A%9F%E8%83%BD/</guid>
-      <description>
-
-&lt;p&gt;網站傳送門：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄如何用Carrierwave這個gem實作圖片上傳功能。&lt;/p&gt;
-
-&lt;h2 id=&#34;上傳圖片功能&#34;&gt;上傳圖片功能&lt;/h2&gt;
-
-&lt;p&gt;首先要安裝&lt;code&gt;carrierwave&lt;/code&gt; 跟&lt;code&gt;rmagick&lt;/code&gt; 這兩個gem&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Gemfile&lt;/code&gt; :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;gem &#39;carrierwave&#39;
-gem &#39;rmagick&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5 id=&#34;小插曲&#34;&gt;小插曲&lt;/h5&gt;
-
-&lt;p&gt;在安裝rmagick之前，要先用homebrew 安裝imagemagick&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Shell&#34;&gt;$ brew install imagemagick
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然後安裝&lt;code&gt;rmagick&lt;/code&gt; 的時候，可能會出現這樣的錯誤訊息：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Building native extensions.  This could take a while...
-ERROR:  Error installing rmagick-2.16.0.gem:
-	ERROR: Failed to build gem native extension.
-
-    /Users/Hung/.tokaido/Rubies/2.2.2-p95/bin/ruby -r ./siteconf20170629-2407-7s934e.rb extconf.rb
-checking for clang... yes
-checking for Magick-config... no
-checking for pkg-config... no
-Can&#39;t install RMagick 2.16.0. Can&#39;t find Magick-config or pkg-config in /Users/Hung/.tokaido/bin:/Users/Hung/.tokaido/Rubies/2.2.2-p95/bin:/Users/Hung/.tokaido/Gems/2.2.0/bin:/Users/Hung/anaconda2/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
-
-*** extconf.rb failed ***
-Could not create Makefile due to some reason, probably lack of necessary
-libraries and/or headers.  Check the mkmf.log file for more details.  You may
-need configuration options.
-
-Provided configuration options:
-	--with-opt-dir
-	--without-opt-dir
-	--with-opt-include
-	--without-opt-include=${opt-dir}/include
-	--with-opt-lib
-	--without-opt-lib=${opt-dir}/lib
-	--with-make-prog
-	--without-make-prog
-	--srcdir=.
-	--curdir
-	--ruby=/Users/Hung/.tokaido/Rubies/2.2.2-p95/bin/$(RUBY_BASE_NAME)
-
-extconf failed, exit code 1
-
-Gem files will remain installed in /Users/Hung/.tokaido/Gems/2.2.0/gems/rmagick-2.16.0 for inspection.
-Results logged to /Users/Hung/.tokaido/Gems/2.2.0/extensions/x86_64-darwin-12/2.2.0-static/rmagick-2.16.0/gem_make.out
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;讀了錯誤訊息之後，問題應該在&lt;code&gt;Can&#39;t install RMagick 2.16.0. Can&#39;t find Magick-config or pkg-config&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;所以我又安裝了&lt;code&gt;pkg-confg&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;brew install pkg-config
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;但是依然有錯誤訊息，只不過這次的訊息變成&lt;code&gt;Can&#39;t install RMagick 2.16.0. Can&#39;t find MagickWand.h.&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;解決辦法：照著這篇 &lt;a href=&#34;https://stackoverflow.com/questions/39494672/rmagick-installation-cant-find-magickwand-h&#34;&gt;https://stackoverflow.com/questions/39494672/rmagick-installation-cant-find-magickwand-h&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;brew unlink imagemagick
-brew install imagemagick@6 &amp;amp;&amp;amp; brew link imagemagick@6 --force
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;之後&lt;code&gt;gem install rmagick&lt;/code&gt; 應該就會成功了&lt;/p&gt;
-
-&lt;p&gt;Ps. 不過後來網路上有消息指出RMagick有洩漏訊息的問題，因此後來就改用MiniMagick了 （我那麼辛苦debug究竟是&amp;hellip;XD&lt;/p&gt;
-
-&lt;p&gt;&amp;ndash;&lt;/p&gt;
-
-&lt;p&gt;1.&lt;strong&gt;用carrierwave建立image uploader&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ rails generate uploader image
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;2.&lt;strong&gt;新增model的欄位&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;如果此時要儲存圖片的model都還沒建置的話，只要在generate的時候新增一個欄位給圖片就可以了。&lt;/p&gt;
-
-&lt;p&gt;這邊的情況是，我之前已經有了一個名為&lt;code&gt;group&lt;/code&gt; 的model，但裡面沒有存放圖片的欄位，因此要另外新增&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ rails generate uploader image
-$ rails generate migration add_image_to_groups
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;＊注意group有沒有s，可以在&lt;code&gt;db/migrate&lt;/code&gt; 的檔名裡面找到資料表名稱&lt;/p&gt;
-
-&lt;p&gt;到&lt;code&gt;db/migrate/&lt;/code&gt; 中新增的migrate檔裡面添加column：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Ruby&#34;&gt;class AddImageToGroups &amp;lt; ActiveRecord::Migration
-  def change
-  	add_column :groups, :image, :string
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;最後&lt;code&gt;rake db:migrate&lt;/code&gt; 就完成更新欄位&lt;/p&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;3.&lt;strong&gt;連結model和uploader&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;來到&lt;code&gt;app/model/group.rb&lt;/code&gt; 當中，加上：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;mount_uploader :image, ImageUploader
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;:image&lt;/code&gt; 是剛剛在model當中添加的欄位名，&lt;code&gt;ImageUploader&lt;/code&gt; 的Image是uploader的名稱&lt;/p&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;4.&lt;strong&gt;在controller當中允許更新&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;來到&lt;code&gt;app/controllers/groups_controller.rb&lt;/code&gt; 當中，在private的部分加上&lt;code&gt;:image&lt;/code&gt; ：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;private
-
- 	def group_params
-   		params.require(:group).permit(:title, :description, :image)
- 	end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;5.&lt;strong&gt;更改views&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;在需要上傳圖片的部分，加上&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;%= f.file_field :image %&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;就會自動生成上傳的按鈕了：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-img_uploader_add.jpg&#34; alt=&#34;img_uploader_add&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在需要顯示圖片的地方，則加入：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;%= image_tag group.image.thumb %&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;thumb是限制圖片大小的，下一步會提到&lt;/p&gt;
-
-&lt;p&gt;.&lt;/p&gt;
-
-&lt;p&gt;6.&lt;strong&gt;限制圖片大小&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;如果沒有這一步，圖片就會以原始大小呈現在網頁上，有時候會很令人驚嚇（？&lt;/p&gt;
-
-&lt;p&gt;來到&lt;code&gt;app/uploaders/image_uploader.rb&lt;/code&gt; 當中，大概第六行的地方&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# Include RMagick or MiniMagick support:
-  #include CarrierWave::RMagick
-  #include CarrierWave::MiniMagick
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;選一個解除註解&lt;/p&gt;
-
-&lt;p&gt;第九行：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# Choose what kind of storage to use for this uploader:
-  #storage :file
-  #storage :fog
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;把&lt;code&gt;storage :file&lt;/code&gt; 解除註解&lt;/p&gt;
-
-&lt;p&gt;第35行左右：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# Create different versions of your uploaded files:
-  version :thumb do
-    process resize_to_fit: [400, 400]
-  end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以改成任何自己喜歡的大小，&lt;code&gt;:thumb&lt;/code&gt; 也可以換成別的，上一步驟圖片顯示的地方也要跟著更動就好&lt;/p&gt;
-
-&lt;p&gt;這時試著上傳圖片，應該就會成功了！&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-img_uploader_show.jpg&#34; alt=&#34;img_uploader_show&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;上傳圖片的功能很大部分是參考這篇(&lt;a href=&#34;http://motion-express.com/blog/20140708-ruby-gem-carrierwave&#34;&gt;http://motion-express.com/blog/20140708-ruby-gem-carrierwave&lt;/a&gt;)&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;上傳圖片-heroku&#34;&gt;上傳圖片＋Heroku&lt;/h2&gt;
-
-&lt;p&gt;如果選擇Heroku做為部署工具就要注意了，因為&amp;hellip;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;heroku不能儲存使用者自己上傳的圖片啊！！！！&lt;/strong&gt;（登愣&lt;/p&gt;
-
-&lt;p&gt;如何解決？傳送門： &lt;a href=&#34;https://ichennn.github.io/blog/2017/07/ruby-on-rails-部署到heroku囉/&#34;&gt;[Ruby on Rails] 部署到Heroku囉！&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>網站傳送門： https://gentle-inlet-97986.herokuapp.com/
+主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄如何用Carrierwave這個gem實作圖片上傳功能。
+上傳圖片功能 首先要安裝carrierwave 跟rmagick 這兩個gem
+Gemfile :
+gem &amp;#39;carrierwave&amp;#39; gem &amp;#39;rmagick&amp;#39; 小插曲 在安裝rmagick之前，要先用homebrew 安裝imagemagick
+$ brew install imagemagick 然後安裝rmagick 的時候，可能會出現這樣的錯誤訊息：
+Building native extensions. This could take a while... ERROR: Error installing rmagick-2.16.0.gem: ERROR: Failed to build gem native extension. /Users/Hung/.tokaido/Rubies/2.2.2-p95/bin/ruby -r ./siteconf20170629-2407-7s934e.rb extconf.rb checking for clang... yes checking for Magick-config... no checking for pkg-config... no Can&amp;#39;t install RMagick 2.16.0. Can&amp;#39;t find Magick-config or pkg-config in /Users/Hung/.</description>
     </item>
     
     <item>
@@ -521,100 +90,17 @@ end
       <pubDate>Sat, 22 Jul 2017 17:40:26 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E5%AF%A6%E4%BD%9C%E7%B0%A1%E6%98%93%E7%9A%84%E6%90%9C%E5%B0%8B%E5%92%8C%E6%9C%80%E6%96%B0%E6%B6%88%E6%81%AF%E5%8A%9F%E8%83%BD/</guid>
-      <description>
-
-&lt;p&gt;網站傳送門：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄如何實作最新消息功能和簡易的搜尋功能，不使用任何gem。當然，有很多現成的gem可以達到非常強大的搜尋功能，若有需要也想找機會試試（可是功能越強大說明通常也就越難懂ＸＤ（哭）。&lt;/p&gt;
-
-&lt;h2 id=&#34;簡易搜尋功能&#34;&gt;簡易搜尋功能&lt;/h2&gt;
-
-&lt;p&gt;以搜尋書本為例：&lt;/p&gt;
-
-&lt;p&gt;想達到的功能是在書本列表當中可以搜尋想要的書（title和description都可以對應）&lt;/p&gt;
-
-&lt;p&gt;首先，找到想放置搜尋bar的頁面：&lt;code&gt;app/views/groups/index.html.erb&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;加入下面這一段code，做一個陽春的搜尋框&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div&amp;gt;
-	&amp;lt;%= form_tag groups_path, id: &amp;quot;search-form&amp;quot;, :method =&amp;gt; &amp;quot;get&amp;quot; do %&amp;gt;  
-	&amp;lt;%= text_field_tag :search, params[:search], class: &#39;btn btn-default&#39;, placeholder: &amp;quot;Search Books&amp;quot; %&amp;gt;
-	&amp;lt;%= submit_tag &amp;quot;Search&amp;quot;, class: &#39;btn btn-default&#39;, name: nil %&amp;gt;
-	&amp;lt;% end %&amp;gt;
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再來找到controller：&lt;code&gt;app/controllers/groups_controller.rb&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;更改index的部分，這樣才會顯示搜尋結果。記得paginate的部分也要寫，不然搜尋結果的頁面會報錯&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;def index
-    if params[:search]
-      @groups = Group.search(params[:search]).recent.paginate(:page =&amp;gt; params[:page], :per_page =&amp;gt; 10)
-    else 
-      @groups = Group.all.recent.paginate(:page =&amp;gt; params[:page], :per_page =&amp;gt; 10)
-    end
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;最後是model的部分：&lt;code&gt;app/models/group.rb&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;定義搜尋的動作，這邊我想要可以同時搜尋書的title跟description&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;def self.search(search)
-  		if search
-    		#where(&amp;quot;title LIKE ?&amp;quot;, &amp;quot;%#{search}%&amp;quot;) 
-  			where(&amp;quot;title LIKE :search OR description LIKE :search&amp;quot;, search: &amp;quot;%#{search}%&amp;quot;)
-  		else
-    		all
-    	end
-    end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果只想要搜尋一個欄位（例如title的話），就用註解掉的那行就可以了。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;最新消息-只想要顯示n個結果&#34;&gt;最新消息：只想要顯示n個結果&lt;/h2&gt;
-
-&lt;p&gt;概念：最新消息＝按照時間排序後的前n筆資料。不得不說，是有點土法煉鋼，很陽春的方法ＸＤＤ&lt;/p&gt;
-
-&lt;p&gt;首先，在view當中，就和一般顯示清單一樣：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;table class=&amp;quot;table table-hover&amp;quot;&amp;gt;
-	&amp;lt;thead&amp;gt;
-    	&amp;lt;tr&amp;gt;
-          &amp;lt;td&amp;gt;&amp;lt;/td&amp;gt;
-          &amp;lt;td&amp;gt;&amp;lt;h4&amp;gt;Title&amp;lt;/h4&amp;gt;&amp;lt;/td&amp;gt;
-         &amp;lt;/tr&amp;gt;
-    &amp;lt;/thead&amp;gt;
-    &amp;lt;tbody&amp;gt;   
-         &amp;lt;% @groups.each do |group|  %&amp;gt;
-         &amp;lt;tr&amp;gt;
-         &amp;lt;td&amp;gt;&amp;lt;/td&amp;gt;
-         &amp;lt;td class=&amp;quot;text-success&amp;quot;&amp;gt;&amp;lt;%= group.title %&amp;gt;&amp;lt;/td&amp;gt;
-         &amp;lt;/tr&amp;gt;
-         &amp;lt;% end %&amp;gt;
-     &amp;lt;/tbody&amp;gt;
-&amp;lt;/table&amp;gt;       
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;重點在於controller當中，記得要限制返回的數量：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;def index  	
-  	@groups = Group.all.limit(5).recent
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;對的，清單和最新消息真的只是一線之隔啊ＸＤ&lt;/p&gt;
-</description>
+      <description>網站傳送門： https://gentle-inlet-97986.herokuapp.com/
+主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄如何實作最新消息功能和簡易的搜尋功能，不使用任何gem。當然，有很多現成的gem可以達到非常強大的搜尋功能，若有需要也想找機會試試（可是功能越強大說明通常也就越難懂ＸＤ（哭）。
+簡易搜尋功能 以搜尋書本為例：
+想達到的功能是在書本列表當中可以搜尋想要的書（title和description都可以對應）
+首先，找到想放置搜尋bar的頁面：app/views/groups/index.html.erb
+加入下面這一段code，做一個陽春的搜尋框
+&amp;lt;div&amp;gt; &amp;lt;%= form_tag groups_path, id: &amp;#34;search-form&amp;#34;, :method =&amp;gt; &amp;#34;get&amp;#34; do %&amp;gt; &amp;lt;%= text_field_tag :search, params[:search], class: &amp;#39;btn btn-default&amp;#39;, placeholder: &amp;#34;Search Books&amp;#34; %&amp;gt; &amp;lt;%= submit_tag &amp;#34;Search&amp;#34;, class: &amp;#39;btn btn-default&amp;#39;, name: nil %&amp;gt; &amp;lt;% end %&amp;gt; &amp;lt;/div&amp;gt; 再來找到controller：app/controllers/groups_controller.rb
+更改index的部分，這樣才會顯示搜尋結果。記得paginate的部分也要寫，不然搜尋結果的頁面會報錯
+def index if params[:search] @groups = Group.search(params[:search]).recent.paginate(:page =&amp;gt; params[:page], :per_page =&amp;gt; 10) else @groups = Group.all.recent.paginate(:page =&amp;gt; params[:page], :per_page =&amp;gt; 10) end end 最後是model的部分：app/models/group.</description>
     </item>
     
     <item>
@@ -623,83 +109,21 @@ end
       <pubDate>Sat, 22 Jul 2017 17:10:16 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E5%A5%BD%E7%94%A8%E7%9A%84will_paginate%E5%8F%8Asimpl_-form_for/</guid>
-      <description>
-
-&lt;p&gt;網站傳送門：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄如何使用will paginate 及 simple form for這兩個方便又好用的gem來使網站變得更美觀。&lt;/p&gt;
-
-&lt;h2 id=&#34;use-simple-form-for&#34;&gt;use simple_form_for&lt;/h2&gt;
-
-&lt;p&gt;Simple_form_for 是一個好用的gem，可以自動調整格式&lt;/p&gt;
-
-&lt;p&gt;如果還沒安裝的話，記得先在gemfile裡面新增&lt;code&gt;gem &amp;quot;simple_form&amp;quot;&lt;/code&gt; ，然後 &lt;code&gt;bundle install&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;下一步：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;rails generate simple_form:install --bootstrap&lt;/code&gt; 執行boostrap的設定&lt;/p&gt;
-
-&lt;p&gt;就可以使用simple_form_for了！&lt;/p&gt;
-
-&lt;p&gt;使用方法也很簡單，只要將原本是&lt;code&gt;form_for&lt;/code&gt; 的部分都替換成&lt;code&gt;simple_form_for&lt;/code&gt; 並照著規定的格式更改內容就行了。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;%= simple_form_for @group do |f| %&amp;gt;
-	&amp;lt;%= f.input :description, input_html: { class: &amp;quot;form-horizontal&amp;quot;, :rows =&amp;gt; 4} %&amp;gt;
-&amp;lt;% end %&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;:rows&lt;/code&gt;  可以用來調輸入框的高度&lt;/p&gt;
-
-&lt;p&gt;這是使用simple_form_for的效果：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-simple_form_for_before.jpg&#34; alt=&#34;simple_form_for_before&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Simple_form_for會自動偵測不可空白的欄位，並給出警告：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-simple_form_for_adjustment.jpg&#34; alt=&#34;simple_form_for_adjustment&#34; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Reference  : use &lt;code&gt;form_for&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;  &amp;lt;%= form_for @group do |f| %&amp;gt;
-      &amp;lt;%= f.label &amp;quot;description&amp;quot;, :class =&amp;gt; &amp;quot;string optional control-label&amp;quot; %&amp;gt;
-      &amp;lt;%= f.text_area :description, :class =&amp;gt; &amp;quot;string optional form-control&amp;quot; %&amp;gt;
-   &amp;lt;% end %&amp;gt;   
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;這段和上面的simple_form_for能達到的效果幾乎是一模一樣的，但明顯就囉唆了點ＸＤ&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;will-paginate&#34;&gt;will paginate&lt;/h2&gt;
-
-&lt;p&gt;不管是什麼網站，紀錄一多，就會落落長讓人眼花撩亂，這時候有個好看簡單的分頁功能就顯得格外重要了！&lt;/p&gt;
-
-&lt;p&gt;安裝完will_paginate後，也要記得在寫進&lt;code&gt;Gemfile&lt;/code&gt; 裡面&lt;/p&gt;
-
-&lt;p&gt;首先，在&lt;code&gt;App/controllers/groups_controller.rb&lt;/code&gt;  當中加入&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;@posts = @group.posts.recent.paginate(:page =&amp;gt; params[:page], :per_page =&amp;gt; 10)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;此時若是直接&lt;code&gt;rails server&lt;/code&gt; 的話會一直出現undefined method &amp;ldquo;recent&amp;rdquo;&lt;/p&gt;
-
-&lt;p&gt;這是因為系統當中並沒有名為recent的方法，要自己去&lt;code&gt;app/models/post.rb&lt;/code&gt; 中加入&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;scope :recent, -&amp;gt; {order(&amp;quot;created_at DESC&amp;quot;)}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;此時應該就可以順利看到分頁了！&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-paginate.jpg&#34; alt=&#34;paginate&#34; /&gt;&lt;/p&gt;
-</description>
+      <description>網站傳送門： https://gentle-inlet-97986.herokuapp.com/
+主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄如何使用will paginate 及 simple form for這兩個方便又好用的gem來使網站變得更美觀。
+use simple_form_for Simple_form_for 是一個好用的gem，可以自動調整格式
+如果還沒安裝的話，記得先在gemfile裡面新增gem &amp;quot;simple_form&amp;quot; ，然後 bundle install
+下一步：
+rails generate simple_form:install --bootstrap 執行boostrap的設定
+就可以使用simple_form_for了！
+使用方法也很簡單，只要將原本是form_for 的部分都替換成simple_form_for 並照著規定的格式更改內容就行了。
+&amp;lt;%= simple_form_for @group do |f| %&amp;gt; &amp;lt;%= f.input :description, input_html: { class: &amp;#34;form-horizontal&amp;#34;, :rows =&amp;gt; 4} %&amp;gt; &amp;lt;% end %&amp;gt; :rows 可以用來調輸入框的高度
+這是使用simple_form_for的效果：
+Simple_form_for會自動偵測不可空白的欄位，並給出警告：
+Reference : use form_for
+&amp;lt;%= form_for @group do |f| %&amp;gt; &amp;lt;%= f.label &amp;#34;description&amp;#34;, :class =&amp;gt; &amp;#34;string optional control-label&amp;#34; %&amp;gt; &amp;lt;%= f.</description>
     </item>
     
     <item>
@@ -708,71 +132,18 @@ end
       <pubDate>Sat, 22 Jul 2017 16:52:00 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E6%96%87%E7%AB%A0%E5%88%AA%E9%99%A4%E4%BF%AE%E6%94%B9%E5%AF%A6%E4%BD%9C%E4%BF%AE%E6%94%B9%E6%99%82%E5%8D%80%E5%92%8C%E6%8F%9B%E8%A1%8C/</guid>
-      <description>
-
-&lt;p&gt;網站傳送門：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄如何實作Rails 101教程當中沒有提供答案的文章修改刪除功能。&lt;/p&gt;
-
-&lt;h2 id=&#34;文章刪除修改實作&#34;&gt;文章刪除修改實作&lt;/h2&gt;
-
-&lt;p&gt;在&lt;code&gt;app/controllers/posts_controller.rb&lt;/code&gt; 下定義&lt;code&gt;edit&lt;/code&gt; method&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;def edit
-	@group = Group.find(params[:group_id]) 
-	@post = Post.find(params[:id])
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;要記得&lt;code&gt;@group&lt;/code&gt; 跟 &lt;code&gt;@post&lt;/code&gt; 都要定義！不然會出現 NoMethodError&lt;/p&gt;
-
-&lt;p&gt;無論是Edit, update, destroy都需要&lt;/p&gt;
-
-&lt;p&gt;另外，edit介面也要同時加上&lt;code&gt;@group&lt;/code&gt;跟&lt;code&gt;@post&lt;/code&gt;，用array 方式表示，系統才能判斷是哪一個group裡面的哪一個post&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;%= simple_form_for [@group, @post] do |f| %&amp;gt;
-  .....
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;simple-format-日期顯示&#34;&gt;Simple_format ＆日期顯示&lt;/h2&gt;
-
-&lt;p&gt;換行用，只要將要換行的內容放入&lt;code&gt;simple_format()&lt;/code&gt; 當中就可以了&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;% @posts.each do |post| %&amp;gt;
-        &amp;lt;tr&amp;gt;
-          &amp;lt;td&amp;gt;&amp;lt;%= simple_format(post.content) %&amp;gt;&amp;lt;/td&amp;gt;
-          &amp;lt;td&amp;gt;&amp;lt;%= post.user.email %&amp;gt;&amp;lt;/td&amp;gt;
-          &amp;lt;td&amp;gt;&amp;lt;%= post.created_at.to_date %&amp;gt;&amp;lt;/td&amp;gt;
-        &amp;lt;/tr&amp;gt;
-      &amp;lt;% end %&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;關於日期的顯示方式，若是只使用最簡單的&lt;code&gt;post.created_at&lt;/code&gt; 會以這樣的方式呈現：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-default_timestamp.jpg&#34; alt=&#34;default_timestamp&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;若想要讓樣式看起來簡潔一些，可以加上&lt;code&gt;created_at.to_date&lt;/code&gt; （或是 &lt;code&gt;created_at.strftime(&amp;quot;%Y-%m-%d&amp;quot;)&lt;/code&gt; ）就會只顯示到日期，不會出現後面的UTC之類的&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-strtime_timestamp.jpg&#34; alt=&#34;strtime_timestamp&#34; /&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;時區更改&#34;&gt;時區更改&lt;/h2&gt;
-
-&lt;p&gt;想要改到自己地區的時區，到&lt;code&gt;config/application.rb&lt;/code&gt; 改設定：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Ruby&#34;&gt;config.time_zone = &#39;Osaka&#39;
-config.active_record.default_timezone = :local
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>網站傳送門： https://gentle-inlet-97986.herokuapp.com/
+主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄如何實作Rails 101教程當中沒有提供答案的文章修改刪除功能。
+文章刪除修改實作 在app/controllers/posts_controller.rb 下定義edit method
+def edit @group = Group.find(params[:group_id]) @post = Post.find(params[:id]) end 要記得@group 跟 @post 都要定義！不然會出現 NoMethodError
+無論是Edit, update, destroy都需要
+另外，edit介面也要同時加上@group跟@post，用array 方式表示，系統才能判斷是哪一個group裡面的哪一個post
+&amp;lt;%= simple_form_for [@group, @post] do |f| %&amp;gt; ..... Simple_format ＆日期顯示 換行用，只要將要換行的內容放入simple_format() 當中就可以了
+&amp;lt;% @posts.each do |post| %&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;td&amp;gt;&amp;lt;%= simple_format(post.content) %&amp;gt;&amp;lt;/td&amp;gt; &amp;lt;td&amp;gt;&amp;lt;%= post.user.email %&amp;gt;&amp;lt;/td&amp;gt; &amp;lt;td&amp;gt;&amp;lt;%= post.created_at.to_date %&amp;gt;&amp;lt;/td&amp;gt; &amp;lt;/tr&amp;gt; &amp;lt;% end %&amp;gt; 關於日期的顯示方式，若是只使用最簡單的post.created_at 會以這樣的方式呈現：
+若想要讓樣式看起來簡潔一些，可以加上created_at.to_date （或是 created_at.strftime(&amp;quot;%Y-%m-%d&amp;quot;) ）就會只顯示到日期，不會出現後面的UTC之類的
+時區更改 想要改到自己地區的時區，到config/application.rb 改設定：</description>
     </item>
     
     <item>
@@ -781,165 +152,20 @@ config.active_record.default_timezone = :local
       <pubDate>Sat, 22 Jul 2017 15:43:37 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/ruby-on-rails-%E5%9F%BA%E6%9C%ACview%E6%A7%8B%E6%88%90htmlcss/</guid>
-      <description>
-
-&lt;p&gt;這是第一次用Ruby on Rails 做出一個完整的網站。&lt;/p&gt;
-
-&lt;p&gt;已經架在Heroku上了：  &lt;a href=&#34;https://gentle-inlet-97986.herokuapp.com/&#34;&gt;https://gentle-inlet-97986.herokuapp.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;可能跑的有點慢，畢竟整個專案很肥ＸＤ&lt;/p&gt;
-
-&lt;p&gt;這次的主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。&lt;/p&gt;
-
-&lt;p&gt;（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此篇主要紀錄一些和View構成有關的部分。&lt;/p&gt;
-
-&lt;h2 id=&#34;html-partial&#34;&gt;HTML partial&lt;/h2&gt;
-
-&lt;p&gt;顧名思義，就是把一份html檔拆成好多部分來組合&lt;/p&gt;
-
-&lt;p&gt;基本上，一個頁面可以拆成三個部分：navbar, footer, 中間的內容。這麼拆的好處是，可以將上下兩條bar設定成全域樣式，中間的內容無論怎麼跳轉，都不會影響到上下方的bar&lt;/p&gt;
-
-&lt;p&gt;網站上頭的bar：&lt;code&gt;View/common/_navbar.html.erb&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;!-- Navigation --&amp;gt;
-&amp;lt;nav class=&amp;quot;navbar navbar-default navbar-fixed-top topnav&amp;quot; role=&amp;quot;navigation&amp;quot;&amp;gt;
-  ....
-&amp;lt;/nav&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;網站下方的footer：&lt;code&gt;View/commom/_footer.html.erb&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;!-- Footer --&amp;gt;
-&amp;lt;footer&amp;gt;
-   ...
-&amp;lt;/footer&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然後修改&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;View/layouts/application.html.erb&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;(html全域樣式，不管頁面怎麼跳轉都會在)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Html&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;
-&amp;lt;html&amp;gt;
-    &amp;lt;head&amp;gt;
-        &amp;lt;title&amp;gt;Book Reviews&amp;lt;/title&amp;gt;
-        &amp;lt;%= csrf_meta_tags %&amp;gt;
-        &amp;lt;%= stylesheet_link_tag    &#39;application&#39;, media: &#39;all&#39;, &#39;data-turbolinks-track&#39;: &#39;reload&#39; %&amp;gt;
-        &amp;lt;%= javascript_include_tag &#39;application&#39;, &#39;data-turbolinks-track&#39;: &#39;reload&#39; %&amp;gt;
-    &amp;lt;/head&amp;gt;
-    &amp;lt;body&amp;gt;
-        &amp;lt;div class=&amp;quot;container-fluid&amp;quot;&amp;gt;
-            &amp;lt;%= render &amp;quot;common/navbar&amp;quot; %&amp;gt;
-            &amp;lt;%= yield %&amp;gt;
-        &amp;lt;/div&amp;gt;
-        &amp;lt;%= render &amp;quot;common/footer&amp;quot; %&amp;gt;
-    &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;&amp;lt;%= yield %&amp;gt;&lt;/code&gt; 是其他程式碼輸出的地方，也就是網頁的主要內容，會一直跳轉。&lt;/p&gt;
-
-&lt;p&gt;另外值得一提的是，&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;雖然檔名是&lt;code&gt;_navbar&lt;/code&gt;  ，但路徑卻是&lt;code&gt;common/navbar&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;把header變成partial後，開了&lt;code&gt;rails server&lt;/code&gt; 後會發現無法全頁面延展。這時只要把&lt;code&gt;&amp;lt;div class=&amp;quot;container-fluid&amp;quot;&amp;gt;&lt;/code&gt; 的 class拿掉就好了(也就是變成只有&lt;code&gt;&amp;lt;div&amp;gt;&lt;/code&gt; )&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;如何置底&#34;&gt;如何置底&lt;/h2&gt;
-
-&lt;p&gt;把bar置底或置頂&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;nav class=&amp;quot;navbar navbar-default navbar-fixed-bottom&amp;quot; role=&amp;quot;navigation&amp;quot;&amp;gt;
-  ...
-&amp;lt;/nav&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;置頂：navbar-fixed-top&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;external-css&#34;&gt;External css&lt;/h2&gt;
-
-&lt;p&gt;每次產生一個View以後，總是有一些想要微調的部分，此時的CSS code要寫在哪裡呢？&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;rails generate controller groups&lt;/code&gt; 後，在 app/assets/stylesheets/ 下會有自動產生的 groups.scss&lt;/p&gt;
-
-&lt;p&gt;把css寫在這，但因為最後都會套用進(?) application.css&lt;/p&gt;
-
-&lt;p&gt;因此在html中要指定個別的&lt;code&gt;&amp;lt;div id=&amp;quot; &amp;quot;&amp;gt;&lt;/code&gt; ，不要直接用body下指令，不然會連帶改到其他的頁面。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;移到頁面中的某一段&#34;&gt;移到頁面中的某一段&lt;/h2&gt;
-
-&lt;p&gt;有點像是標籤的功能，直接在區塊中指定name&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;a name=&amp;quot;latest&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;
-    &amp;lt;div class=&amp;quot;content-section-a&amp;quot;&amp;gt;
-      ......
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;頁尾標籤：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;ul class=&amp;quot;list-inline&amp;quot;&amp;gt;
-  &amp;lt;li&amp;gt;
-  &amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;Home&amp;lt;/a&amp;gt;
-  &amp;lt;/li&amp;gt;
-  &amp;lt;li class=&amp;quot;footer-menu-divider&amp;quot;&amp;gt;&amp;amp;sdot;&amp;lt;/li&amp;gt;
-  &amp;lt;li&amp;gt;
-  &amp;lt;a href=#latest&amp;gt;What&#39;s news&amp;lt;/a&amp;gt;  # 不用“ ”
-  &amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;link-button&#34;&gt;Link button&lt;/h2&gt;
-
-&lt;p&gt;不像一般HTML用&lt;code&gt;&amp;lt;a href = &amp;gt; &amp;lt;/a&amp;gt;&lt;/code&gt; 來操作超連結和按鈕，在Rails當中可以用一套特別的寫法&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;&amp;lt;%= link_to(&amp;quot;Cancel&amp;quot;, groups_path, class: &amp;quot;btn btn-md btn-default&amp;quot;)%&amp;gt;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;其中，&lt;code&gt;&amp;quot;Cancel&amp;quot;&lt;/code&gt; 是出現在按鈕上的字，&lt;code&gt;groups_path&lt;/code&gt; 是按鈕按下去之後會連結到的路徑，按鈕的class有很多種大小可以選：&lt;/p&gt;
-
-&lt;p&gt;btn-xs, btn-sm, btn-md, btn-lg&lt;/p&gt;
-
-&lt;p&gt;更詳細的設定可以參考bootstrap的網站 : &lt;a href=&#34;https://getbootstrap.com/&#34;&gt;https://getbootstrap.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;查看目前的action&#34;&gt;查看目前的action&lt;/h2&gt;
-
-&lt;p&gt;欸，那如果不知道要連過去的那個頁面的路徑怎麼辦？！&lt;/p&gt;
-
-&lt;p&gt;因為Rails通常會一下子自動產生好多個檔案，有時候頁面一多自己也頭昏腦脹搞不清楚。&lt;/p&gt;
-
-&lt;p&gt;不過還好有個指令可以幫大家列出所有目前存在的路徑：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Shell&#34;&gt;$ rake routes
-                  Prefix Verb   URI Pattern                    Controller#Action
-        new_user_session GET    /users/sign_in(.:format)       devise/sessions#new
-            user_session POST   /users/sign_in(.:format)       devise/sessions#create
-    destroy_user_session DELETE /users/sign_out(.:format)      devise/sessions#destroy
-           user_password POST   /users/password(.:format)      devise/passwords#create
-       new_user_password GET    /users/password/new(.:format)  devise/passwords#new
-      edit_user_password GET    /users/password/edit(.:format) devise/passwords#edit
-      .
-      .
-      .
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;路徑就是prefix那欄，假設要連到第一欄的&lt;code&gt;new_user_session&lt;/code&gt; ，路徑就是&lt;code&gt;new_user_session_path&lt;/code&gt;&lt;/p&gt;
-</description>
+      <description>這是第一次用Ruby on Rails 做出一個完整的網站。
+已經架在Heroku上了： https://gentle-inlet-97986.herokuapp.com/
+可能跑的有點慢，畢竟整個專案很肥ＸＤ
+這次的主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。
+（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）
+此篇主要紀錄一些和View構成有關的部分。
+HTML partial 顧名思義，就是把一份html檔拆成好多部分來組合
+基本上，一個頁面可以拆成三個部分：navbar, footer, 中間的內容。這麼拆的好處是，可以將上下兩條bar設定成全域樣式，中間的內容無論怎麼跳轉，都不會影響到上下方的bar
+網站上頭的bar：View/common/_navbar.html.erb
+&amp;lt;!-- Navigation --&amp;gt; &amp;lt;nav class=&amp;#34;navbar navbar-default navbar-fixed-top topnav&amp;#34; role=&amp;#34;navigation&amp;#34;&amp;gt; .... &amp;lt;/nav&amp;gt; 網站下方的footer：View/commom/_footer.html.erb
+&amp;lt;!-- Footer --&amp;gt; &amp;lt;footer&amp;gt; ... &amp;lt;/footer&amp;gt; 然後修改
+View/layouts/application.html.erb
+(html全域樣式，不管頁面怎麼跳轉都會在)
+&amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;Book Reviews&amp;lt;/title&amp;gt; &amp;lt;%= csrf_meta_tags %&amp;gt; &amp;lt;%= stylesheet_link_tag &amp;#39;application&amp;#39;, media: &amp;#39;all&amp;#39;, &amp;#39;data-turbolinks-track&amp;#39;: &amp;#39;reload&amp;#39; %&amp;gt; &amp;lt;%= javascript_include_tag &amp;#39;application&amp;#39;, &amp;#39;data-turbolinks-track&amp;#39;: &amp;#39;reload&amp;#39; %&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;div class=&amp;#34;container-fluid&amp;#34;&amp;gt; &amp;lt;%= render &amp;#34;common/navbar&amp;#34; %&amp;gt; &amp;lt;%= yield %&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;%= render &amp;#34;common/footer&amp;#34; %&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt; &amp;lt;%= yield %&amp;gt; 是其他程式碼輸出的地方，也就是網頁的主要內容，會一直跳轉。</description>
     </item>
     
     <item>
@@ -948,46 +174,15 @@ config.active_record.default_timezone = :local
       <pubDate>Sat, 22 Jul 2017 14:54:32 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/07/%E8%A8%B1%E6%88%91%E4%B8%80%E5%80%8B%E7%BE%8E%E9%BA%97%E7%9A%84terminal/</guid>
-      <description>&lt;p&gt;每天都去辦公室的話，自然就會想要把座位妝點的溫馨舒適：每天都開電腦，也自然就會想著要換個賞心悅目的漂亮桌面。&lt;/p&gt;
-
-&lt;p&gt;同理可證，每天都開terminal，怎麼捨得讓他黑壓壓一片字又小不拉機的還不去處理呢！&lt;/p&gt;
-
-&lt;p&gt;其實稍微爬一下國外的網站，就有很多如何客製化終端機的教學，但為了不要讓自己每次改過就忘，在此做個紀錄。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;首先，叫出&lt;code&gt;.bash_profile.&lt;/code&gt; 這個檔案&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ subl ~/.bash_profile
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;加上這兩段：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Shell&#34;&gt;#enable color
-export CLICOLOR=&#39;true&#39;
-export LSCOLORS=&amp;quot;gxfxcxdxcxegedabagacad&amp;quot;
-
-#change hostname color shown in terminal
-export PS1=&amp;quot;\[\e[0;33m\]\u\[\033[m\]@\[\033[2;93m\]\h:\[\033[0;32m\]\w\[\033[m\]\$ &amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;其中&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;\u&lt;/code&gt; 是user name&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;\h&lt;/code&gt; 是host name&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;\w&lt;/code&gt; 是working directory&lt;/li&gt;
-&lt;li&gt;$ 和 ＠ 看個人喜好，也可以換成其他喜歡的符號&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;字母後面的是顏色的色碼，一樣可以在網路上查到各式各樣的顏色 （關鍵字：terminal color code）&lt;/p&gt;
-
-&lt;p&gt;最後別忘了 &lt;code&gt;source ~/.bash_profile&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;按照上面的設定，最後的成果長這樣：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201707-terminal-color.jpg&#34; alt=&#34;terminal color&#34; /&gt;&lt;/p&gt;
-</description>
+      <description>每天都去辦公室的話，自然就會想要把座位妝點的溫馨舒適：每天都開電腦，也自然就會想著要換個賞心悅目的漂亮桌面。
+同理可證，每天都開terminal，怎麼捨得讓他黑壓壓一片字又小不拉機的還不去處理呢！
+其實稍微爬一下國外的網站，就有很多如何客製化終端機的教學，但為了不要讓自己每次改過就忘，在此做個紀錄。
+首先，叫出.bash_profile. 這個檔案
+$ subl ~/.bash_profile 加上這兩段：
+#enable color export CLICOLOR=&amp;#39;true&amp;#39; export LSCOLORS=&amp;#34;gxfxcxdxcxegedabagacad&amp;#34; #change hostname color shown in terminal export PS1=&amp;#34;\[\e[0;33m\]\u\[\033[m\]@\[\033[2;93m\]\h:\[\033[0;32m\]\w\[\033[m\]\$ &amp;#34; 其中
+\u 是user name \h 是host name \w 是working directory $ 和 ＠ 看個人喜好，也可以換成其他喜歡的符號 字母後面的是顏色的色碼，一樣可以在網路上查到各式各樣的顏色 （關鍵字：terminal color code）
+最後別忘了 source ~/.bash_profile
+按照上面的設定，最後的成果長這樣：</description>
     </item>
     
     <item>
@@ -996,101 +191,30 @@ export PS1=&amp;quot;\[\e[0;33m\]\u\[\033[m\]@\[\033[2;93m\]\h:\[\033[0;32m\]\w\
       <pubDate>Sun, 14 May 2017 20:20:48 +0900</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/05/%E5%90%83%E7%87%92%E8%82%89%E5%AD%B8%E6%97%A5%E6%96%87/</guid>
-      <description>
-
-&lt;p&gt;來到日本之後，開學季的各種聚餐與社交（？）活動不斷，四月就已經吃了兩次燒肉（荷包君哭泣&lt;/p&gt;
-
-&lt;p&gt;但先不論肉好不好吃，錢噴了多少（咦)
-最重要的還是要讓吃燒肉這個活動一次比一次得心應手啊！！（？&lt;/p&gt;
-
-&lt;p&gt;趁著還沒忘記（但這位大姐，已經隔了一個月了耶 囧），把一些吃飯中學到的單字記錄下來ＸＤ&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;推開門之後&#34;&gt;推開門之後&lt;/h2&gt;
-
-&lt;p&gt;首先，一進門服務生會先問幾個人，然後問有沒有抽菸需求（像燒肉、大阪燒這種聽起來很豪邁（？的店家似乎都會備有吸煙區）&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;「おタバコお吸いになりますか？」&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;「喫煙席、禁煙席どちらがよろしいでしょうか？」&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;大致有這兩種問法，因為隔太久了我有點記不清那天被問什麼ＸＤ但一開始沒預想到會被問這個問題，還愣了一下ＸＤ&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;開吃囉&#34;&gt;開吃囉&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;「カルピ・カルビ」&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;i&gt;肋骨旁邊的肉&lt;/i&gt; （牛胸肉？ＸＤ），通常是不帶骨的，有點油花，應該說是 &lt;em&gt;牛五花&lt;/em&gt; 比較恰當？也稱作&lt;strong&gt;「バラ肉」&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;一拿到菜單就看到滿滿的カルピ啊ＸＤＤＤ這好像是一個從韓文翻譯過來的詞，所以不同的店家可能有些會使用カルピ，有些則會使用カルビ，但不論是哪個，都是一樣的意思。也有人說是「好肉」（？）的代名詞ＸＤ&lt;/p&gt;
-
-&lt;p&gt;網路上找了一張圖，大概是這種感覺：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201705-yakiniku.png&#34; alt=&#34;meat&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;(Source: &lt;a href=&#34;https://www.sagae29.jp/parts/&#34;&gt;https://www.sagae29.jp/parts/&lt;/a&gt;)&lt;/em&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;「ササミ肉」&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;em&gt;雞胸肉。&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;這其實不是在燒肉店看到的，燒肉店大多以牛肉為主。不過如果到超市，很多熟食都是雞肉，「ササミ肉」就很常見了，就是一個很安全的部位，挑食如我也很少踩雷ＸＤ&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;「タン」&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;em&gt;牛舌。&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;因為菜單其實都看不懂，所以只好全部點一輪（咦）然後這個就特別軟Ｑ嫩，有種&amp;hellip;.很像舌頭的觸感啊～～（不是很像而已，他就是啊！！&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;「ホルモン．モツ」&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;em&gt;各種內臟。&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;因為不知道是什麼，就隨便點了一盤&amp;hellip;..結果咬不爛&amp;hellip;&amp;hellip;完全咬不爛&amp;hellip;&amp;hellip;這什麼巫術 囧&lt;/p&gt;
-
-&lt;p&gt;在維基上的定義是這樣的：「狭い意味では、小腸、大腸を、広い意味では正肉以外のかつて廃棄していた部位をも含む臓物肉全般が含まれ、皮、胃、肝臓、心臓、腎臓、子宮、肺、腸などを用いる。」&lt;/p&gt;
-
-&lt;p&gt;…….日本人好可怕。而且查了一下還有ホルモン專門店，人氣還高著呢～（黑人問號臉ＱＱ&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;「タレ．塩」&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;em&gt;醬汁或鹽味。&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;好像大部分的店家同一種單品都會有這兩種口味可以選（好啦，其實我不知道是不是大部分，因為我只吃過兩家（欸）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;一些阿哩阿雜的&#34;&gt;一些阿哩阿雜的&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;「網（あみ）交換をお願いします」&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;i&gt;換網子&lt;/i&gt;。不用全部清空，店員會跟你一起手忙腳亂（？）的把他們移走ＸＤＤＤ&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;「お皿もう一枚お願いします・ください」&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;i&gt;再給我一個盤子&lt;/i&gt;。有時候人一多，或是杯盤狼藉之後（？）盤子就容易搞失蹤不夠用ＸＤ&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;實際寫完才發現其實單字沒有想像中的那麼多，大概大部分的時候還是忙著吃ＸＤ（不用急著自爆&lt;/p&gt;
-</description>
+      <description>來到日本之後，開學季的各種聚餐與社交（？）活動不斷，四月就已經吃了兩次燒肉（荷包君哭泣
+但先不論肉好不好吃，錢噴了多少（咦) 最重要的還是要讓吃燒肉這個活動一次比一次得心應手啊！！（？
+趁著還沒忘記（但這位大姐，已經隔了一個月了耶 囧），把一些吃飯中學到的單字記錄下來ＸＤ
+推開門之後 首先，一進門服務生會先問幾個人，然後問有沒有抽菸需求（像燒肉、大阪燒這種聽起來很豪邁（？的店家似乎都會備有吸煙區）
+「おタバコお吸いになりますか？」
+「喫煙席、禁煙席どちらがよろしいでしょうか？」
+大致有這兩種問法，因為隔太久了我有點記不清那天被問什麼ＸＤ但一開始沒預想到會被問這個問題，還愣了一下ＸＤ
+開吃囉 「カルピ・カルビ」 肋骨旁邊的肉 （牛胸肉？ＸＤ），通常是不帶骨的，有點油花，應該說是 牛五花 比較恰當？也稱作**「バラ肉」**。
+一拿到菜單就看到滿滿的カルピ啊ＸＤＤＤ這好像是一個從韓文翻譯過來的詞，所以不同的店家可能有些會使用カルピ，有些則會使用カルビ，但不論是哪個，都是一樣的意思。也有人說是「好肉」（？）的代名詞ＸＤ
+網路上找了一張圖，大概是這種感覺：
+(Source: https://www.sagae29.jp/parts/)
+「ササミ肉」 雞胸肉。
+這其實不是在燒肉店看到的，燒肉店大多以牛肉為主。不過如果到超市，很多熟食都是雞肉，「ササミ肉」就很常見了，就是一個很安全的部位，挑食如我也很少踩雷ＸＤ
+「タン」 牛舌。
+因為菜單其實都看不懂，所以只好全部點一輪（咦）然後這個就特別軟Ｑ嫩，有種&amp;hellip;.很像舌頭的觸感啊～～（不是很像而已，他就是啊！！
+「ホルモン．モツ」 各種內臟。
+因為不知道是什麼，就隨便點了一盤&amp;hellip;..結果咬不爛&amp;hellip;&amp;hellip;完全咬不爛&amp;hellip;&amp;hellip;這什麼巫術 囧
+在維基上的定義是這樣的：「狭い意味では、小腸、大腸を、広い意味では正肉以外のかつて廃棄していた部位をも含む臓物肉全般が含まれ、皮、胃、肝臓、心臓、腎臓、子宮、肺、腸などを用いる。」
+…….日本人好可怕。而且查了一下還有ホルモン專門店，人氣還高著呢～（黑人問號臉ＱＱ
+「タレ．塩」 醬汁或鹽味。
+好像大部分的店家同一種單品都會有這兩種口味可以選（好啦，其實我不知道是不是大部分，因為我只吃過兩家（欸）
+一些阿哩阿雜的 「網（あみ）交換をお願いします」 換網子。不用全部清空，店員會跟你一起手忙腳亂（？）的把他們移走ＸＤＤＤ
+「お皿もう一枚お願いします・ください」 再給我一個盤子。有時候人一多，或是杯盤狼藉之後（？）盤子就容易搞失蹤不夠用ＸＤ
+實際寫完才發現其實單字沒有想像中的那麼多，大概大部分的時候還是忙著吃ＸＤ（不用急著自爆</description>
     </item>
     
     <item>
@@ -1099,168 +223,38 @@ export PS1=&amp;quot;\[\e[0;33m\]\u\[\033[m\]@\[\033[2;93m\]\h:\[\033[0;32m\]\w\
       <pubDate>Tue, 28 Mar 2017 21:24:04 +0800</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/03/%E8%B7%A8%E9%A0%98%E5%9F%9F%E7%9A%84%E4%B8%8D%E5%AE%89%E8%88%87%E5%B0%8F%E7%A2%BA%E5%B9%B8%E4%BA%AC%E5%A4%A7%E6%83%85%E5%A0%B1%E5%AD%B8%E7%A0%94%E7%A9%B6%E7%A7%91-%E9%99%A2%E8%A9%A6%E5%90%88%E6%A0%BC%E5%BF%83%E5%BE%97%E4%B8%8B/</guid>
-      <description>
-
-&lt;h2 id=&#34;科系選擇-跨領域-文系-理系&#34;&gt;科系選擇＆跨領域——文系？理系？&lt;/h2&gt;
-
-&lt;p&gt;在進入念書考試心得之前，想先記錄一下關於選擇科系的眉角（？&lt;/p&gt;
-
-&lt;p&gt;跨領域當然有其難度，不過也許是最近這幾年的流行（？，打破文理分界的科系越來越多，有時候跨領域專長還有種潮潮的感覺（欸&lt;/p&gt;
-
-&lt;p&gt;以日本大學院來說，就我觀察到的大概呈現兩種趨勢：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;傳統、古老、較封閉的：&lt;/strong&gt;這種研究科通常底下有相對應的學部，每年新入生幾乎都是學部直升，不太容易跨考（無論是換學校或是換領域都是）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;主打創新、標榜多元：&lt;/strong&gt;通常主打多元專業背景、文理融合、創新價值，較高機率出現在新成立不久的研究科或是底下沒有直接對應的學部，通常有一定比例的外國人&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;這兩種並沒有孰優孰劣，前者的好處應該是研究容易上軌道、深度也夠（畢竟學＋碩都6年了），後者就是給跨領域或對於自身專業另有想法的人一個選擇，可以迸出燦爛的火花（？也說不定。&lt;/p&gt;
-
-&lt;p&gt;目前觀察到比較明顯的例子大概是東大情報理工 v.s. 東大情報學環，有興趣可以研究一下他們的差異。&lt;/p&gt;
-
-&lt;p&gt;無論文科理科，通常到了大學院都要有一定的研究底子，以及語言能力（不然讀文本應該會被電爆），因此有些教授會要求先當一年研究生。&lt;/p&gt;
-
-&lt;p&gt;而強調文理不問的大學院，通常只要求基本學科達到一定水平，反而比較注重想法與溝通力之類的（≒英文），梳理到這裡似乎可以理解為何教授沒有要求我當一年研究生，我也能這麼傻傻愣愣地就跨過門檻進去了。&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;del&gt;可是我實在很怕進得去出不來啊&lt;/del&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;報考京都大學-入學考試&#34;&gt;報考京都大學——入學考試&lt;/h2&gt;
-
-&lt;h3 id=&#34;情報學研究科ao入試&#34;&gt;情報學研究科AO入試&lt;/h3&gt;
-
-&lt;p&gt;AO入試類似於台灣的推甄申請，主要以審查資料、小論文、面試等等手段來評斷合格與否。京大情報學研究科當中，只有社會情報專攻有AO入試，可能也與這個專攻標榜融合不同專業背景有關。&lt;/p&gt;
-
-&lt;p&gt;報名期間在四月，若合格則是十月入學。我當初看到不用考試，就一整個懶病逃避病發作，覺得這&lt;del&gt;完全就是給我申請用的簡直天賜良機&lt;/del&gt;（當然後來發現完全不是這麼回事）&lt;/p&gt;
-
-&lt;p&gt;要求繳交的資料有：志望說明書、成績單、推薦信兩封、英文成績、願書等&lt;/p&gt;
-
-&lt;p&gt;強烈建議把募集要項一個字一個字看清楚看仔細，&lt;strong&gt;「および」「または」&lt;/strong&gt;傻傻分不清楚的苦主在此。為了彌補眼殘我還多寄了一趟DHL&lt;del&gt;結果還落榜&lt;/del&gt;，豈是一個慘字了得QQ&lt;/p&gt;
-
-&lt;p&gt;過程沒有太多可以分享的，因為我根本沒被面試到，就直接掰掰了。放榜當天還是有點難過的，雖然不是太意外，但一想到我還差得好遠好遠，隔天還要打起精神參加畢業典禮，就覺得人生好難（躺&lt;/p&gt;
-
-&lt;p&gt;曾經聽過「日本AO入試是要招收『異才』」這樣的說法，我想，社會情報AO期望收到的學生應該也是&lt;strong&gt;在這個領域中已經有傑出的成果或嘗試，甚至是從別的領域試圖與情報學做結合&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;看重個性與潛力這種說法應該只適用學部吧ＸＤ大學院如果沒有相當的研究成果，應該是很難說服教授只憑幾張紙就把你收進門的。&lt;/p&gt;
-
-&lt;p&gt;&lt;del&gt;猛然發現我在申請資料裡看起來應該就是個廢才吧ry&lt;/del&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;情報學研究科一般入試&#34;&gt;情報學研究科一般入試&lt;/h3&gt;
-
-&lt;p&gt;等畢業典禮過了、大學最後一次期末也結束了，回到宿舍，翻開過去問，才真的有種要走入戰場的感覺。&lt;/p&gt;
-
-&lt;p&gt;因為並非本科系出身，也已經火燒眉毛了（此時距離考試倒數40天），於是我決定先從&lt;strong&gt;研究考古題&lt;/strong&gt;開始。就像高中的閱讀測驗，老師總是教先看題目再看文章，過了這麼多年我才發現這招真的好用ＸＤ&lt;/p&gt;
-
-&lt;p&gt;所謂的研究考古題，並不是單純多寫幾次，而是&lt;strong&gt;觀察出題的範圍、方向與趨勢&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;筆試總共分為三部份：情報學基礎、專門科目、一般論述&lt;/p&gt;
-
-&lt;p&gt;而成績則分為四部分：情報學基礎100點、專門科目200點、一般論述100點、&lt;strong&gt;英語200點&lt;/strong&gt;、口頭試驗100&lt;/p&gt;
-
-&lt;p&gt;之前在網路上找到一篇日本考生的心得，分析因為學科部分都是以前上課的內容，因此得點不會差距太大，一般論述是個人本事，也無法短時間加強——因此社會情報的決勝點在英文成績。&lt;/p&gt;
-
-&lt;p&gt;這段話對我的鼓舞很大，因為廢才我什麼都沒有，就剛好有一張分數很高的多益（社會情報接受多益、托福、雅思任一種成績，如果不是英文超強或剛好需要考托福雅思，考多益絕對是CP值最高的選項，省錢省力省時間）&lt;/p&gt;
-
-&lt;p&gt;因此我的40日讀書目標是：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;情報學基礎一定要唸到滾瓜爛熟不能失分&lt;/li&gt;
-&lt;li&gt;專門科目挑2~3個大主題細讀就好，力求不要落後學部考生太多&lt;/li&gt;
-&lt;li&gt;打點好面試的服裝＆背好自我介紹ＸＤ&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&#34;情報學基礎&#34;&gt;&lt;em&gt;＃情報學基礎&lt;/em&gt;&lt;/h4&gt;
-
-&lt;p&gt;募集要項上有指定書目，其實就是大一計算機概論會用的那本：&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;J. Glenn Brookshear. &lt;em&gt;Computer Science: An Overview&lt;/em&gt;. Addison-Wesley&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;不需要看日文版，因為考試可以寫英文啊ＸＤ而且很多專有名詞翻成片假名之後搞得像是在唸片假名讀本（？&lt;/p&gt;
-
-&lt;p&gt;這本我花了一整個學期把他唸好念熟，搭配台大開放式課程的影片服用，進度約是一週一單元。在學期中這麼做其實就等於多修了一門課，有時候難免想偷懶，但很慶幸當初有堅持下來。&lt;/p&gt;
-
-&lt;p&gt;形式是&lt;strong&gt;5題選3&lt;/strong&gt;，出題的範圍是一整本。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;一定會有一大題名詞解釋，有背有分；另一方面也可以幫助自己更了解基本概念&lt;/li&gt;
-&lt;li&gt;比較常出現的有operating system、algorithms、computation theory這三個單元&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;專門科目&#34;&gt;&lt;em&gt;＃專門科目&lt;/em&gt;&lt;/h4&gt;
-
-&lt;p&gt;專門科目試卷非常厚一疊，&lt;strong&gt;17題選3，共有五種不同領域&lt;/strong&gt;，根據第一志望的研究室來選擇題目。&lt;/p&gt;
-
-&lt;p&gt;計算機題組5題的組成每年其實大同小異：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;u&gt;&lt;strong&gt;&lt;em&gt;Database&lt;/em&gt;&lt;/strong&gt;&lt;/u&gt;
-
-&lt;ul&gt;
-&lt;li&gt;1題。主要是SQL、relational algebra、relational calculas、indexing、transaction management&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;u&gt;&lt;strong&gt;&lt;em&gt;HCI&lt;/em&gt;&lt;/strong&gt;&lt;/u&gt;
-
-&lt;ul&gt;
-&lt;li&gt;1題。主要是usability evaluation  的幾種方法及優缺點&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;u&gt;&lt;strong&gt;&lt;em&gt;Information Retrieval&lt;/em&gt;&lt;/strong&gt;&lt;/u&gt;
-
-&lt;ul&gt;
-&lt;li&gt;1~2題。範圍很大，較難，從基本的precision/recall rate到B tree到recommendation system都有&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;u&gt;&lt;strong&gt;&lt;em&gt;AI&lt;/em&gt;&lt;/strong&gt;&lt;/u&gt;
-
-&lt;ul&gt;
-&lt;li&gt;0~1題。decision tree、bayesian network等主題&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;u&gt;&lt;strong&gt;&lt;em&gt;情報教育&lt;/em&gt;&lt;/strong&gt;&lt;/u&gt;
-
-&lt;ul&gt;
-&lt;li&gt;0~1題。應該是學部的一門課，主要是e-learning的概念和方法。&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;因為時間太少了，我決定只以資料庫跟HCI為主力目標，其他大概念一下，有考到算我撿到（欸&lt;/p&gt;
-
-&lt;p&gt;不過這部分我還是考得不好，考完失落到去超市大肆採購洩恨（不對吧&lt;/p&gt;
-
-&lt;h4 id=&#34;一般論述&#34;&gt;&lt;em&gt;＃一般論述&lt;/em&gt;&lt;/h4&gt;
-
-&lt;p&gt;給一篇文章問你的看法或可能的解決方法，或是給文章跟圖表，考如何詮釋與理解。&lt;/p&gt;
-
-&lt;p&gt;基本上無法準備，各憑本事。自認邏輯跟表達能力還不錯的話，其實是個滿不錯的科目，可以平衡一下前兩節的挫折ＸＤ&lt;/p&gt;
-
-&lt;h4 id=&#34;面試&#34;&gt;&lt;em&gt;＃面試&lt;/em&gt;&lt;/h4&gt;
-
-&lt;p&gt;面試名單當天早上會公布在系館樓下，看了一下號碼幾乎九成都有進吧ＸＤ&lt;/p&gt;
-
-&lt;p&gt;當天我穿著非常標準的正裝，有看到其他女生穿褲裝或是黑色連身裙。應該是不用到就活等級，不過我自己覺得整套正裝穿起來比較有自信，而且我非常喜歡我的鞋子光是穿著就覺得心情很好💕&lt;/p&gt;
-
-&lt;p&gt;有趣的是，一進門就看到教授們零散地坐在教室的各個角落ＸＤ沒有肅殺的氣息，反而會覺得自己變成老師，走進來要上課了（？&lt;/p&gt;
-
-&lt;p&gt;首先是五分鐘的自我介紹（好像可以帶講稿，但是我一直以為不行所以已經背起來了，當然也沒準備稿），跟筆試一樣可以用英文。過程中，教室後方有個女教授一直對我微笑（？）好害羞啦ＸＤＤ&lt;/p&gt;
-
-&lt;p&gt;講完之後，被問了畢業後的打算，然後……就被放出去了（大驚）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;後話-準備過程中的小確幸&#34;&gt;後話——準備過程中的小確幸&lt;/h2&gt;
-
-&lt;p&gt;一路上好像都在談我如何慌慌張張如何不安，標題上說好的小確幸呢ＸＤＤ&lt;/p&gt;
-
-&lt;p&gt;其實正如一開始所說，無論是申請上、唸書上、甚至是動身到了京都去考試，這些事都只有自己能面對。&lt;/p&gt;
-
-&lt;p&gt;即使我身邊很幸運有一直鼓勵我的人，但那就像是有一個暖暖包，雖然隨時可以把手伸進口袋握住，但當你要做任何事的時候，還是只能把暖暖包留在口袋裡。&lt;/p&gt;
-
-&lt;p&gt;但正是因為這樣，每一次努力做完一件事，寄出了願書、認真了一天、寫了一份考古題、念完了一個科目，就會覺得自己越來越強壯，暖暖包握起來的感覺也不再是「縮回來取暖」，而是「讓我越來越不怕冷」(♡˙︶˙♡)&lt;/p&gt;
-
-&lt;p&gt;心裡不踏實，情緒才會大起大落。考完到放榜的一週之間，既無考完的狂喜，也無解脫的暢快，更沒有緊繃的期待感。得之我幸，不得，又何嘗不是另一種幸運？&lt;/p&gt;
-
-&lt;p&gt;在規律的生活中，每天的腦袋都有新的知識、每天的心都比昨日更加安穩、每天都能知道自己的下一步踏往什麼方向，應該就是在不安與焦躁當中最大最大的幸福了。&lt;/p&gt;
-</description>
+      <description>科系選擇＆跨領域——文系？理系？ 在進入念書考試心得之前，想先記錄一下關於選擇科系的眉角（？
+跨領域當然有其難度，不過也許是最近這幾年的流行（？，打破文理分界的科系越來越多，有時候跨領域專長還有種潮潮的感覺（欸
+以日本大學院來說，就我觀察到的大概呈現兩種趨勢：
+**傳統、古老、較封閉的：**這種研究科通常底下有相對應的學部，每年新入生幾乎都是學部直升，不太容易跨考（無論是換學校或是換領域都是） **主打創新、標榜多元：**通常主打多元專業背景、文理融合、創新價值，較高機率出現在新成立不久的研究科或是底下沒有直接對應的學部，通常有一定比例的外國人 這兩種並沒有孰優孰劣，前者的好處應該是研究容易上軌道、深度也夠（畢竟學＋碩都6年了），後者就是給跨領域或對於自身專業另有想法的人一個選擇，可以迸出燦爛的火花（？也說不定。
+目前觀察到比較明顯的例子大概是東大情報理工 v.s. 東大情報學環，有興趣可以研究一下他們的差異。
+無論文科理科，通常到了大學院都要有一定的研究底子，以及語言能力（不然讀文本應該會被電爆），因此有些教授會要求先當一年研究生。
+而強調文理不問的大學院，通常只要求基本學科達到一定水平，反而比較注重想法與溝通力之類的（≒英文），梳理到這裡似乎可以理解為何教授沒有要求我當一年研究生，我也能這麼傻傻愣愣地就跨過門檻進去了。
+可是我實在很怕進得去出不來啊
+報考京都大學——入學考試 情報學研究科AO入試 AO入試類似於台灣的推甄申請，主要以審查資料、小論文、面試等等手段來評斷合格與否。京大情報學研究科當中，只有社會情報專攻有AO入試，可能也與這個專攻標榜融合不同專業背景有關。
+報名期間在四月，若合格則是十月入學。我當初看到不用考試，就一整個懶病逃避病發作，覺得這完全就是給我申請用的簡直天賜良機（當然後來發現完全不是這麼回事）
+要求繳交的資料有：志望說明書、成績單、推薦信兩封、英文成績、願書等
+強烈建議把募集要項一個字一個字看清楚看仔細，**「および」「または」**傻傻分不清楚的苦主在此。為了彌補眼殘我還多寄了一趟DHL結果還落榜，豈是一個慘字了得QQ
+過程沒有太多可以分享的，因為我根本沒被面試到，就直接掰掰了。放榜當天還是有點難過的，雖然不是太意外，但一想到我還差得好遠好遠，隔天還要打起精神參加畢業典禮，就覺得人生好難（躺
+曾經聽過「日本AO入試是要招收『異才』」這樣的說法，我想，社會情報AO期望收到的學生應該也是在這個領域中已經有傑出的成果或嘗試，甚至是從別的領域試圖與情報學做結合。
+看重個性與潛力這種說法應該只適用學部吧ＸＤ大學院如果沒有相當的研究成果，應該是很難說服教授只憑幾張紙就把你收進門的。
+猛然發現我在申請資料裡看起來應該就是個廢才吧ry
+情報學研究科一般入試 等畢業典禮過了、大學最後一次期末也結束了，回到宿舍，翻開過去問，才真的有種要走入戰場的感覺。
+因為並非本科系出身，也已經火燒眉毛了（此時距離考試倒數40天），於是我決定先從研究考古題開始。就像高中的閱讀測驗，老師總是教先看題目再看文章，過了這麼多年我才發現這招真的好用ＸＤ
+所謂的研究考古題，並不是單純多寫幾次，而是觀察出題的範圍、方向與趨勢。
+筆試總共分為三部份：情報學基礎、專門科目、一般論述
+而成績則分為四部分：情報學基礎100點、專門科目200點、一般論述100點、英語200點、口頭試驗100
+之前在網路上找到一篇日本考生的心得，分析因為學科部分都是以前上課的內容，因此得點不會差距太大，一般論述是個人本事，也無法短時間加強——因此社會情報的決勝點在英文成績。
+這段話對我的鼓舞很大，因為廢才我什麼都沒有，就剛好有一張分數很高的多益（社會情報接受多益、托福、雅思任一種成績，如果不是英文超強或剛好需要考托福雅思，考多益絕對是CP值最高的選項，省錢省力省時間）
+因此我的40日讀書目標是：
+情報學基礎一定要唸到滾瓜爛熟不能失分 專門科目挑2~3個大主題細讀就好，力求不要落後學部考生太多 打點好面試的服裝＆背好自我介紹ＸＤ ＃情報學基礎 募集要項上有指定書目，其實就是大一計算機概論會用的那本：
+J. Glenn Brookshear. Computer Science: An Overview. Addison-Wesley
+不需要看日文版，因為考試可以寫英文啊ＸＤ而且很多專有名詞翻成片假名之後搞得像是在唸片假名讀本（？
+這本我花了一整個學期把他唸好念熟，搭配台大開放式課程的影片服用，進度約是一週一單元。在學期中這麼做其實就等於多修了一門課，有時候難免想偷懶，但很慶幸當初有堅持下來。
+形式是5題選3，出題的範圍是一整本。
+一定會有一大題名詞解釋，有背有分；另一方面也可以幫助自己更了解基本概念 比較常出現的有operating system、algorithms、computation theory這三個單元 ＃專門科目 專門科目試卷非常厚一疊，17題選3，共有五種不同領域，根據第一志望的研究室來選擇題目。
+計算機題組5題的組成每年其實大同小異：
+Database 1題。主要是SQL、relational algebra、relational calculas、indexing、transaction management HCI 1題。主要是usability evaluation 的幾種方法及優缺點 Information Retrieval 1~2題。範圍很大，較難，從基本的precision/recall rate到B tree到recommendation system都有 AI 0~1題。decision tree、bayesian network等主題 情報教育 0~1題。應該是學部的一門課，主要是e-learning的概念和方法。 因為時間太少了，我決定只以資料庫跟HCI為主力目標，其他大概念一下，有考到算我撿到（欸</description>
     </item>
     
     <item>
@@ -1269,103 +263,39 @@ export PS1=&amp;quot;\[\e[0;33m\]\u\[\033[m\]@\[\033[2;93m\]\h:\[\033[0;32m\]\w\
       <pubDate>Mon, 27 Mar 2017 01:22:15 +0800</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/03/%E8%B7%A8%E9%A0%98%E5%9F%9F%E7%9A%84%E4%B8%8D%E5%AE%89%E8%88%87%E5%B0%8F%E7%A2%BA%E5%B9%B8%E4%BA%AC%E5%A4%A7%E6%83%85%E5%A0%B1%E5%AD%B8%E7%A0%94%E7%A9%B6%E7%A7%91-%E9%99%A2%E8%A9%A6%E5%90%88%E6%A0%BC%E5%BF%83%E5%BE%97%E4%B8%8A/</guid>
-      <description>
-
-&lt;h2 id=&#34;寫在前面-跨領域&#34;&gt;寫在前面——跨領域&lt;/h2&gt;
-
-&lt;p&gt;轉換領域聽起來是一件稀鬆平常的事，但做起來總是不輕鬆的。&lt;/p&gt;
-
-&lt;p&gt;除了心底時常會冒出質疑自己的聲音外，也更容易感到孤立無援，畢竟走的是一條與身邊的人截然不同的路，很多事情都只能強壓下不安去面對，最多就是事後能在聊天過程中一笑帶過而已。&lt;/p&gt;
-
-&lt;p&gt;大學唸的是某個純到不行的&lt;strong&gt;文院科系&lt;/strong&gt;，大三的時候雙主修經濟，原本的規劃是研究所就轉念經濟，好歹也算是本科系的。但是，果然人算不如天算，最後決定報考的卻是&lt;strong&gt;京都大學情報學研究科社會情報專攻&lt;/strong&gt;ＸＤ&lt;/p&gt;
-
-&lt;p&gt;情報是什麼啊？很多不太懂日文的朋友會這麼問道。情報呢，就是中文的&lt;strong&gt;資訊&lt;/strong&gt;啊（笑&lt;/p&gt;
-
-&lt;p&gt;因此這是一篇跨得很大、從南極跨到北極（？的心得。（&lt;del&gt;而且很多廢話&lt;/del&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;時程總覽與我的大轉彎時期&#34;&gt;時程總覽與我的大轉彎時期&lt;/h2&gt;
-
-&lt;p&gt;大轉彎時期聽起來好像什麼歷史事件一樣ＸＤ&lt;/p&gt;
-
-&lt;p&gt;基本上決定要轉考情報學領域是很晚的事情，認真開始唸書當然又是更晚的事情，大概跟地球的歷史當中人類出現的時間點差不多吧  囧&lt;/p&gt;
-
-&lt;p&gt;我的留學時程大致上長這樣，其中有很多跟學校、報名不相關的東西，正確來說比較像是心路歷程：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://ichennn.github.io/img/201703-kyoto-date.png&#34; alt=&#34;kyoto-date&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;可以發現，其實我大部分的時間都在迷惘跟耍廢啊orz&lt;/p&gt;
-
-&lt;p&gt;我算是個習慣於及早開始規劃事情的人，因此在確定要考日本大學院之後，一路從雙主修的課程安排、研究計畫撰寫、找教授、筆試內容⋯⋯都想過一輪了，但是呢，還是老話一句，計畫趕不上變化啊～&lt;/p&gt;
-
-&lt;p&gt;大轉彎的結果就是最後半年搞得像趕場一樣處處驚險orz&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;報考京都大學-準備階段&#34;&gt;報考京都大學——準備階段&lt;/h2&gt;
-
-&lt;p&gt;雖然我在時程總覽當中有寫到筑波大學，但那其實算是我的備案，再者，考慮到報名費神貴的問題，最後決定還是全力準備京都大學就好。&lt;/p&gt;
-
-&lt;h3 id=&#34;aao&#34;&gt;AAO&lt;/h3&gt;
-
-&lt;p&gt;京都大學的AAO是個相當奇妙的系統，美其名是由學校做統一接洽窗口，可是又只有中港台的留學生才需要跑這個流程。（聽說是因為之前中國留學生有學經歷不實的問題才導致這個系統的出現）&lt;/p&gt;
-
-&lt;p&gt;很多人會感到很困惑，到底應該先AAO？先聯絡教授？雖然網頁上寫說過了AAO再聯絡教授，可是教授又不知道我是誰這樣也能過？那如果一直沒消息難道我要傻傻的等？萬一被拒絕真的不能申請第二次嗎⋯⋯？&lt;/p&gt;
-
-&lt;p&gt;我到現在也不知道標準答案orz 大概是因人而異吧（毫無參考價值&lt;/p&gt;
-
-&lt;p&gt;我自己當初是照著官方流程，也就是先AAO後找教授，可能情報學研究科的老師都習慣光速回信（？，我送出申請大概&lt;strong&gt;兩小時&lt;/strong&gt;就通過了（驚嚇）但是我興高采烈地寄信給教授之後，教授又光速回信說：&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;「抱歉哦，我要退休了」&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;⋯⋯蛤？經過肉身測試，教授很有可能不知道這系統到底是幹嘛的ＸＤ&lt;/p&gt;
-
-&lt;p&gt;但反正也通過了，我就寄信找了另一位領域接近的教授，後來也順利進入這位教授的研究室惹 ヽ(●´∀`●)ﾉ&lt;/p&gt;
-
-&lt;p&gt;不過後來有聽說，應該要先跟教授聯絡比較好，有的教授可能會因為不知道你哪位就放置play或是拒絕。現在想想，我真的運氣不錯ＸＤ&lt;/p&gt;
-
-&lt;p&gt;另外有個真實性不明的不負責任小道消息，AAO會提供好幾種選項（拒絕的狀況）給教授，包括退休、收滿、研究方向無法指導等等，還有一個翻成白話是&lt;strong&gt;&lt;em&gt;我覺得這學生不好，叫他不要再來申請了&lt;/em&gt;&lt;/strong&gt;。所以如果不幸被一位教授拒絕，其實還是有可能再次提出申請的，除非⋯⋯（乾 好傷人&lt;/p&gt;
-
-&lt;h3 id=&#34;聯絡教授&#34;&gt;聯絡教授&lt;/h3&gt;
-
-&lt;p&gt;寄了信給我未來的指導教授，信裡附上了SOP跟個人簡歷，還有大學時代修過課的一位老師替我寫的推薦信（就是給AAO的那些東西而已）。沒寫研究計劃，因為⋯⋯不會寫orz&lt;/p&gt;
-
-&lt;p&gt;跨領域的弱勢此時就顯現出來了，我真的不會寫⋯⋯連亂掰都沒有頭緒的那種不會。一方面是我對這個領域的研究、論文該是什麼模式不太熟悉，另一方面就是我僅有的淺薄知識也不足以支撐我掰出一篇研究計畫。&lt;/p&gt;
-
-&lt;p&gt;所以我就想，與其硬著頭皮寫一篇讓人搖頭的研究計畫，不如乾脆別寫。&lt;/p&gt;
-
-&lt;p&gt;事實證明這是對的，因為教授根本沒問這個。（不是說這個不重要哦，原因後述）&lt;/p&gt;
-
-&lt;p&gt;skype其實很快就結束了，教授滿親切的，談話也沒有我原先想的那麼嚴肅可怕，問了一些基本（？題：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;不是相關科系的你，對這個領域了解多少？有拿過去問寫寫看嗎？&lt;/li&gt;
-&lt;li&gt;來日本留學有經濟壓力嗎？&lt;/li&gt;
-&lt;li&gt;除了京大還有申請別的學校嗎？&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;結論其實也很簡單，就是&lt;strong&gt;考上了就收&lt;/strong&gt;，努力唸書啊～&lt;/p&gt;
-
-&lt;p&gt;腦子稍微冷卻一點之後，有如大夢初醒。這幾天準備的擬答命中率是0，不禁開始檢討我的思維發生了什麼事，為什麼我以為老師在意的他似乎一點也不在意？&lt;/p&gt;
-
-&lt;p&gt;只能說，我似乎還沒進入狀況，簡單來說&lt;strong&gt;&lt;u&gt;我以為應該著重在我的賣點，殊不知重點在於該如何彌補我的缺點&lt;/u&gt;&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;比起一些冠冕堂皇的溢美之詞，我覺得教授對於實際面的問題更有興趣就是了。畢竟真的入學後，很多事不能光靠嘴砲解決。當然如果背景與能力非常足夠，教授就會對你的動機跟研究主題很有興趣了（應該吧xd）&lt;/p&gt;
-
-&lt;p&gt;於是我就連滾帶爬（？的衝出門去寄EMS了。&lt;/p&gt;
-
-&lt;h3 id=&#34;索取過去問&#34;&gt;索取過去問&lt;/h3&gt;
-
-&lt;p&gt;索取考古題的方法各研究科的網站都會寫，有些有電子檔有些則要寄信去拿。從台灣寄EMS的話，大約3天會到，內附回郵信封跟郵票就可以了。當初有點苦惱到底該怎麼放，提供一下我的作法:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;（由外到內）EMS信封 ← A4信封(上面用紅筆寫過去問請求之類的，依網頁規定) ← 回郵信封、郵票¥900&lt;/li&gt;
-&lt;li&gt;日本郵票可在牯嶺街上的郵幣社買到，旁邊就是南海郵局，兩個願望一次滿足～&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;另外EMS是看重量計價，所以如果要索取的資料很多很重的話可能要多附一點郵票。&lt;/p&gt;
-</description>
+      <description>寫在前面——跨領域 轉換領域聽起來是一件稀鬆平常的事，但做起來總是不輕鬆的。
+除了心底時常會冒出質疑自己的聲音外，也更容易感到孤立無援，畢竟走的是一條與身邊的人截然不同的路，很多事情都只能強壓下不安去面對，最多就是事後能在聊天過程中一笑帶過而已。
+大學唸的是某個純到不行的文院科系，大三的時候雙主修經濟，原本的規劃是研究所就轉念經濟，好歹也算是本科系的。但是，果然人算不如天算，最後決定報考的卻是京都大學情報學研究科社會情報專攻ＸＤ
+情報是什麼啊？很多不太懂日文的朋友會這麼問道。情報呢，就是中文的資訊啊（笑
+因此這是一篇跨得很大、從南極跨到北極（？的心得。（而且很多廢話
+時程總覽與我的大轉彎時期 大轉彎時期聽起來好像什麼歷史事件一樣ＸＤ
+基本上決定要轉考情報學領域是很晚的事情，認真開始唸書當然又是更晚的事情，大概跟地球的歷史當中人類出現的時間點差不多吧 囧
+我的留學時程大致上長這樣，其中有很多跟學校、報名不相關的東西，正確來說比較像是心路歷程：
+可以發現，其實我大部分的時間都在迷惘跟耍廢啊orz
+我算是個習慣於及早開始規劃事情的人，因此在確定要考日本大學院之後，一路從雙主修的課程安排、研究計畫撰寫、找教授、筆試內容⋯⋯都想過一輪了，但是呢，還是老話一句，計畫趕不上變化啊～
+大轉彎的結果就是最後半年搞得像趕場一樣處處驚險orz
+報考京都大學——準備階段 雖然我在時程總覽當中有寫到筑波大學，但那其實算是我的備案，再者，考慮到報名費神貴的問題，最後決定還是全力準備京都大學就好。
+AAO 京都大學的AAO是個相當奇妙的系統，美其名是由學校做統一接洽窗口，可是又只有中港台的留學生才需要跑這個流程。（聽說是因為之前中國留學生有學經歷不實的問題才導致這個系統的出現）
+很多人會感到很困惑，到底應該先AAO？先聯絡教授？雖然網頁上寫說過了AAO再聯絡教授，可是教授又不知道我是誰這樣也能過？那如果一直沒消息難道我要傻傻的等？萬一被拒絕真的不能申請第二次嗎⋯⋯？
+我到現在也不知道標準答案orz 大概是因人而異吧（毫無參考價值
+我自己當初是照著官方流程，也就是先AAO後找教授，可能情報學研究科的老師都習慣光速回信（？，我送出申請大概兩小時就通過了（驚嚇）但是我興高采烈地寄信給教授之後，教授又光速回信說：
+「抱歉哦，我要退休了」
+⋯⋯蛤？經過肉身測試，教授很有可能不知道這系統到底是幹嘛的ＸＤ
+但反正也通過了，我就寄信找了另一位領域接近的教授，後來也順利進入這位教授的研究室惹 ヽ(●´∀`●)ﾉ
+不過後來有聽說，應該要先跟教授聯絡比較好，有的教授可能會因為不知道你哪位就放置play或是拒絕。現在想想，我真的運氣不錯ＸＤ
+另外有個真實性不明的不負責任小道消息，AAO會提供好幾種選項（拒絕的狀況）給教授，包括退休、收滿、研究方向無法指導等等，還有一個翻成白話是我覺得這學生不好，叫他不要再來申請了。所以如果不幸被一位教授拒絕，其實還是有可能再次提出申請的，除非⋯⋯（乾 好傷人
+聯絡教授 寄了信給我未來的指導教授，信裡附上了SOP跟個人簡歷，還有大學時代修過課的一位老師替我寫的推薦信（就是給AAO的那些東西而已）。沒寫研究計劃，因為⋯⋯不會寫orz
+跨領域的弱勢此時就顯現出來了，我真的不會寫⋯⋯連亂掰都沒有頭緒的那種不會。一方面是我對這個領域的研究、論文該是什麼模式不太熟悉，另一方面就是我僅有的淺薄知識也不足以支撐我掰出一篇研究計畫。
+所以我就想，與其硬著頭皮寫一篇讓人搖頭的研究計畫，不如乾脆別寫。
+事實證明這是對的，因為教授根本沒問這個。（不是說這個不重要哦，原因後述）
+skype其實很快就結束了，教授滿親切的，談話也沒有我原先想的那麼嚴肅可怕，問了一些基本（？題：
+不是相關科系的你，對這個領域了解多少？有拿過去問寫寫看嗎？ 來日本留學有經濟壓力嗎？ 除了京大還有申請別的學校嗎？ 結論其實也很簡單，就是考上了就收，努力唸書啊～
+腦子稍微冷卻一點之後，有如大夢初醒。這幾天準備的擬答命中率是0，不禁開始檢討我的思維發生了什麼事，為什麼我以為老師在意的他似乎一點也不在意？
+只能說，我似乎還沒進入狀況，簡單來說**我以為應該著重在我的賣點，殊不知重點在於該如何彌補我的缺點**。
+比起一些冠冕堂皇的溢美之詞，我覺得教授對於實際面的問題更有興趣就是了。畢竟真的入學後，很多事不能光靠嘴砲解決。當然如果背景與能力非常足夠，教授就會對你的動機跟研究主題很有興趣了（應該吧xd）
+於是我就連滾帶爬（？的衝出門去寄EMS了。
+索取過去問 索取考古題的方法各研究科的網站都會寫，有些有電子檔有些則要寄信去拿。從台灣寄EMS的話，大約3天會到，內附回郵信封跟郵票就可以了。當初有點苦惱到底該怎麼放，提供一下我的作法:
+（由外到內）EMS信封 ← A4信封(上面用紅筆寫過去問請求之類的，依網頁規定) ← 回郵信封、郵票¥900 日本郵票可在牯嶺街上的郵幣社買到，旁邊就是南海郵局，兩個願望一次滿足～ 另外EMS是看重量計價，所以如果要索取的資料很多很重的話可能要多附一點郵票。</description>
     </item>
     
     <item>
@@ -1374,112 +304,21 @@ export PS1=&amp;quot;\[\e[0;33m\]\u\[\033[m\]@\[\033[2;93m\]\h:\[\033[0;32m\]\w\
       <pubDate>Tue, 21 Mar 2017 00:33:37 +0800</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/03/%E5%9C%A8hugo%E5%AF%AB%E5%AE%8C%E6%96%87%E7%AB%A0%E5%8D%BBpush%E4%B8%8D%E4%B8%8Agithub%E6%80%8E%E9%BA%BC%E8%BE%A6/</guid>
-      <description>
-
-&lt;p&gt;今天突然心血來潮想說自己來改改看hugo theme的樣式，CSS門外漢的我，就每個檔案都給它打開來研究研究，然後手賤的塗塗改改，想說反正&lt;code&gt;hugo server&lt;/code&gt; 上面看爽的就好，改壞了大不了重新&lt;code&gt;git clone&lt;/code&gt;下來就好惹～～&lt;/p&gt;
-
-&lt;p&gt;結果，門外漢的我還是手賤，push了一些也不知道自己在改啥的東西上去後&amp;hellip;&amp;hellip;就發現放hugo souce的repo裡的submodule好像不同步&amp;hellip;&amp;hellip;？&lt;/p&gt;
-
-&lt;p&gt;…&amp;hellip;我真的不知道我剛剛做了什麼（崩潰&lt;/p&gt;
-
-&lt;p&gt;為什麼public裡面的靜態網頁push不上去ＱＱＱ救命哦&lt;/p&gt;
-
-&lt;p&gt;想當然，就算喊破喉嚨應該也是沒人能救我  囧&lt;/p&gt;
-
-&lt;p&gt;自己的手賤自己救，拜過估狗大神後還是把它弄好了（雙手合十&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;u-所以我到底對他做了什麼呢-u&#34;&gt;&lt;strong&gt;&lt;u&gt;所以我到底對他做了什麼呢&lt;/u&gt;？&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;…….我真的不知道啦（哭&lt;/p&gt;
-
-&lt;h5 id=&#34;可能原因-font-color-red-push順序錯誤-font&#34;&gt;→可能原因： &lt;font color=&#34;red&#34;&gt;&lt;strong&gt;push順序錯誤：&lt;/strong&gt;&lt;font&gt;&lt;/h5&gt;
-
-&lt;p&gt;&lt;font color=&#34;black&#34;&gt;因為submodule的內容不會被連帶更新，所以要先push submodule再push上一層（如果有需要的話），不然從上一層repo連結過去會是前一次push的內容。&lt;font&gt;&lt;/p&gt;
-
-&lt;p&gt;只要連過去後發現，在顯示&lt;code&gt;branch:master&lt;/code&gt;的地方會顯示&lt;code&gt;tree:&amp;lt;上一次的commit&amp;gt;&lt;/code&gt;，應該就是不小心忘了先push submodule的目錄。&lt;/p&gt;
-
-&lt;p&gt;此時在submodule裡面嘗試push的話，就會顯示：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Everything up-to-date
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;一開始看到我真的是滿頭問號orz明明最新的內容都push不上去你還騙我說什麼up-to-date&amp;hellip;.&lt;/p&gt;
-
-&lt;h3 id=&#34;u-解決方法-u&#34;&gt;&lt;strong&gt;&lt;u&gt;解決方法&lt;/u&gt;&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;參照&lt;a href=&#34;http://stackoverflow.com/questions/4445738/unable-to-push-commits-from-a-git-submodule&#34;&gt;這篇&lt;/a&gt; [註一]，總結來說就是：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ cd &amp;lt;submodule directory&amp;gt;
-$ git checkout master
-$ git merge HEAD@{1}
-$ git push origin master
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;因為現在其實有兩個branch。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ git branch
-* (HEAD detached from &amp;lt;上一次的commit&amp;gt;)
-  master
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;除了&lt;code&gt;master&lt;/code&gt;以外，另一個就是我們現在所處的branch 。所以解決方法就是要把這兩個莫名其妙被我搞出來的東西merge在一起。當輸入merge指令之後，會看到：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ git merge HEAD@{1}
-Updating 300cd65..08987fb
-Fast-forward
- blog/.DS_Store                              | Bin 6148 -&amp;gt; 6148 bytes
- blog/{year-month-day =&amp;gt; 2017}/.DS_Store     | Bin 6148 -&amp;gt; 6148 bytes
- blog/year-month-day/day_1/index.html        |  96 ----------------
- blog/year-month-day/day_2/index.html        |  96 ----------------
- .
- .
- #下接一串要update的檔案
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;耶，然後就正常了！我以後還是乖乖寫東西更新就好了，不要再亂動裡面的檔案orz&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;git-add-的時候碰到奇怪的錯誤訊息&#34;&gt;&lt;code&gt;git add&lt;/code&gt;的時候碰到奇怪的錯誤訊息：&lt;/h3&gt;
-
-&lt;p&gt;如果第一步要&lt;code&gt;add&lt;/code&gt;就不幸發生錯誤了&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git add .
-fatal: Unable to create &#39;/Users/.../.git/index.lock&#39;: File exists.
-
-Another git process seems to be running in this repository, e.g.
-an editor opened by &#39;git commit&#39;. Please make sure all processes
-are terminated then try again. If it still fails, a git process
-may have crashed in this repository earlier:
-remove the file manually to continue.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;就直接把&lt;code&gt;index.lock&lt;/code&gt;刪除即可。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ rm -f ./.git/index.lock
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;若無法&lt;code&gt;git add&lt;/code&gt;的是submodule的話，訊息應該是這樣的：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Bash&#34;&gt;$ git add .
-Assertion failed: (item-&amp;gt;nowildcard_len &amp;lt;= item-&amp;gt;len &amp;amp;&amp;amp; item-&amp;gt;prefix &amp;lt;= item-&amp;gt;len), function prefix_pathspec, file pathspec.c, line 308.
-Abort trap: 6
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;此時解決方法就不太一樣，要回到上一層處理：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git submodule init
-$ git submodule update
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;因為自己真的很常手賤，又腦袋不太清楚就亂push東西&amp;hellip;&amp;hellip;這些問題從一開始很慌張地去估狗，甚至考慮把整個repo砍掉重練，到現在已經見怪不怪了～～（好像沒什麼好得意XD）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;[註一] 在stackoverflow的連結裡的狀況是headless-branch，跟我碰到的似乎有點不太一樣，不過提供的方法一樣有效就是了。&lt;/p&gt;
-</description>
+      <description>今天突然心血來潮想說自己來改改看hugo theme的樣式，CSS門外漢的我，就每個檔案都給它打開來研究研究，然後手賤的塗塗改改，想說反正hugo server 上面看爽的就好，改壞了大不了重新git clone下來就好惹～～
+結果，門外漢的我還是手賤，push了一些也不知道自己在改啥的東西上去後&amp;hellip;&amp;hellip;就發現放hugo souce的repo裡的submodule好像不同步&amp;hellip;&amp;hellip;？
+…&amp;hellip;我真的不知道我剛剛做了什麼（崩潰
+為什麼public裡面的靜態網頁push不上去ＱＱＱ救命哦
+想當然，就算喊破喉嚨應該也是沒人能救我 囧
+自己的手賤自己救，拜過估狗大神後還是把它弄好了（雙手合十
+所以我到底對他做了什麼呢？ …….我真的不知道啦（哭
+→可能原因： push順序錯誤： 因為submodule的內容不會被連帶更新，所以要先push submodule再push上一層（如果有需要的話），不然從上一層repo連結過去會是前一次push的內容。
+只要連過去後發現，在顯示branch:master的地方會顯示tree:&amp;lt;上一次的commit&amp;gt;，應該就是不小心忘了先push submodule的目錄。
+此時在submodule裡面嘗試push的話，就會顯示：
+Everything up-to-date 一開始看到我真的是滿頭問號orz明明最新的內容都push不上去你還騙我說什麼up-to-date&amp;hellip;.
+解決方法 參照這篇 [註一]，總結來說就是：
+$ cd &amp;lt;submodule directory&amp;gt; $ git checkout master $ git merge HEAD@{1} $ git push origin master 因為現在其實有兩個branch。
+$ git branch * (HEAD detached from &amp;lt;上一次的commit&amp;gt;) master 除了master以外，另一個就是我們現在所處的branch 。所以解決方法就是要把這兩個莫名其妙被我搞出來的東西merge在一起。當輸入merge指令之後，會看到：
+$ git merge HEAD@{1} Updating 300cd65..08987fb Fast-forward blog/.DS_Store | Bin 6148 -&amp;gt; 6148 bytes blog/{year-month-day =&amp;gt; 2017}/.</description>
     </item>
     
     <item>
@@ -1488,96 +327,42 @@ $ git submodule update
       <pubDate>Mon, 20 Mar 2017 20:28:57 +0800</pubDate>
       
       <guid>https://ichennn.github.io/blog/2017/03/%E5%A6%82%E4%BD%95%E7%94%A8hugo%E6%9E%B6%E5%87%BA%E4%B9%BE%E6%B7%A8%E7%B0%A1%E6%BD%94%E7%9A%84%E9%83%A8%E8%90%BD%E6%A0%BC/</guid>
-      <description>
-
-&lt;p&gt;從小時候就一直覺得寫自己的部落格是一件很潮很厲害的事，當然也經營過好幾個，從最一開始的yahoo部落格、無名小站到天空部落，前前後後也寫了好幾年，可是最後都虎頭蛇尾收場ＸＤ還是別提了&lt;/p&gt;
-
-&lt;p&gt;但是從很早之前，我就一直對這些部落格平台有一些小小的不滿（？&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;首先，樣板很固定，用過的幾個當中，大概只有天空算比較自由，其他就&amp;hellip;&amp;hellip;xd&lt;/li&gt;
-&lt;li&gt;很多時候只是想寫一些自己的碎碎念，並不想要知道有多少人看過，也不想要有人對此發表評論。&lt;/li&gt;
-&lt;li&gt;有廣告有廣告有廣告啊啊啊&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;直到最近開始學著用github之後，意外發現可以利用github pages存放靜態頁面。於是又重新燃起了我寫部落格的熊熊大火啊&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;hugo是什麼&#34;&gt;Hugo是什麼？&lt;/h2&gt;
-
-&lt;p&gt;簡單來說就是一個靜態網頁生成器，簡單快速好用。&lt;/p&gt;
-
-&lt;p&gt;可以放在任何可host網站的空間，如github或FTP。
-用Go語言寫成，據說比Jekyll穩定且快（當然也比較簡單ＸＤ&lt;/p&gt;
-
-&lt;h2 id=&#34;這個網站怎麼生出來的&#34;&gt;這個網站怎麼生出來的？&lt;/h2&gt;
-
-&lt;p&gt;有多簡單好用呢？用Hugo架一個部落格，大概需要以下幾個步驟，根據官網的&lt;a href=&#34;http://gohugo.io/overview/quickstart/&#34;&gt;Quick start&lt;/a&gt;這個過程大概只要2分鐘：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;下載hugo&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;hugo new site &amp;lt;sitename&amp;gt;&lt;/code&gt;，然後&lt;code&gt;cd&lt;/code&gt;進&lt;code&gt;themes&lt;/code&gt;，網路上隨便找個順眼的主題，把它&lt;code&gt;git clone&lt;/code&gt;下來（ps. 如果想放github上的話，這邊請用submodule）&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;hugo new post/&amp;lt;title&amp;gt;.md&lt;/code&gt; ，寫點什麼東西進去&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;hugo server&lt;/code&gt; 就可以在本地看到熱騰騰的網站了&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;好了，結束收工（欸&lt;/p&gt;
-
-&lt;p&gt;不是啦，其實還是有很多細節可以設定，在&lt;code&gt;config.toml&lt;/code&gt; 當中可以客製化一些細節，也可自己寫一個css覆蓋原本的主題做微調。真的要鑽研也是研究不完，像是short code我到現在還是沒弄懂 囧&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://gohugo.io/&#34;&gt;Hugo官網&lt;/a&gt;裡面有很多好玩的設定，留著日後慢慢看ＸＤ&lt;/p&gt;
-
-&lt;h2 id=&#34;hosting-on-github&#34;&gt;Hosting on Github&lt;/h2&gt;
-
-&lt;p&gt;然後呢？總不能這麼簡單漂亮的網站只有我自己看得到吧？&lt;/p&gt;
-
-&lt;p&gt;我當初為了研究怎麼把它放上github，搞了一天一夜快要瘋掉，&lt;a href=&#34;http://gohugo.io/tutorials/github-pages-blog/&#34;&gt;官網上的教學&lt;/a&gt;一個很複雜不想看懂（欸），一個怎麼試都失敗搞得我很火大ry&lt;/p&gt;
-
-&lt;p&gt;順帶一提github pages有分成user page跟project page兩種，托hugo的福，我之前一直不知道原來有分別，詳細差別參見&lt;a href=&#34;https://help.github.com/articles/user-organization-and-project-pages/&#34;&gt;官方&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;最後在各種英文日文網站的教學拼拼湊湊下，終於成功使用user page放上去惹～（也就是網址是github.io結尾）：&lt;/p&gt;
-
-&lt;h5 id=&#34;step1-準備兩個repository&#34;&gt;Step1: 準備兩個repository&lt;/h5&gt;
-
-&lt;p&gt;一個命名為&lt;code&gt;&amp;lt;username&amp;gt;.github.io&lt;/code&gt;，用來放產生的靜態頁面；另一個隨意，用來放Hugo site的source code。&lt;/p&gt;
-
-&lt;h5 id=&#34;step2-利用hugo架網站囉&#34;&gt;Step2: 利用hugo架網站囉&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ hugo new site &amp;lt;sitename&amp;gt;
-$ cd &amp;lt;sitename&amp;gt;
-$ hugo new post/&amp;lt;title&amp;gt;.md  #文章會放在content/post裡
-$ git init
-$ git remote add origin &amp;lt;隨意&amp;gt;.git. #對應到另一個隨意命名的repo
-$ git submodule add &amp;lt;theme url&amp;gt; theme/&amp;lt;theme name&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;submodule大概就是git裡的超連結，可以連到另一個獨立的repository裏，這樣原作者有什麼更新的話，就不用再手動更新了。&lt;/p&gt;
-
-&lt;p&gt;不過直接&lt;code&gt;git clone&lt;/code&gt;下來也是可以的，只要本地有檔案還是可以產生靜態頁面。真要說有什麼不方便的話，大概就是某天想要換電腦寫文章的時候，要再額外到theme作者的頁面git clone一次而已。&lt;/p&gt;
-
-&lt;h5 id=&#34;step3-生成網頁&#34;&gt;Step3:  生成網頁&lt;/h5&gt;
-
-&lt;p&gt;先填寫好&lt;code&gt;config.toml&lt;/code&gt;內的設定，準備好要發表的文章，&lt;code&gt;hugo&lt;/code&gt;後會產生一個存放靜態頁面的資料夾，預設是叫public&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ hugo
-$ git submodule add &amp;lt;username&amp;gt;.github.io.git public
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;將public對應到&lt;code&gt;&amp;lt;username&amp;gt;.github.io&lt;/code&gt;，這樣之後就可以直接將public中的靜態頁面push上去了&lt;/p&gt;
-
-&lt;h5 id=&#34;step4-準備放上github&#34;&gt;Step4:  準備放上GitHub&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cd public #很重要！！
-$ git add .
-$ git commit -m &amp;quot;message&amp;quot;
-$ git push origin master
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;為什麼說很重要呢？因為不&lt;code&gt;cd&lt;/code&gt;進public，裡面的東西是不會被連帶push上去的啊！！&lt;/p&gt;
-
-&lt;p&gt;之後要新增文章，只要寫好之後執行&lt;code&gt;hugo&lt;/code&gt;，再把public資料夾裡的東西push上去就可以更新了💕&lt;/p&gt;
-</description>
+      <description>從小時候就一直覺得寫自己的部落格是一件很潮很厲害的事，當然也經營過好幾個，從最一開始的yahoo部落格、無名小站到天空部落，前前後後也寫了好幾年，可是最後都虎頭蛇尾收場ＸＤ還是別提了
+但是從很早之前，我就一直對這些部落格平台有一些小小的不滿（？
+首先，樣板很固定，用過的幾個當中，大概只有天空算比較自由，其他就&amp;hellip;&amp;hellip;xd 很多時候只是想寫一些自己的碎碎念，並不想要知道有多少人看過，也不想要有人對此發表評論。 有廣告有廣告有廣告啊啊啊 直到最近開始學著用github之後，意外發現可以利用github pages存放靜態頁面。於是又重新燃起了我寫部落格的熊熊大火啊
+Hugo是什麼？ 簡單來說就是一個靜態網頁生成器，簡單快速好用。
+可以放在任何可host網站的空間，如github或FTP。 用Go語言寫成，據說比Jekyll穩定且快（當然也比較簡單ＸＤ
+這個網站怎麼生出來的？ 有多簡單好用呢？用Hugo架一個部落格，大概需要以下幾個步驟，根據官網的Quick start這個過程大概只要2分鐘：
+下載hugo hugo new site &amp;lt;sitename&amp;gt;，然後cd進themes，網路上隨便找個順眼的主題，把它git clone下來（ps. 如果想放github上的話，這邊請用submodule） hugo new post/&amp;lt;title&amp;gt;.md ，寫點什麼東西進去 hugo server 就可以在本地看到熱騰騰的網站了 好了，結束收工（欸
+不是啦，其實還是有很多細節可以設定，在config.toml 當中可以客製化一些細節，也可自己寫一個css覆蓋原本的主題做微調。真的要鑽研也是研究不完，像是short code我到現在還是沒弄懂 囧
+Hugo官網裡面有很多好玩的設定，留著日後慢慢看ＸＤ
+Hosting on Github 然後呢？總不能這麼簡單漂亮的網站只有我自己看得到吧？
+我當初為了研究怎麼把它放上github，搞了一天一夜快要瘋掉，官網上的教學一個很複雜不想看懂（欸），一個怎麼試都失敗搞得我很火大ry
+順帶一提github pages有分成user page跟project page兩種，托hugo的福，我之前一直不知道原來有分別，詳細差別參見官方。
+最後在各種英文日文網站的教學拼拼湊湊下，終於成功使用user page放上去惹～（也就是網址是github.io結尾）：
+Step1: 準備兩個repository 一個命名為&amp;lt;username&amp;gt;.github.io，用來放產生的靜態頁面；另一個隨意，用來放Hugo site的source code。
+Step2: 利用hugo架網站囉 $ hugo new site &amp;lt;sitename&amp;gt; $ cd &amp;lt;sitename&amp;gt; $ hugo new post/&amp;lt;title&amp;gt;.md #文章會放在content/post裡 $ git init $ git remote add origin &amp;lt;隨意&amp;gt;.</description>
+    </item>
+    
+    <item>
+      <title>讓Hyde-X theme重新動起來</title>
+      <link>https://ichennn.github.io/blog/1/01/%E8%AE%93hyde-x-theme%E9%87%8D%E6%96%B0%E5%8B%95%E8%B5%B7%E4%BE%86/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ichennn.github.io/blog/1/01/%E8%AE%93hyde-x-theme%E9%87%8D%E6%96%B0%E5%8B%95%E8%B5%B7%E4%BE%86/</guid>
+      <description>距離上一次更新文章，不知不覺已經過了四年。最近想要重新振作起來，整理自己的生活，一方面希望能繼續保持生活中有所output的習慣，另一方面也是希望能有條理地回顧自己過去四年當中究竟有哪些成長與改變。
+然而，就在我興致勃勃地將hugo重新載了回來之後（是的，這四年當中經歷了太多，連電腦都換了，當然也沒記得要裝hugo），發現我使用的Hyde-X模板竟然&amp;hellip;&amp;hellip;已經壞了（哭
+原本也想過要不要乾脆換個模板，或是沿用Hyde，但是換成其他的fork版本。畢竟Hyde-X自從2018年起就沒有再更新維護了，以後應該只會越壞越多吧ＱＱ
+不過最後峰迴路轉，實在是懶得再去調整CSS，也覺得Hyde-X有一些我滿喜歡的功能（像是label），最後決定還是自己來修吧！
+其實仔細看render error，只需要修改幾個小地方，並沒有想像中的整組壞光光ＸＤ因此做個紀錄，也為之後重新寫文章做個熱身＝）
+layouts/partials/sidebar.html 這裡的寫法是從另一個Hyde repo直接借過來用的
+https://github.com/spf13/hyde/blob/master/layouts/partials/sidebar.html
+- &amp;lt;p&amp;gt;&amp;lt;font size=2&amp;gt;Copyright &amp;amp;copy; {{ .Now.Format &amp;#34;2006&amp;#34; }} &amp;lt;a href=&amp;#34;{{ &amp;#34;/LICENSE&amp;#34; | absURL }}&amp;#34;&amp;gt;License&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt; + &amp;lt;p&amp;gt;&amp;lt;font size=2&amp;gt;{{ with .Site.Params.copyright }}{{.}}{{ else }}&amp;amp;copy; {{ now.Format &amp;#34;2006&amp;#34;}}. All rights reserved. {{end}}&amp;lt;br/&amp;gt; Note： 這一行後來在Hyde-X中被移動到layouts/partials/sidebar/footer.html中了。我也忘了當初是出於什麼理由，一直將他留在我的override的sidebar.html中
+layouts/index.html 這裡是Home page裡呈現出來的全部文章列表。
+原本的寫法已經deprecated，在Hyde-X的issue中也有提到。
+https://github.com/zyro/hyde-x/issues/84
+- {{ $paginator := .Paginate (where .Data.Pages &amp;#34;Type&amp;#34; &amp;#34;post&amp;#34;) }} + {{ $paginator := .Paginate (where .Site.RegularPages &amp;#34;Type&amp;#34; &amp;#34;post&amp;#34;) }} layouts/partials/head.html 我沒有需要使用這個功能（也不知道修改前後的使用上差異），因此也只是從上面提到的另一個Hyde repo找到同一個段落然後複製貼上，確保render會成功而已。
+錯誤訊息如下：</description>
     </item>
     
   </channel>

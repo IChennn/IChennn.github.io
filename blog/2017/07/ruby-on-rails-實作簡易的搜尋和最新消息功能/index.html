@@ -27,8 +27,6 @@
   
   
   
-  
-
   <meta name="description" content="記錄一些學習rails 過程中碰到的疑難雜症與新學到的用法part4。此篇記錄如何實作簡易的搜尋功能（不使用gem），以及最新消息功能">
   <meta name="keywords" content="">
   
@@ -72,7 +70,7 @@
 
     
 
-    <p><font size=2>Copyright &copy; 2019 <a href="https://ichennn.github.io/LICENSE">License</a><br/>
+    <p><font size=2>&copy; 2023. All rights reserved. <br/>
        Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></font></p>
   </div>
 </div>
@@ -86,99 +84,67 @@
     <br/>
     <a class="label" href="https://ichennn.github.io/categories/learning">Learning</a><a class="label" href="https://ichennn.github.io/categories/rails">Rails</a>
     </span>
-    
-
-<p>網站傳送門：  <a href="https://gentle-inlet-97986.herokuapp.com/">https://gentle-inlet-97986.herokuapp.com/</a></p>
-
+    <p>網站傳送門：  <a href="https://gentle-inlet-97986.herokuapp.com/">https://gentle-inlet-97986.herokuapp.com/</a></p>
 <p>主題是一個書評網站，需要登入才能發表評論，可以自行上傳書的圖片，也可以搜尋現有的書籍資訊。</p>
-
 <p>（基本架構是照著Rails 101的教學做出來的，自己另外再加了一些小功能）</p>
-
-<hr />
-
+<hr>
 <p>此篇主要紀錄如何實作最新消息功能和簡易的搜尋功能，不使用任何gem。當然，有很多現成的gem可以達到非常強大的搜尋功能，若有需要也想找機會試試（可是功能越強大說明通常也就越難懂ＸＤ（哭）。</p>
-
 <h2 id="簡易搜尋功能">簡易搜尋功能</h2>
-
 <p>以搜尋書本為例：</p>
-
 <p>想達到的功能是在書本列表當中可以搜尋想要的書（title和description都可以對應）</p>
-
 <p>首先，找到想放置搜尋bar的頁面：<code>app/views/groups/index.html.erb</code></p>
-
 <p>加入下面這一段code，做一個陽春的搜尋框</p>
-
-<pre><code class="language-html">&lt;div&gt;
-	&lt;%= form_tag groups_path, id: &quot;search-form&quot;, :method =&gt; &quot;get&quot; do %&gt;  
-	&lt;%= text_field_tag :search, params[:search], class: 'btn btn-default', placeholder: &quot;Search Books&quot; %&gt;
-	&lt;%= submit_tag &quot;Search&quot;, class: 'btn btn-default', name: nil %&gt;
-	&lt;% end %&gt;
-&lt;/div&gt;
-</code></pre>
-
-<p>再來找到controller：<code>app/controllers/groups_controller.rb</code></p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>	<span style="color:#960050;background-color:#1e0010">&lt;</span>%= form_tag groups_path, id: &#34;search-form&#34;, :method =&gt; &#34;get&#34; do %&gt;  
+</span></span><span style="display:flex;"><span>	<span style="color:#960050;background-color:#1e0010">&lt;</span>%= text_field_tag :search, params[:search], class: &#39;btn btn-default&#39;, placeholder: &#34;Search Books&#34; %&gt;
+</span></span><span style="display:flex;"><span>	<span style="color:#960050;background-color:#1e0010">&lt;</span>%= submit_tag &#34;Search&#34;, class: &#39;btn btn-default&#39;, name: nil %&gt;
+</span></span><span style="display:flex;"><span>	<span style="color:#960050;background-color:#1e0010">&lt;</span>% end %&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span></code></pre></div><p>再來找到controller：<code>app/controllers/groups_controller.rb</code></p>
 <p>更改index的部分，這樣才會顯示搜尋結果。記得paginate的部分也要寫，不然搜尋結果的頁面會報錯</p>
-
-<pre><code class="language-ruby">def index
-    if params[:search]
-      @groups = Group.search(params[:search]).recent.paginate(:page =&gt; params[:page], :per_page =&gt; 10)
-    else 
-      @groups = Group.all.recent.paginate(:page =&gt; params[:page], :per_page =&gt; 10)
-    end
-end
-</code></pre>
-
-<p>最後是model的部分：<code>app/models/group.rb</code></p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">index</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> params<span style="color:#f92672">[</span><span style="color:#e6db74">:search</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>      @groups <span style="color:#f92672">=</span> <span style="color:#66d9ef">Group</span><span style="color:#f92672">.</span>search(params<span style="color:#f92672">[</span><span style="color:#e6db74">:search</span><span style="color:#f92672">]</span>)<span style="color:#f92672">.</span>recent<span style="color:#f92672">.</span>paginate(<span style="color:#e6db74">:page</span> <span style="color:#f92672">=&gt;</span> params<span style="color:#f92672">[</span><span style="color:#e6db74">:page</span><span style="color:#f92672">]</span>, <span style="color:#e6db74">:per_page</span> <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span> 
+</span></span><span style="display:flex;"><span>      @groups <span style="color:#f92672">=</span> <span style="color:#66d9ef">Group</span><span style="color:#f92672">.</span>all<span style="color:#f92672">.</span>recent<span style="color:#f92672">.</span>paginate(<span style="color:#e6db74">:page</span> <span style="color:#f92672">=&gt;</span> params<span style="color:#f92672">[</span><span style="color:#e6db74">:page</span><span style="color:#f92672">]</span>, <span style="color:#e6db74">:per_page</span> <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>最後是model的部分：<code>app/models/group.rb</code></p>
 <p>定義搜尋的動作，這邊我想要可以同時搜尋書的title跟description</p>
-
-<pre><code class="language-ruby">def self.search(search)
-  		if search
-    		#where(&quot;title LIKE ?&quot;, &quot;%#{search}%&quot;) 
-  			where(&quot;title LIKE :search OR description LIKE :search&quot;, search: &quot;%#{search}%&quot;)
-  		else
-    		all
-    	end
-    end
-</code></pre>
-
-<p>如果只想要搜尋一個欄位（例如title的話），就用註解掉的那行就可以了。</p>
-
-<hr />
-
-<h2 id="最新消息-只想要顯示n個結果">最新消息：只想要顯示n個結果</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">self</span><span style="color:#f92672">.</span><span style="color:#a6e22e">search</span>(search)
+</span></span><span style="display:flex;"><span>  		<span style="color:#66d9ef">if</span> search
+</span></span><span style="display:flex;"><span>    		<span style="color:#75715e">#where(&#34;title LIKE ?&#34;, &#34;%#{search}%&#34;) </span>
+</span></span><span style="display:flex;"><span>  			where(<span style="color:#e6db74">&#34;title LIKE :search OR description LIKE :search&#34;</span>, <span style="color:#e6db74">search</span>: <span style="color:#e6db74">&#34;%</span><span style="color:#e6db74">#{</span>search<span style="color:#e6db74">}</span><span style="color:#e6db74">%&#34;</span>)
+</span></span><span style="display:flex;"><span>  		<span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    		all
+</span></span><span style="display:flex;"><span>    	<span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>如果只想要搜尋一個欄位（例如title的話），就用註解掉的那行就可以了。</p>
+<hr>
+<h2 id="最新消息只想要顯示n個結果">最新消息：只想要顯示n個結果</h2>
 <p>概念：最新消息＝按照時間排序後的前n筆資料。不得不說，是有點土法煉鋼，很陽春的方法ＸＤＤ</p>
-
 <p>首先，在view當中，就和一般顯示清單一樣：</p>
-
-<pre><code class="language-html">&lt;table class=&quot;table table-hover&quot;&gt;
-	&lt;thead&gt;
-    	&lt;tr&gt;
-          &lt;td&gt;&lt;/td&gt;
-          &lt;td&gt;&lt;h4&gt;Title&lt;/h4&gt;&lt;/td&gt;
-         &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;   
-         &lt;% @groups.each do |group|  %&gt;
-         &lt;tr&gt;
-         &lt;td&gt;&lt;/td&gt;
-         &lt;td class=&quot;text-success&quot;&gt;&lt;%= group.title %&gt;&lt;/td&gt;
-         &lt;/tr&gt;
-         &lt;% end %&gt;
-     &lt;/tbody&gt;
-&lt;/table&gt;       
-</code></pre>
-
-<p>重點在於controller當中，記得要限制返回的數量：</p>
-
-<pre><code class="language-ruby">def index  	
-  	@groups = Group.all.limit(5).recent
-end
-</code></pre>
-
-<p>對的，清單和最新消息真的只是一線之隔啊ＸＤ</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">table</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;table table-hover&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>	&lt;<span style="color:#f92672">thead</span>&gt;
+</span></span><span style="display:flex;"><span>    	&lt;<span style="color:#f92672">tr</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#f92672">td</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">h4</span>&gt;Title&lt;/<span style="color:#f92672">h4</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+</span></span><span style="display:flex;"><span>         &lt;/<span style="color:#f92672">tr</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">thead</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">tbody</span>&gt;   
+</span></span><span style="display:flex;"><span>         <span style="color:#960050;background-color:#1e0010">&lt;</span>% @groups.each do |group|  %&gt;
+</span></span><span style="display:flex;"><span>         &lt;<span style="color:#f92672">tr</span>&gt;
+</span></span><span style="display:flex;"><span>         &lt;<span style="color:#f92672">td</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+</span></span><span style="display:flex;"><span>         &lt;<span style="color:#f92672">td</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text-success&#34;</span>&gt;<span style="color:#960050;background-color:#1e0010">&lt;</span>%= group.title %&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+</span></span><span style="display:flex;"><span>         &lt;/<span style="color:#f92672">tr</span>&gt;
+</span></span><span style="display:flex;"><span>         <span style="color:#960050;background-color:#1e0010">&lt;</span>% end %&gt;
+</span></span><span style="display:flex;"><span>     &lt;/<span style="color:#f92672">tbody</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">table</span>&gt;       
+</span></span></code></pre></div><p>重點在於controller當中，記得要限制返回的數量：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">index</span>  	
+</span></span><span style="display:flex;"><span>  	@groups <span style="color:#f92672">=</span> <span style="color:#66d9ef">Group</span><span style="color:#f92672">.</span>all<span style="color:#f92672">.</span>limit(<span style="color:#ae81ff">5</span>)<span style="color:#f92672">.</span>recent
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>對的，清單和最新消息真的只是一線之隔啊ＸＤ</p>
 
   </div>
   
