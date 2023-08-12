@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kubernetes on Murmuring</title>
+    <link>https://ichennn.github.io/categories/kubernetes/</link>
+    <description>Recent content in Kubernetes on Murmuring</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 12 Aug 2023 17:29:03 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CKA備考＆常用指令筆記</title>
+      <link>https://ichennn.github.io/blog/2023/08/cka%E5%82%99%E8%80%83%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E7%AD%86%E8%A8%98/</link>
+      <pubDate>Sat, 12 Aug 2023 17:29:03 +0900</pubDate>
+      
+      <guid>https://ichennn.github.io/blog/2023/08/cka%E5%82%99%E8%80%83%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E7%AD%86%E8%A8%98/</guid>
+      <description>最初因為工作需要而開始接觸Kubernetes，組內的前輩們花了一段時間建立了一個cluster，有好幾個worker node，上面也已經deployed了各種app。
+身為一個剛被配屬的小菜鳥，也從來沒有接觸過k8s，前輩們於是決定幫我開一個ナレッジ共有会，從pod的基本概念講起，淘淘不絕分享了兩小時（其實仔細想想，線上課都要20幾小時，兩小時要是我就聽懂了也是滿神的），但是只換來我呆滯的眼神跟停止思考的腦袋&amp;hellip;&amp;hellip;
+總而言之，就是一知半解，但工作還是要做，日子還是要過。我就這樣半推半就（？）進入了kubernetes的世界，竟也跌跌撞撞但有驚無險的摸懂了基本操作，甚至還主導了幾次cluster upgrade跟cluster migration。幾句話的輕描淡寫，背後也是花了好幾年的時間，期間一直在想，我應該要找個線上課老老實實地從頭開始打基本功，能順便考個CKA就好了。
+但行動力像條蟲的我，拖延病一發作就是一兩年，直到今年，各種層面上想要好好整頓一下自己的生活，也包括未來的職涯。也因此好好把CKA拿到手，就又回到我的待辦事項中，趁著4月新生活打折的時機，以30%off的價格買了CKA考試。
+線上課程 跟網路上大部分人一樣，都是找了udemy上Mumshad Mannambeth的Certified Kubernetes Adminidtrator(CKA) with Practice Tests來看。
+不得不說，真的清楚易懂，而且每個小單元都有練習題，最後還有三個模擬試題可以練習，雖然環境和真正考試環境並不是100%相同，但也相去不遠了。課程影片和hands on lab雖然是相輔相成的，但畢竟考試的形式不是選擇題，而是上機實際操作，hands on lab其實才是決定能不能順利通過考試的關鍵！！
+說實在，若有無限的時間慢慢google的話其實都不是難事（畢竟是開書考ＸＤ），但難就難在必須在有限的時間內（2小時）完成17道題目，而且要敲的指令也不算少，做完題目也得檢查一下比較保險，因此把簡單的指令記下來，並知道要怎麼在doc中搜尋出複雜的指令就成了考試對策中一個重要的環節。（大概就跟考多益一樣，到最後也不見得是在考英文能力，而是耐心跟讀題速度ＸＤ）
+kubectl常用指令 雖然說是為了考試而寫的筆記，但在自己過去的實務經驗上，好用實用的指令還是很多的，準備CKA也不只是為了那張證書，在自己的技術提升上也是受益良多了。
+參考Document url CKA開書考可參考範圍 https://kubernetes.io/docs/home/ k8s cheat sheet https://kubernetes.io/docs/reference/kubectl/cheatsheet/ 指令 kubectl help https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands 前置設定 生成yaml
+export do=&amp;#34;--dry-run=client -o yaml&amp;#34; create各種 Pod
+雖然被歸類在create，但生成pod是唯一不能使用kubectl create的
+kubectl run &amp;lt;pod-name&amp;gt; 生成1個以上container的pod
+先create一個container，再手動修改yaml Deployment, Daemonset
+Deployment
+kubectl create deployment &amp;lt;name&amp;gt; --image=xxx --replicas=3 (-r 3) Daemonset
+先create deployment，再手動將Kind: Deployment改成Kind: Daemonset Secret
+docker-registry
+kubectl create secret docker-registry xxx --docker-server=xxx:5000 --docker-username=user --docker-password=pass generic</description>
+    </item>
+    
+  </channel>
+</rss>

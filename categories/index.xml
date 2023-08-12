@@ -6,20 +6,20 @@
     <description>Recent content in Categories on Murmuring</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 07 Apr 2023 09:03:08 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 12 Aug 2023 17:29:03 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Hugo</title>
-      <link>https://ichennn.github.io/categories/hugo/</link>
-      <pubDate>Fri, 07 Apr 2023 09:03:08 +0900</pubDate>
+      <title>Kubernetes</title>
+      <link>https://ichennn.github.io/categories/kubernetes/</link>
+      <pubDate>Sat, 12 Aug 2023 17:29:03 +0900</pubDate>
       
-      <guid>https://ichennn.github.io/categories/hugo/</guid>
+      <guid>https://ichennn.github.io/categories/kubernetes/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Learning</title>
       <link>https://ichennn.github.io/categories/learning/</link>
-      <pubDate>Fri, 07 Apr 2023 09:03:08 +0900</pubDate>
+      <pubDate>Sat, 12 Aug 2023 17:29:03 +0900</pubDate>
       
       <guid>https://ichennn.github.io/categories/learning/</guid>
       <description></description>
@@ -28,9 +28,18 @@
     <item>
       <title>Tech</title>
       <link>https://ichennn.github.io/categories/tech/</link>
-      <pubDate>Fri, 07 Apr 2023 09:03:08 +0900</pubDate>
+      <pubDate>Sat, 12 Aug 2023 17:29:03 +0900</pubDate>
       
       <guid>https://ichennn.github.io/categories/tech/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hugo</title>
+      <link>https://ichennn.github.io/categories/hugo/</link>
+      <pubDate>Fri, 07 Apr 2023 09:03:08 +0900</pubDate>
+      
+      <guid>https://ichennn.github.io/categories/hugo/</guid>
       <description></description>
     </item>
     

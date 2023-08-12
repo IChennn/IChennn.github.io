@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>CKA備考＆常用指令筆記 &middot; IChen Hung</title>
+
+  
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/highlight/solarized_dark.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://ichennn.github.io/touch-icon-144-precomposed.png">
+  <link href="https://ichennn.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+  <meta name="description" content="叨叨念念要考CKA（Certified Kubernetes Administrator）已經過了一年，終於在2023年趁著準備轉職的契機，一鼓作氣地把線上課看完，緊鑼密鼓的準備了約一個月，最後有驚無險地通過啦！過程中整理了一些考試時常用，實務中也有用的指令，趁著記憶猶新的時候整理記錄以供日後參考。">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-08 layout-reverse">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>Murmuring</h1>
+      <p class="lead">心身之外，順其自然；順其自然，花落果成。</p>
+    </div>
+
+    <ul class="sidebar-nav category">
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/about-me/">About ME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/learning/">Learning</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/%E4%BA%AC%E9%83%BD%E7%94%9F%E6%B4%BB/">Life in Kyoto</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/%E6%9D%B1%E4%BA%AC%E7%94%9F%E6%B4%BB/">Life in Tokyo</a></li>
+      
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/IChennn"><i class="fa fa-github-square fa-2x"></i></a>
+      
+      
+      
+      
+      
+      
+      
+      
+      </li>
+    </ul>
+
+    
+
+    <p><font size=2>&copy; 2023. All rights reserved. <br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></font></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">CKA備考＆常用指令筆記</h1>
+    <span class="post-date">Aug 12, 2023
+    
+    <br/>
+    <a class="label" href="https://ichennn.github.io/categories/learning">Learning</a><a class="label" href="https://ichennn.github.io/categories/kubernetes">Kubernetes</a><a class="label" href="https://ichennn.github.io/categories/tech">Tech</a>
+    </span>
+    <p>最初因為工作需要而開始接觸Kubernetes，組內的前輩們花了一段時間建立了一個cluster，有好幾個worker node，上面也已經deployed了各種app。</p>
+<p>身為一個剛被配屬的小菜鳥，也從來沒有接觸過k8s，前輩們於是決定幫我開一個ナレッジ共有会，從pod的基本概念講起，淘淘不絕分享了兩小時（其實仔細想想，線上課都要20幾小時，兩小時要是我就聽懂了也是滿神的），但是只換來我呆滯的眼神跟停止思考的腦袋&hellip;&hellip;</p>
+<p>總而言之，就是一知半解，但工作還是要做，日子還是要過。我就這樣半推半就（？）進入了kubernetes的世界，竟也跌跌撞撞但有驚無險的摸懂了基本操作，甚至還主導了幾次cluster upgrade跟cluster migration。幾句話的輕描淡寫，背後也是花了好幾年的時間，期間一直在想，我應該要找個線上課老老實實地從頭開始打基本功，能順便考個CKA就好了。</p>
+<p>但行動力像條蟲的我，拖延病一發作就是一兩年，直到今年，各種層面上想要好好整頓一下自己的生活，也包括未來的職涯。也因此好好把CKA拿到手，就又回到我的待辦事項中，趁著4月新生活打折的時機，以30%off的價格買了CKA考試。</p>
+<h2 id="線上課程">線上課程</h2>
+<p>跟網路上大部分人一樣，都是找了udemy上Mumshad Mannambeth的<code>Certified Kubernetes Adminidtrator(CKA) with Practice Tests</code>來看。</p>
+<p>不得不說，真的清楚易懂，而且每個小單元都有練習題，最後還有三個模擬試題可以練習，雖然環境和真正考試環境並不是100%相同，但也相去不遠了。課程影片和hands on lab雖然是相輔相成的，但畢竟考試的形式不是選擇題，而是上機實際操作，hands on lab其實才是決定能不能順利通過考試的關鍵！！</p>
+<p>說實在，若有無限的時間慢慢google的話其實都不是難事（畢竟是開書考ＸＤ），但難就難在必須在有限的時間內（2小時）完成17道題目，而且要敲的指令也不算少，做完題目也得檢查一下比較保險，因此把簡單的指令記下來，並知道要怎麼在doc中搜尋出複雜的指令就成了考試對策中一個重要的環節。（大概就跟考多益一樣，到最後也不見得是在考英文能力，而是耐心跟讀題速度ＸＤ）</p>
+<h2 id="kubectl常用指令">kubectl常用指令</h2>
+<p>雖然說是為了考試而寫的筆記，但在自己過去的實務經驗上，好用實用的指令還是很多的，準備CKA也不只是為了那張證書，在自己的技術提升上也是受益良多了。</p>
+<h4 id="參考document-url">參考Document url</h4>
+<ul>
+<li>CKA開書考可參考範圍
+<ul>
+<li><a href="https://kubernetes.io/docs/home/">https://kubernetes.io/docs/home/</a></li>
+</ul>
+</li>
+<li>k8s cheat sheet
+<ul>
+<li><a href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/">https://kubernetes.io/docs/reference/kubectl/cheatsheet/</a></li>
+</ul>
+</li>
+<li>指令
+<ul>
+<li><code>kubectl help</code></li>
+<li><a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands">https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="前置設定">前置設定</h4>
+<ul>
+<li>
+<p>生成yaml</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export <span style="color:#66d9ef">do</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;--dry-run=client -o yaml&#34;</span>
+</span></span></code></pre></div></li>
+</ul>
+<h4 id="create各種">create各種</h4>
+<ul>
+<li>
+<p>Pod</p>
+<ul>
+<li>
+<p>雖然被歸類在create，但生成pod是唯一不能使用kubectl create的</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl run &lt;pod-name&gt;
+</span></span></code></pre></div></li>
+<li>
+<p>生成1個以上container的pod</p>
+<ul>
+<li>先create一個container，再手動修改yaml</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Deployment, Daemonset</p>
+<ul>
+<li>
+<p>Deployment</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl create deployment &lt;name&gt; --image<span style="color:#f92672">=</span>xxx --replicas<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">(</span>-r 3<span style="color:#f92672">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p>Daemonset</p>
+<ul>
+<li>先create deployment，再手動將<code>Kind: Deployment</code>改成<code>Kind: Daemonset</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Secret</p>
+<ul>
+<li>
+<p><code>docker-registry</code></p>
+<pre tabindex="0"><code>kubectl create secret docker-registry xxx --docker-server=xxx:5000 --docker-username=user --docker-password=pass
+</code></pre></li>
+<li>
+<p><code>generic</code></p>
+<pre tabindex="0"><code>kubectl create secret generic xxx --from-literal=app=web --from-literal=pass=123
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>Service</p>
+<ul>
+<li>
+<p>Expose pod(or other resource)</p>
+<ul>
+<li><code>port</code>: port on service</li>
+<li><code>target port</code>: port on pod(or other target)</li>
+</ul>
+<pre tabindex="0"><code>kubectl expose pod &lt;pod-name&gt; --port=6379 --target-port=8080 --type=ClusterIP --name=&lt;svc-name&gt;
+</code></pre></li>
+<li>
+<p>也可使用create</p>
+<pre tabindex="0"><code>kubectl create service &lt;name&gt;
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>PV, PVC</p>
+<ul>
+<li>沒有指令可以創建</li>
+<li>Search document by : <code>pv hostpath pod</code>
+<ul>
+<li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/">https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="修改刪除等基本操作">修改、刪除等基本操作</h4>
+<ul>
+<li>
+<p>Update: Edit, Replace</p>
+<ul>
+<li>
+<p>若是pod，有可能無法直接修改，需要先存成yaml修改後再replace</p>
+<pre tabindex="0"><code>kubectl get pod xxx -o yaml &gt; test.yaml
+kubectl replace -f test.yaml 
+</code></pre></li>
+<li>
+<p>Kubectl edit</p>
+<pre tabindex="0"><code>kubectl edit &lt;resource&gt; &lt;name&gt; -n &lt;ns&gt;
+kubectl edit deployment test-deploy -n staging
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>Delete</p>
+<ul>
+<li>
+<p>刪除帶有同一label的resource</p>
+<pre tabindex="0"><code>kubectl delete pod -l tier=front
+</code></pre></li>
+<li>
+<p>強制刪除（等待時間可能較短）</p>
+<pre tabindex="0"><code>kubectl delete pod &lt;name&gt; --force --grace-period=0
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>Scale out</p>
+<ul>
+<li>
+<p>Deployment, Replicaset</p>
+<pre tabindex="0"><code>kubectl scale replicaset &lt;replicaset-name&gt; --replicas=5
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>Check log</p>
+<pre tabindex="0"><code>kubectl logs &lt;pod-name&gt;
+</code></pre><ul>
+<li>
+<p>check log in multiple container pod</p>
+<pre tabindex="0"><code>kubectl logs &lt;pod-name&gt; -c &lt;container-name&gt; 
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>Set command in container (when creating resource)</p>
+<ul>
+<li>
+<p>生成yaml至指定path</p>
+<ul>
+<li><code>--command</code> 必須在一連串flag的最後</li>
+</ul>
+<pre tabindex="0"><code>kubectl run --image=busybox static-busybox --dry-run=client -o yaml --command -- sleep 1000 &gt; /etc/kubernetes/manifests/static-busybox.yaml
+</code></pre></li>
+<li>
+<p>在container中執行bash script</p>
+<pre tabindex="0"><code>kubectl run myshell --image=busybox --command -- sh -c &#34;tail xxx.log&#34;
+</code></pre><ul>
+<li>
+<p>若需要在bash中執行，卻沒有寫<code>sh -c</code>時會報錯：</p>
+<pre tabindex="0"><code>unable to start container process: exec: &#34;tail xxx.log&#34;
+</code></pre></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>在既有pod中執行指令</p>
+<ul>
+<li>
+<p>將結果存到操作VM中</p>
+<pre tabindex="0"><code>kubectl exec -it hr -- nslookup mysql.payroll &gt; /root/CKA/nslookup.out
+</code></pre></li>
+<li>
+<p>Get shell of pod</p>
+<ul>
+<li><code>-it</code>:  <code>--stdin --tty</code></li>
+</ul>
+<pre tabindex="0"><code>kubectl exec -it shell-demo -- /bin/bash
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h4 id="select-operate-on-resource">select, operate on resource</h4>
+<ul>
+<li>
+<p>Taint node</p>
+<ul>
+<li>
+<p>Add taint</p>
+<pre tabindex="0"><code>kubectl taint node node01 &lt;key&gt;=&lt;value&gt;:NoSchedule
+</code></pre></li>
+<li>
+<p>Remove taint</p>
+<pre tabindex="0"><code>kubectl taint node node01 &lt;key&gt;=&lt;value&gt;:NoSchedule-
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>Rollout</p>
+<ul>
+<li>
+<p><code>deployment</code>, <code>daemonset</code>, <code>statefulsets</code></p>
+</li>
+<li>
+<p>Check version</p>
+<pre tabindex="0"><code>kubectl rollout history deployment xxx
+</code></pre></li>
+<li>
+<p>rollback</p>
+<pre tabindex="0"><code>kubectl rollout undo deployment xxx --to-revision=80
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>Label</p>
+<ul>
+<li>
+<p>Show label</p>
+<pre tabindex="0"><code>kubectl get node --show-labels
+</code></pre></li>
+<li>
+<p>Select by label  (<code>-l</code>: <code>--selector</code>)</p>
+<pre tabindex="0"><code>kubectl get pod -l enc=dev  
+</code></pre></li>
+<li>
+<p>Add label</p>
+<pre tabindex="0"><code>kubectl label node node01 &lt;key&gt;=&lt;value&gt;
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>Filter namespaced resource only</p>
+<pre tabindex="0"><code>kubectl api-resources --namespaced=true/false
+</code></pre></li>
+<li>
+<p>Check service endpoint (point to pod)</p>
+<pre tabindex="0"><code>kubectl get ep
+</code></pre></li>
+<li>
+<p>Find static pod</p>
+<ul>
+<li>
+<p>Find those pod name with node name instead of hash. ex. etcd-master01</p>
+<pre tabindex="0"><code>kubectl get pod
+</code></pre></li>
+<li>
+<p>Default manifest path for static pod</p>
+<ul>
+<li><code>/etc/kubernetes/manifest</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="一些yaml修改寫法">一些yaml修改寫法</h4>
+<ul>
+<li>
+<p>指定<code>scheduler</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">spec</span>: 
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">schedulerName</span>: <span style="color:#ae81ff">my-sceduler</span>
+</span></span></code></pre></div></li>
+<li>
+<p>指定<code>node</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">spec</span>: 
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">nodeName</span>: <span style="color:#ae81ff">Node-01</span>
+</span></span></code></pre></div></li>
+<li>
+<p>設置<code>env</code></p>
+<ul>
+<li>
+<p>直接指定</p>
+<ul>
+<li><a href="https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/#using-environment-variables-inside-of-your-config">https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/#using-environment-variables-inside-of-your-config</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">env-print-demo</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">GREETING</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#34;Warm greetings to&#34;</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">HONORIFIC</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#34;The Most Honorable&#34;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>使用Configmap的key-value pair</p>
+<ul>
+<li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#define-container-environment-variables-using-configmap-data">https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#define-container-environment-variables-using-configmap-data</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">test-container</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">SPECIAL_LEVEL_KEY</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">valueFrom</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">configMapKeyRef</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">name</span>: <span style="color:#ae81ff">special-config</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">key</span>: <span style="color:#ae81ff">special.how</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">test-container</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">envFrom</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">configMapRef</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">name</span>: <span style="color:#ae81ff">special-config</span>
+</span></span></code></pre></div></li>
+<li>
+<p>使用Secret的key-value pair</p>
+<ul>
+<li>Search document by: <code>environment variable secret/ env configmap</code></li>
+<li><a href="https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#define-container-environment-variables-using-secret-data">https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#define-container-environment-variables-using-secret-data</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">envars-test-container</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">SECRET_USERNAME</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">valueFrom</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">secretKeyRef</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">name</span>: <span style="color:#ae81ff">backend-user</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">key</span>: <span style="color:#ae81ff">backend-username</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">envars-test-container</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">envFrom</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">secretRef</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">name</span>: <span style="color:#ae81ff">test-secret</span>
+</span></span></code></pre></div></li>
+<li>
+<p>將pod matadata設為env</p>
+<ul>
+<li>Search document by: <code>env container expose</code></li>
+<li><a href="https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/">https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">test-container</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">MY_NODE_NAME</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">valueFrom</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">fieldRef</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">fieldPath</span>: <span style="color:#ae81ff">spec.nodeName</span>
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">MY_POD_NAME</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">valueFrom</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">fieldRef</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">fieldPath</span>: <span style="color:#ae81ff">metadata.name</span>
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">MY_POD_NAMESPACE</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">valueFrom</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">fieldRef</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">fieldPath</span>: <span style="color:#ae81ff">metadata.namespace</span>
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">MY_POD_IP</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">valueFrom</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">fieldRef</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">fieldPath</span>: <span style="color:#ae81ff">status.podIP</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h4 id="install-upgrade-cluster">Install, Upgrade cluster</h4>
+<ul>
+<li>
+<p>Upgrade cluster</p>
+<ul>
+<li>Search document by: <code>upgrade kubeadm</code>
+<ul>
+<li><a href="https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/">https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Install cluster</p>
+<ul>
+<li>
+<p>Search document by: <code>kubeadm install</code></p>
+<ul>
+<li><a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/">https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/</a></li>
+</ul>
+</li>
+<li>
+<p>Do the install, and do not forget to:</p>
+<pre tabindex="0"><code>kubeadm init  --apiserver-advertise-address=&lt;k8s endpoint&gt;
+</code></pre><ul>
+<li>Endpoint can be seen by <code>kubectl describe svc kubernetes</code></li>
+</ul>
+</li>
+<li>
+<p>Manifest url of some CNI plugin</p>
+<ul>
+<li>flannel: <a href="https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml">https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml</a></li>
+<li>weave: <a href="https://github.com/weaveworks/weave/releases/latest/download/weave-daemonset-k8s.yaml">https://github.com/weaveworks/weave/releases/latest/download/weave-daemonset-k8s.yaml</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Join a node in existing cluster</p>
+<ul>
+<li>
+<p>need to get kubeadm join command first</p>
+<ul>
+<li>search document by: <code>kubeadm token</code>
+<ul>
+<li><a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-token/">https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-token/</a></li>
+</ul>
+</li>
+</ul>
+<pre tabindex="0"><code>kubeadm token create --print-join-command
+</code></pre></li>
+<li>
+<p>If kubeadm join command not working, try <code>kubeadm reset</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="etcd-backup">etcd backup</h4>
+<ul>
+<li>
+<p>Search document by: <code>backup etcd</code></p>
+<ul>
+<li><a href="https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#backing-up-an-etcd-cluster">https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#backing-up-an-etcd-cluster</a></li>
+</ul>
+</li>
+<li>
+<p>Restore</p>
+<pre tabindex="0"><code>ETCDCTL_API=3 etcdctl snapshot restore --data-dir &lt;where-to-store-the-recover-file&gt; &lt;snapshot-path&gt;
+</code></pre><ul>
+<li>For stacked cluster: edit <code>etcd.yaml</code> for  volumes part to point to new path</li>
+<li>For external cluster: edit etcd data dir in <code>/etc/systemd/system/etcd.service</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="context">Context</h4>
+<pre tabindex="0"><code>kubectl config view
+kubectl config current-context
+kubectl config get-clusters
+kubectl config use-context cluster1
+</code></pre><h4 id="csr">CSR</h4>
+<ul>
+<li>Search document by: <code>csr</code>
+<ul>
+<li><a href="https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/#normal-user">https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/#normal-user</a></li>
+</ul>
+</li>
+</ul>
+<pre tabindex="0"><code>kubectl certificate approve/deny xxx
+</code></pre><ul>
+<li>
+<p>create user  -&gt; create .crt (which CN is defined)  -&gt;  create csr to request approve</p>
+</li>
+<li>
+<p>csr name is not username, username is defined in certificate!</p>
+</li>
+<li>
+<p>Check k8s certifivate content</p>
+<ul>
+<li>search <code>openssl ca</code> , see <code>8. View the certificate</code></li>
+<li><a href="https://kubernetes.io/docs/tasks/administer-cluster/certificates/#openssl">https://kubernetes.io/docs/tasks/administer-cluster/certificates/#openssl</a></li>
+</ul>
+<pre tabindex="0"><code>openssl x509 -in /etc/kubernetes/pki/ca.crt -text -noout 
+</code></pre></li>
+</ul>
+<h4 id="securitycontext">Securitycontext</h4>
+<ul>
+<li>
+<p>Search document by: <code>security context</code></p>
+<ul>
+<li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">https://kubernetes.io/docs/tasks/configure-pod-container/security-context/</a></li>
+</ul>
+</li>
+<li>
+<p>Decide which user to run in container</p>
+<ul>
+<li><code>root</code> if runasuser not defined</li>
+<li>Can be set on pod level or container level</li>
+</ul>
+</li>
+<li>
+<p>Have to delete and recreate pod to change securitycontext. cannot do it with <code>kubectl edit</code></p>
+</li>
+</ul>
+<h4 id="networking">Networking</h4>
+<ul>
+<li>
+<p>CNI</p>
+<ul>
+<li>Node connection network
+<ul>
+<li>by default, cni plugin are in <code>/opt/cni/bin</code></li>
+<li>by default, cni config are in <code>/etc/cni/</code></li>
+</ul>
+</li>
+<li>pod network
+<ul>
+<li><code>eth0</code></li>
+</ul>
+</li>
+<li>service ip range
+<ul>
+<li>check kubeapiserver setting (<code>service-cluster-ip</code>) in manifest</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>DNS</p>
+<ul>
+<li>DNS IP
+<ul>
+<li>cluster ip of dns svc</li>
+</ul>
+</li>
+<li>Name resolve
+<ul>
+<li>參考
+<ul>
+<li><a href="https://page.codespaper.com/2019/k8s-dns-resolve/">https://page.codespaper.com/2019/k8s-dns-resolve/</a></li>
+</ul>
+</li>
+<li>root domain (<code>cluster.local</code>) should be used together.
+<ul>
+<li>OK:   <code>web.default.svc.cluster.local</code> or just <code>web.default.svc</code></li>
+<li>NG:  <code>web.default.svc.cluster</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Ingress</p>
+<ul>
+<li>ingress(kind:ingress) vs ingress controller(kind:deployment)
+<ul>
+<li>只有ingress，沒有controller也是可以的</li>
+</ul>
+</li>
+<li>svc in different ns can use same ingress controller(deployment)
+<ul>
+<li>Don&rsquo;t forget add rewrite annotation</li>
+</ul>
+</li>
+<li>Set same ingress setting in different ns will cause 503 error</li>
+</ul>
+</li>
+</ul>
+<h4 id="jsonpath">jsonpath</h4>
+<pre tabindex="0"><code>kubectl get pv -A -o=jsonpath=&#39;{.items[*].spec.capacity.storage}&#39;
+  (same as: kubectl get pv  -o=jsonpath={.items..spec.capacity.storage})
+kubectl get pv --sort-by=.spec.capacity.storage | sort -r
+kubectl get pv --sort-by=.spec.capacity.storage -o=custom-columns=NAME:.metadata.name,CAPACITY:.spec.capacity.storage
+kubectl get pod --no-header
+kubectl config view --kubeconfig=my-kube-config -o jsonpath=&#34;{.contexts[?(@.context.user==&#39;aws-user&#39;)].name}&#34; &gt; /opt/outputs/aws-context-name
+kubectl get pv -o jsonpath=&#39;{.items[?(@.metadata.name==&#34;pv-log-1&#34;)].metadata.name}&#39;
+</code></pre><ul>
+<li>if <code>&quot;&quot;</code> is used in jsonpath, have to specify <code>''</code> to <code>jsonpath='{}'</code></li>
+<li>when using <code>-o=jsonpath</code> need to include <code>.item[*]</code> but <code>--sort-by</code> no need to
+<ul>
+<li><a href="https://kodekloud.com/community/t/answer-is-kubectl-get-pv-sort-by-spec-capacity-storage-gt-opt-outputs-sto/227175/2">https://kodekloud.com/community/t/answer-is-kubectl-get-pv-sort-by-spec-capacity-storage-gt-opt-outputs-sto/227175/2</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="troubleshooting">TroubleShooting</h4>
+<ul>
+<li>
+<p>Application failure</p>
+<ul>
+<li>Check service name, port, label/selector, user</li>
+</ul>
+</li>
+<li>
+<p>Pod pending</p>
+<ul>
+<li>Check kube-scheduler</li>
+</ul>
+</li>
+<li>
+<p>Scale problem</p>
+<ul>
+<li>Check kube-control-manager, check mount path, command, cert file name</li>
+</ul>
+</li>
+<li>
+<p>Node not ready</p>
+<ul>
+<li>Check kubelet is running or not, journalctl to see log, cert file path, restart kubelet after edit</li>
+</ul>
+</li>
+<li>
+<p>Pod containercreating, svc not working</p>
+<ul>
+<li>Check if cni installed</li>
+</ul>
+</li>
+<li>
+<p>File not exist</p>
+<ul>
+<li>Check filename, file name in configmap, mountpath</li>
+</ul>
+</li>
+<li>
+<p>pvc not bound</p>
+<ul>
+<li>Check if require more than pv capacity, access mode</li>
+</ul>
+</li>
+</ul>
+<h2 id="linux指令">Linux指令</h2>
+<h4 id="grep">Grep</h4>
+<ul>
+<li>
+<p><code>-i</code> :  ignore case distinction</p>
+<pre tabindex="0"><code>grep -i &lt;keyword&gt; xxx.yaml
+</code></pre></li>
+<li>
+<p>Show more result before and after the match</p>
+<ul>
+<li>
+<p><code>-B 2</code>:  show 2 lines before the match</p>
+</li>
+<li>
+<p><code>-A 2</code>:  show 2 lines after the match</p>
+</li>
+<li>
+<p><code>-C 2</code>:  show 2 lines beafore and after the match</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="get-encryted-public-key">Get encryted public key</h4>
+<pre tabindex="0"><code>cat akshay.csr | base64 | tr -d &#34;\n&#34;
+</code></pre><h4 id="count-lines">Count lines</h4>
+<pre tabindex="0"><code>kubectl get xxxxx | wc -l
+</code></pre><h4 id="check-listining-port">Check listining port</h4>
+<pre tabindex="0"><code>netstat -nplt (numeric-ip program listen tcp)
+netstat -anp | grep etcd | grep 2379 (list all program with etcd on port 2379)
+</code></pre><h4 id="print-specific-column">Print specific column</h4>
+<pre tabindex="0"><code>kubectl top pods | awk {&#39;print $1&#39;}
+</code></pre>
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://ichennn.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+
