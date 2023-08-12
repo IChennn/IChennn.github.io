@@ -34,15 +34,6 @@ kubectl create secret docker-registry xxx --docker-server=xxx:5000 --docker-user
     </item>
     
     <item>
-      <title></title>
-      <link>https://ichennn.github.io/blog/2023/08/</link>
-      <pubDate>Wed, 02 Aug 2023 02:15:52 +0900</pubDate>
-      
-      <guid>https://ichennn.github.io/blog/2023/08/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>讓Hyde-x theme重新動起來</title>
       <link>https://ichennn.github.io/blog/2023/04/%E8%AE%93hyde-x-theme%E9%87%8D%E6%96%B0%E5%8B%95%E8%B5%B7%E4%BE%86/</link>
       <pubDate>Fri, 07 Apr 2023 09:03:08 +0900</pubDate>
