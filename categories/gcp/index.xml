@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>gcp on Murmuring</title>
+    <link>https://ichennn.github.io/categories/gcp/</link>
+    <description>Recent content in gcp on Murmuring</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 29 Jan 2018 14:49:08 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/categories/gcp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>用google cloud platform 開jupyter notebook!</title>
+      <link>https://ichennn.github.io/blog/2018/01/%E7%94%A8google-cloud-platform-%E9%96%8Bjupyter-notebook/</link>
+      <pubDate>Mon, 29 Jan 2018 14:49:08 +0900</pubDate>
+      
+      <guid>https://ichennn.github.io/blog/2018/01/%E7%94%A8google-cloud-platform-%E9%96%8Bjupyter-notebook/</guid>
+      <description>參照這篇，做個紀錄以免我以後又忘了（真的很金魚腦 該怎麼辦
+https://towardsdatascience.com/running-jupyter-notebook-in-google-cloud-platform-in-15-min-61e16da34d52
+創建google cloud platform 帳號 直接用自己的google帳號就可以惹，一年有300美試用額度，對一般人而言真的是綽綽有餘了
+建立vm instance : compute&amp;gt; compute engine
+安裝google cloud sdk: 可以使用本地terminal利用SSH連線登入google cloud platform的server，不一定要使用，也可以直接網頁上點一下SSH開啟console
+不過用gcloud指令的話傳檔案比較快ＸＤ
+解壓縮之後，執行install.sh
+我自己就莫名其妙一直有奇怪的錯誤訊息（不過好像還是有安裝成功&amp;hellip;吧），接著要認證帳戶
+輸入gcloud auth login ，瀏覽器會自動跳出google帳號的頁面讓你點選登入的帳號
+接下來就可以使用gcloud了
+到google cloud platform的vm那邊，點選SSH連線旁邊小三角形後再選查看gcloud指令
+會出現類似gcloud compute --project &amp;quot;&amp;lt;project-id&amp;gt;&amp;quot; ssh --zone &amp;quot;&amp;lt;your-zone&amp;gt;&amp;quot; &amp;quot;&amp;lt;instance-name&amp;gt;&amp;quot; 的指令，在terminal輸入後就可以用SSH連線到google cloud platform
+安裝anaconda3 wget http://repo.continuum.io/archive/Anaconda3-4.3.0-Linux-x86_64.sh bash Anaconda3-4.0.0-Linux-x86_64.sh source ~/.bashrc 設定網路 Network &amp;gt; VPC network
+External IP address :先將網路改成static
+Firewall rule: 建立一個新的rule允許port tcp:5000 (or 任何一個想要指定開啟notebook 的port)
+設定jupyter notebok jupyter notebook --generate-config 建立config檔（若沒有的話）</description>
+    </item>
+    
+  </channel>
+</rss>
