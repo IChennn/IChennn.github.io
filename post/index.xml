@@ -6,7 +6,26 @@
     <description>Recent content in Posts on Murmuring</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 12 Aug 2023 17:29:03 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 06 Nov 2023 23:04:22 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubernetes cluster migration（kubectl篇）</title>
+      <link>https://ichennn.github.io/blog/2023/11/kubernetes-cluster-migrationkubectl%E7%AF%87/</link>
+      <pubDate>Mon, 06 Nov 2023 23:04:22 +0900</pubDate>
+      
+      <guid>https://ichennn.github.io/blog/2023/11/kubernetes-cluster-migrationkubectl%E7%AF%87/</guid>
+      <description>因為EOL的緣故要更新k8s的vm OS，順便將已經很久沒有更新的weave-net換成calico，因此決定重新建一個cluster，再把原本的workload轉移到新的cluster上。
+乍聽之下沒什麼問題，畢竟原本就是用manifest管理的，平時更新workload也都是重新將manifest deploy一遍就行。
+但真正的問題在於，其中一些workload，像是jenkins，是將app的資料儲存在pv裡，若要轉移到新的cluster上，也要連帶著將pv裡的資料也轉移過去才行。
+因此如何轉移pv變成了這次migration最大的課題。
+首先梳理一下cluster的狀況：
+以jenkins為例： deployment -&amp;gt; (經由nfs provisioner創建) pvc -&amp;gt; pv -&amp;gt; nfs https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner 作為storage的nfs沒有改變 也就是說在nfs上舊cluster用來儲存資料的path不會移動或改變，只是怎麼讓新cluster使用這個路徑作為pv的問題 移植pv與pvc的方法是參考這篇文章實作的：
+https://acv.engineering/posts/migrating-a-kubernetes-pvc/
+[新cluster] Deploy NFS provisioner 什麼是NFS provisioner呢？這是一個由kubernetes-sigs提供的工具，全稱是Kubernetes NFS Subdir External Provisioner。
+可以非常方便的使用既有的NFS server作為pv的儲存路徑，而pv名稱會以${namespace}-${pvcName}-${pvName}的格式呈現。
+由於舊cluster上的pv都是透過nfs provisioner去創建的，因此在轉移之前，必須先在新的cluster上也deploy NFS provisioner。
+# kubectl apply -k jenkins-nfs-provisioner/test/ storageclass.storage.k8s.io/jenkins-nas-nfs created serviceaccount/jenkins-nfs-client-provisioner created role.rbac.authorization.k8s.io/jenkins-leader-locking-nfs-client-provisioner created clusterrole.rbac.authorization.k8s.io/jenkins-nfs-client-provisioner-runner created rolebinding.rbac.authorization.k8s.io/jenkins-leader-locking-nfs-client-provisioner created clusterrolebinding.rbac.authorization.k8s.io/jenkins-nfs-client-provisioner created deployment.apps/jenkins-nfs-client-provisioner created # kubectl get all | grep nfs pod/jenkins-nfs-client-provisioner-69978cf7f4-vzs2g 1/1 Running 0 118s deployment.apps/jenkins-nfs-client-provisioner 1/1 1 1 118s replicaset.</description>
+    </item>
+    
     <item>
       <title>CKA備考＆常用指令筆記</title>
       <link>https://ichennn.github.io/blog/2023/08/cka%E5%82%99%E8%80%83%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E7%AD%86%E8%A8%98/</link>
