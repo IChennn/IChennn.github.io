@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Kubernetes cluster migration（verelo篇) &middot; IChen Hung</title>
+
+  
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/highlight/solarized_dark.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://ichennn.github.io/touch-icon-144-precomposed.png">
+  <link href="https://ichennn.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+  <meta name="description" content="記錄如何將k8s上的worload和pv由舊的clustet轉移到新建的cluster。此篇參考網路上的教學文章，主要使用verelo指令來完成任務。也會記錄一些使用verelo的限制與條件。">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-08 layout-reverse">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>Murmuring</h1>
+      <p class="lead">心身之外，順其自然；順其自然，花落果成。</p>
+    </div>
+
+    <ul class="sidebar-nav category">
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/about-me/">About ME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/learning/">Learning</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/%E4%BA%AC%E9%83%BD%E7%94%9F%E6%B4%BB/">Life in Kyoto</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/%E6%9D%B1%E4%BA%AC%E7%94%9F%E6%B4%BB/">Life in Tokyo</a></li>
+      
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/IChennn"><i class="fa fa-github-square fa-2x"></i></a>
+      
+      
+      
+      
+      
+      
+      
+      
+      </li>
+    </ul>
+
+    
+
+    <p><font size=2>&copy; 2023. All rights reserved. <br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></font></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Kubernetes cluster migration（verelo篇)</h1>
+    <span class="post-date">Dec 12, 2023
+    
+    <br/>
+    <a class="label" href="https://ichennn.github.io/categories/learning">Learning</a><a class="label" href="https://ichennn.github.io/categories/kubernetes">Kubernetes</a>
+    </span>
+    <p>上篇：</p>
+<p><a href="https://ichennn.github.io/blog/2023/11/kubernetes-cluster-migrationkubectl%E7%AF%87/">https://ichennn.github.io/blog/2023/11/kubernetes-cluster-migrationkubectl%E7%AF%87/</a></p>
+<p>雖然上一篇使用kubectl移植workload跟pv沒有什麼問題，但就是步驟略多略複雜，又是全部手動操作，移植的對象一多，難免曠日廢時忙中有錯ＸＤ</p>
+<p>恩～有沒有更好更快的方法呢？</p>
+<p>突然靈光一閃，之前我不是抱著嚐鮮的心態安裝了velero在cluster裡嗎！一直以來沒什麼實際應用的機會略感可惜，這不，天上掉下來一個大好的機會，正好可以試試看velero好不好用。</p>
+<h2 id="安裝velero">安裝velero</h2>
+<p>其實安裝沒碰到太多的困難，只要準備好存放備份的object storage，接下來照著公式上的步驟deploy到cluster上就行了。</p>
+<p><a href="https://velero.io/docs/v1.12/">https://velero.io/docs/v1.12/</a></p>
+<p>velero雖然看似單純的一個小工具，其實用途很多，像是disaster recovery、cluster migration、或是日常的測試時用來回復備份等等，沒有不會怎樣，但有了之後突然感覺很方便的概念。</p>
+<p>由於不是本篇的重點，公式網站的文章也有非常詳細的說明，因此就不贅述了。</p>
+<h2 id="使用velero來備份">使用velero來備份</h2>
+<pre tabindex="0"><code># velero backup create --from-schedule stg-k8s-backup     
+INFO[0000] No Schedule.template.metadata.labels set - using Schedule.labels for backup object
+backup=velero/stg-k8s-backup-20230210160910 labels=&#34;map[]&#34;
+Creating backup from schedule, all other filters are ignored.
+Backup request &#34;stg-k8s-backup-20230210160910&#34; submitted successfully.
+Run `velero backup describe stg-k8s-backup-20230210160910` or `velero backup logs stg-k8s-backup-20230210160910` for more details.
+
+# velero backup get | grep stg-jpe12-k8s-backup-20230210
+stg-k8s-backup-20230210160910          Completed★        0       1        2023-02-10 16:09:11 +0900 JST  6d       default         &lt;none&gt;
+</code></pre><h2 id="舊cluster將deployment-replica0">[舊cluster]將deployment replica=0</h2>
+<p>這邊和上一篇是一樣的，主要是想要保險一點，在replica=0的狀態下移植到新的環境，避免ip衝突，或是其他有可能的紕漏。</p>
+<pre tabindex="0"><code># kubectl scale deployment -n test-dev jenkins-deployment --replicas=0
+deployment.apps/jenkins-deployment scaled
+</code></pre><pre tabindex="0"><code># kubectl get all -n test-dev 
+NAME                      TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)                        AGE
+service/jenkins-service   LoadBalancer   10.109.1xx.xxx   172.xx.xx.xx   80:30194/TCP,50000:31910/TCP   2d
+
+NAME                                           READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/jenkins-deployment             0/0     0            0           2d
+
+NAME                                                      DESIRED   CURRENT   READY   AGE
+replicaset.apps/jenkins-deployment-9b9bbcb8c              0         0         0       2d
+</code></pre><h2 id="新cluster使用velero來恢復備份">[新cluster]使用velero來恢復備份</h2>
+<p>沒錯，就是這麼迅速簡單，已經來到了restore的步驟了ＸＤ</p>
+<pre tabindex="0"><code># velero restore create --from-backup stg-k8s-backup-20230210160910 --include-namespaces test-dev 
+Restore request &#34;stg-k8s-backup-20230210160910-20230210161603&#34; submitted successfully.
+Run `velero restore describe stg-k8s-backup-20230210160910-20230210161603` or `velero restore logs stg-k8s-backup-20230210160910-20230210161603` for more details.
+</code></pre><p>這時可以發現原本在舊cluster的workload已經被原封不動的搬移到新cluster了。replicaset和pv的hash也和舊cluster一模一樣。</p>
+<pre tabindex="0"><code># kubectl get all -n test-dev
+NAME                                                READY   STATUS    RESTARTS   AGE
+pod/jenkins-deployment-9b9bbcb8c-wdfrk              1/1     Running   0          109s
+
+NAME                      TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)                        AGE
+service/jenkins-service   LoadBalancer   192.172.48.40    172.xx.xx.xx   80:30009/TCP,50000:31100/TCP   109s
+
+NAME                                           READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/jenkins-deployment             1/1     1            1           109s
+
+NAME                                                      DESIRED   CURRENT   READY   AGE
+replicaset.apps/jenkins-deployment-9b9bbcb8c              1         1         1       109s
+</code></pre><p>此時進入jenkins畫面，會發現和上一集手動migration的結果一樣，舊cluster上創建的內容都出現在新cluster上了。</p>
+<p>雖然兩者都可以達到一樣的效果，不過使用velero確實更直接、更快速可以將workload移植到新cluster囉！</p>
+<h2 id="使用velero的一些注意點與個人筆記">使用velero的一些注意點與個人筆記</h2>
+<h3 id="velero的label">velero的label</h3>
+<p>使用velero備份還原後，會發現原本的resource被velero加上了一些備份關聯的label。雖說只是幾個label也無傷大雅，不過label內容實在有夠長，看多了就覺得有夠阿雜ＸＤ</p>
+<p>這時可以直接使用kubectl edit去刪除修正這些被另外加上的label就行。</p>
+<h3 id="storageclass名稱改變時">storageclass名稱改變時</h3>
+<p>這次的migration除了升級k8s以外，也順便整理了前輩們留下來的各種resource，其中就包括了為storageclass更名。</p>
+<p>上一篇有提到，jenkins使用的pv其實是經由storageclass來provision的，因此理論上使用velero恢復備份時，也會經由storageclass重新provision一個pv來用。</p>
+<p>然而若是storageclass的名稱改變了，就造成一個有點尷尬的局面——明明（對身為人類的我們來說）是同一個storageclass，但對k8s來說就是不存在的，因此沒辦法恢復原本是由舊名稱所provision的pv，也就是說，若是storageclass名更改了，就無法使用velero來進行migration或restore。</p>
+<p>當初也是過先restore，然後kubectl edit嘗試直接修改storageclass名，可惜結果是一旦宣告使用舊storageclass來provision pv和pvc後，無論成不成功，都無法途中更改storageclass名或是nfs ip了，必須重新來過才行。</p>
+<p>也正是因為這一點，成了這次migration最終沒有採用velero，而是土法煉鋼使用kubectl來操作的最大理由。（使用kubectl的話需要先將舊cluster的pv和pvc保存成yaml，也就可以趁還沒deploy到新cluster之前先修改storageclass了）</p>
+<h3 id="同樣的resource已經存在只是namespace改變時">同樣的resource已經存在只是namespace改變時</h3>
+<p>這個狀況或許不太有機會發生，不過當初因為事先在新stg cluster隨便命名了一個ns來測試pypi，後來隨著migration的方針越來越清晰，最後要將原本測試用的ns給遷移到另一個命名的namespace裡。</p>
+<p>因此狀況是這樣的：</p>
+<ul>
+<li>有個namespace叫做test-dev，上面有一開始測試用的pypi resource包含pv</li>
+<li>目標是，將test-dev的pypi移植到同一個cluster另一個叫做staging的namespace上，並使用原本就有的pv</li>
+</ul>
+<p>此時可以使用velero的mapping指令來達成：</p>
+<pre tabindex="0"><code>velero restore create --from-backup ns-test-dev-20230310 --namespace-mappings test-dev:staging --selector app.kubernetes.io/name=pypi
+</code></pre><p>若是從別的cluster移植過來，只是需要將namespace更名的話，直接執行這個command就行。不過由於這次是同一個cluster內的移動，因此需要在pv上多下一點功夫。</p>
+<ul>
+<li>
+<p>首先，要先將舊namespace裡的東西刪除（當然，要先backup啦）（deployment、pvc之類的這時都被刪掉了）</p>
+<pre tabindex="0"><code>kubectl delete ns test-dev
+</code></pre></li>
+<li>
+<p>再來是將pv裡面殘存的和pvc相連的reference刪除。刪掉之後pv就會被釋放出來，也才能夠被之後restore的新pvc所使用</p>
+<pre tabindex="0"><code>kubectl edit pv &lt;pv-name&gt;
+刪掉 claimRef: 的部分
+</code></pre></li>
+</ul>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://ichennn.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+

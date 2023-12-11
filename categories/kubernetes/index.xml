@@ -6,7 +6,25 @@
     <description>Recent content in Kubernetes on Murmuring</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Nov 2023 23:04:22 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 12 Dec 2023 01:04:16 +0900</lastBuildDate><atom:link href="https://ichennn.github.io/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubernetes cluster migration（verelo篇)</title>
+      <link>https://ichennn.github.io/blog/2023/12/kubernetes-cluster-migrationverelo%E7%AF%87/</link>
+      <pubDate>Tue, 12 Dec 2023 01:04:16 +0900</pubDate>
+      
+      <guid>https://ichennn.github.io/blog/2023/12/kubernetes-cluster-migrationverelo%E7%AF%87/</guid>
+      <description>上篇：
+https://ichennn.github.io/blog/2023/11/kubernetes-cluster-migrationkubectl%E7%AF%87/
+雖然上一篇使用kubectl移植workload跟pv沒有什麼問題，但就是步驟略多略複雜，又是全部手動操作，移植的對象一多，難免曠日廢時忙中有錯ＸＤ
+恩～有沒有更好更快的方法呢？
+突然靈光一閃，之前我不是抱著嚐鮮的心態安裝了velero在cluster裡嗎！一直以來沒什麼實際應用的機會略感可惜，這不，天上掉下來一個大好的機會，正好可以試試看velero好不好用。
+安裝velero 其實安裝沒碰到太多的困難，只要準備好存放備份的object storage，接下來照著公式上的步驟deploy到cluster上就行了。
+https://velero.io/docs/v1.12/
+velero雖然看似單純的一個小工具，其實用途很多，像是disaster recovery、cluster migration、或是日常的測試時用來回復備份等等，沒有不會怎樣，但有了之後突然感覺很方便的概念。
+由於不是本篇的重點，公式網站的文章也有非常詳細的說明，因此就不贅述了。
+使用velero來備份 # velero backup create --from-schedule stg-k8s-backup INFO[0000] No Schedule.template.metadata.labels set - using Schedule.labels for backup object backup=velero/stg-k8s-backup-20230210160910 labels=&amp;#34;map[]&amp;#34; Creating backup from schedule, all other filters are ignored. Backup request &amp;#34;stg-k8s-backup-20230210160910&amp;#34; submitted successfully. Run `velero backup describe stg-k8s-backup-20230210160910` or `velero backup logs stg-k8s-backup-20230210160910` for more details. # velero backup get | grep stg-jpe12-k8s-backup-20230210 stg-k8s-backup-20230210160910 Completed★ 0 1 2023-02-10 16:09:11 +0900 JST 6d default &amp;lt;none&amp;gt; [舊cluster]將deployment replica=0 這邊和上一篇是一樣的，主要是想要保險一點，在replica=0的狀態下移植到新的環境，避免ip衝突，或是其他有可能的紕漏。</description>
+    </item>
+    
     <item>
       <title>Kubernetes cluster migration（kubectl篇）</title>
       <link>https://ichennn.github.io/blog/2023/11/kubernetes-cluster-migrationkubectl%E7%AF%87/</link>
