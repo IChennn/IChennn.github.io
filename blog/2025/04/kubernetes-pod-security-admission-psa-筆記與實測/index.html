@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Kubernetes Pod Security Admission (PSA) 筆記與實測 &middot; IChen Hung</title>
+
+  
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/highlight/solarized_dark.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://ichennn.github.io/touch-icon-144-precomposed.png">
+  <link href="https://ichennn.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+  <meta name="description" content="記錄如何利用簡單的labeling來確保pod符合安全性要求。從概念到實測的一些筆記">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-08 layout-reverse">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>Murmuring</h1>
+      <p class="lead">心身之外，順其自然；順其自然，花落果成。</p>
+    </div>
+
+    <ul class="sidebar-nav category">
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/about-me/">About ME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/learning/">Learning</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/%E4%BA%AC%E9%83%BD%E7%94%9F%E6%B4%BB/">Life in Kyoto</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/%E6%9D%B1%E4%BA%AC%E7%94%9F%E6%B4%BB/">Life in Tokyo</a></li>
+      
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/IChennn"><i class="fa fa-github-square fa-2x"></i></a>
+      
+      
+      
+      
+      
+      
+      
+      
+      </li>
+    </ul>
+
+    
+
+    <p><font size=2>&copy; 2025. All rights reserved. <br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></font></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Kubernetes Pod Security Admission (PSA) 筆記與實測</h1>
+    <span class="post-date">Apr 17, 2025
+    
+    <br/>
+    <a class="label" href="https://ichennn.github.io/categories/learning">Learning</a><a class="label" href="https://ichennn.github.io/categories/kubernetes">Kubernetes</a>
+    </span>
+    <p>自從換了新公司之後，因為業界的性質，安全性一直是在實務上一個非常大的考量。可以不做新功能，可以不上新版本，但一定要嚴格要求安全性。</p>
+<h2 id="什麼是pod-security-admission-psa">什麼是Pod Security Admission (PSA)？</h2>
+<p>先來說說什麼是<a href="https://kubernetes.io/docs/concepts/security/pod-security-standards/">Pod Security Standards（PSS）</a>。</p>
+<p>PSS簡單來說是一系列的predefined的security policy，根據某些安全基準要求必須在manifest當中定義某項設定，而該項設定又有嚴格的Allow值，除了允許的設定內容外都被視為不合格（包含未定義該項設定）。</p>
+<p>而PSS根據嚴格程度從輕到重分成三種等級（LEVEL）：<strong>Privileged</strong>、<strong>Baseline</strong>、<strong>Restricted</strong></p>
+<p>詳細的說明及規範的內容都在官方的文檔裡有詳細介紹，在此就割愛不贅述了。</p>
+<p>簡單介紹了PSS後，再回頭來說PSA。<a href="https://kubernetes.io/docs/concepts/security/pod-security-admission/">Pod Security Admission (PSA)</a>是一個從kubernetes 1.25開始的功能，是一個build-in的controller，以簡單的labeling方式去實踐PSS。一般來說是以namespace為單位去apply，也可以對整個cluster去apply。</p>
+<p>而根據pod被判定為non-compliant時的動作，可以分為三種模式（MODE）：<strong>enforce</strong>、<strong>audit</strong>、<strong>warn</strong></p>
+<p>在最嚴格的enforce模式下，若pod被判定不合規，會直接被rejected。</p>
+<h2 id="實際作法">實際作法</h2>
+<p>說穿了其實超級單純，就是在目標ns或是cluster加上一個label <code>pod-security.kubernetes.io/&lt;MODE&gt;: &lt;LEVEL&gt;</code></p>
+<p>若只想限制特定namespace內的pod：</p>
+<p><code>kubectl label ns xxxx pod-security.kubernetes.io/enforce=restricted</code></p>
+<p>上述的缺點就是若後來創建了新namespace，很有可能就成為漏網之魚了。</p>
+<p>若想一勞永逸對全體cluster都加上限制的話（目前公司使用Azure因此是aks的command）：</p>
+<p><code>az aks update --resource-group xxx --name xxx --security-profile workload-policy=restricted</code></p>
+<p>rollback的方式也很直觀，就是把label拿掉就行了</p>
+<p><code>kubectl label ns test pod-security.kubernetes.io/enforce-</code></p>
+<p><code>az aks update --resource-group xxx --name xxx --security-profile workload-policy=none</code></p>
+<h2 id="一些筆記">一些筆記</h2>
+<p>不知道該幫這個段落取什麼名字，哈哈哈</p>
+<p>總之在嘗試的過程中，發現一些值得留意的點，在實務上可能會造成誤會及困擾，因此覺得該記錄一下以供日後參考。</p>
+<h4 id="non-compliant-pod不會立刻被reject">non-compliant pod不會立刻被reject</h4>
+<p>當label被加上之後，若有violation的話會出現warning，詳細指出哪些設定不符規則，但現存的pod (running狀態下)並不會立刻受到影響。</p>
+<p>pod依然可以正常運作，但是當下一次pod被update或是restart時則會被reject。因此PSA帶來的限制效果可能是有一定的時間延遲的。</p>
+<p>也就是說PSA並不會溯及既往，只會影響發生在限制加上後的pod operation。</p>
+<h4 id="validation">Validation</h4>
+<p>kubernetes 1.30+後，有一種新的resource可以作為validation的方法，像個守門員？一樣替你檢查新做成的pod合不合規定。</p>
+<p>因為檢查的條件可以自己定義，因此不局限於PSA的內容，任何關於pod的設定，例如最少要幾個replica之類的規則也都沒問題。</p>
+<p>由於這次沒有實驗這個功能，就只留下document作為一個筆記了。</p>
+<p><a href="https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/">https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/</a></p>
+<h2 id="實作">實作</h2>
+<p>首先，在任何一個namespace裡隨便起一個pod，確認pod順利變成running status。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; k get all -n test
+</span></span><span style="display:flex;"><span>NAME                       READY   STATUS    RESTARTS   AGE
+</span></span><span style="display:flex;"><span>pod/test-94569c955-7k8qg   1/1     Running   <span style="color:#ae81ff">0</span>          5s
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+</span></span><span style="display:flex;"><span>deployment.apps/test   1/1     <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           8m36s
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>NAME                              DESIRED   CURRENT   READY   AGE
+</span></span><span style="display:flex;"><span>replicaset.apps/test-94569c955    <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>       6s
+</span></span></code></pre></div><p>然後為這個ns加上最嚴格的PSA設定。由於是enforce mode，在此規範加上後，新建或更新時若不合乎規範的pod將無法啟動。</p>
+<p>加上PSA時，系統也會很貼心地給出warning指出哪些地方不合規範，給使用者一個修改的方向。</p>
+<p>這些內容是什麼意思，以及該如何修改才能通過PSA則在官方的文檔裡都能找到答案：</p>
+<p><a href="https://kubernetes.io/docs/concepts/security/pod-security-standards/">https://kubernetes.io/docs/concepts/security/pod-security-standards/</a></p>
+<pre tabindex="0"><code>&gt; k label ns test pod-security.kubernetes.io/enforce=restricted
+Warning: existing pods in namespace &#34;test&#34; violate the new PodSecuity enforce level &#34;restricted:latest&#34;
+Warning: test-7ddbbd8d79-877zz: allowPrivilegeEscalation != false, unrestricted capabilities, runAsNonRoot != true, seccompProfile
+namespace/test labeled
+</code></pre><p>label加上後再次檢查pod，會發現並無任何變化（已經在running狀態的既存pod不受影響）</p>
+<pre tabindex="0"><code>&gt; k get all -n test
+NAME                       READY   STATUS    RESTARTS   AGE
+pod/test-94569c955-7k8qg   1/1     Running   0          15s
+
+NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/test   1/1     1            1           8m56s
+
+NAME                              DESIRED   CURRENT   READY   AGE
+replicaset.apps/test-94569c955    1         1         1       16s
+</code></pre><p>這時若重啟pod，PSA會再次跳出warning。</p>
+<pre tabindex="0"><code>&gt; k rollout restart deploy test -n test
+Warning: would violate PodSecurity &#34;restricted:latest&#34;: allowPrivilegeEscalation != false (container &#34;network-debugger&#34; must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container &#34;network-debugger&#34; must set securityContext.capabilities.drop=[&#34;ALL&#34;]), runAsNonRoot != true (pod or container &#34;network-debugger&#34; must set securityContext.runAsNonRoot=true), seccompProfile (pod or container &#34;network-debugger&#34; must set securityContext.seccompProfile.type to &#34;RuntimeDefault&#34; or &#34;Localhost&#34;)
+deployment.apps/test restarted
+</code></pre><p>再次確認pod狀態，會發現restart的操作確實被實行了，因此出現了一個新的replicaset，但是pod卻是原本舊的那個，並沒有被替換成新的pod。</p>
+<p>pod的更新失敗了，新pod無法啟動</p>
+<pre tabindex="0"><code>&gt; k get all -n test
+NAME                       READY   STATUS    RESTARTS   AGE
+pod/test-94569c955-7k8qg   1/1     Running   0          4m18s
+
+NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/test   1/1     0            1           12m
+
+NAME                              DESIRED   CURRENT   READY   AGE
+replicaset.apps/test-5f6b588c6    1         0         0       8s
+replicaset.apps/test-94569c955    1         1         1       4m19s
+</code></pre><p>這時我們把PSA的label拿掉。</p>
+<pre tabindex="0"><code>&gt; k label ns test pod-security.kubernetes.io/enforce-
+namespace/test unlabeled
+</code></pre><p>再次確認pod狀態，會發現剛才restart後更新的pod成功啟動並變成running狀態。</p>
+<pre tabindex="0"><code>&gt; k get all -n test
+NAME                       READY   STATUS    RESTARTS   AGE
+pod/test-5f6b588c6-qjrd8   1/1     Running   0          4s
+
+NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/test   1/1     1            1           13m
+
+NAME                              DESIRED   CURRENT   READY   AGE
+replicaset.apps/test-5f6b588c6    1         1         1       45s
+replicaset.apps/test-94569c955    0         0         0       4m56s
+</code></pre><h2 id="reference">reference</h2>
+<p><a href="https://medium.com/google-cloud/improve-your-kubernetes-security-posture-with-the-pod-security-admission-psa-6bb59cc6923f">Only one label to improve your Kubernetes security posture, with the Pod Security Admission (PSA) — just do it! | by Mathieu Benoit | Google Cloud - Community | Medium</a></p>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://ichennn.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+
