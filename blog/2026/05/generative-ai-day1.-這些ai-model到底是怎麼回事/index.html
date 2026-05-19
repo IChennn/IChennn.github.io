@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>[Generative AI] Day1. 這些AI model到底是怎麼回事 &middot; IChen Hung</title>
+
+  
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://ichennn.github.io/css/highlight/solarized_dark.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://ichennn.github.io/touch-icon-144-precomposed.png">
+  <link href="https://ichennn.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+  <meta name="description" content="試了一陣子AI生圖，到頭來只產出一堆垃圾，於是決定痛定思痛從基礎開始學——那些美麗的 AI 圖片，背後根本不是在「畫畫」，而是一場超精密的積木遊戲。">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-08 layout-reverse">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>Murmuring</h1>
+      <p class="lead">心身之外，順其自然；順其自然，花落果成。</p>
+    </div>
+
+    <ul class="sidebar-nav category">
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/about-me/">About ME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/generative-ai/">Generative AI</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/learning/">Learning</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/%E4%BA%AC%E9%83%BD%E7%94%9F%E6%B4%BB/">Life in Kyoto</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://ichennn.github.io/categories/%E6%9D%B1%E4%BA%AC%E7%94%9F%E6%B4%BB/">Life in Tokyo</a></li>
+      
+      
+    </ul>
+
+<ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/IChennn"><i class="fa fa-github-square fa-2x"></i></a>
+      
+      
+      
+      
+      
+      
+      
+      
+      <script type="text/javascript"
+        src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+        data-name="bmc-button"
+        data-slug="i_chennn"
+        data-color="#608682" 
+        data-emoji="☕"
+        data-font="Cookie"
+        data-text="Buy me a coffee"
+        data-outline-color="#608682"
+        data-font-color="#ffffff"
+        data-coffee-color="#ffffff">
+      </script>
+      <style>
+        .bmc-btn {
+          opacity: 0.85;
+          transform: scale(0.9);
+          transform-origin: center;
+          margin-top: 5px auto 0 !important;
+          background-color: transparent !important;
+        }
+        .bmc-btn:hover {
+          opacity: 1;
+        }
+      </style>
+      
+      
+      </li>
+    </ul>
+
+    
+
+    <p><font size=2>&copy; 2026. All rights reserved. <br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></font></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">[Generative AI] Day1. 這些AI model到底是怎麼回事</h1>
+    <span class="post-date">May 18, 2026
+    
+    <br/>
+    <a class="label" href="https://ichennn.github.io/categories/generative-ai">Generative AI</a>
+    </span>
+    <p>其實我算是AI後知後覺的人了。</p>
+<p>這些工具和model從2022年開始陸陸續續開始出現在市場上，但我直到2026年AI紀元元年（？才開始注目這些技術。
+就和其他所有的技術知識一樣，已經太多東西要學了（哭</p>
+<p>一開始也對AI生圖躍躍欲試，也想過可以用AI圖賺錢。但後來做了一陣子，發現怎麼弄都是garbage in garbage out&hellip;&hellip;唉，天下果然沒有白吃的午餐</p>
+<p>決定痛定思痛，找個課程好好的學怎麼用AI產出高質量的圖，為了鞭策自己，還開了個instagram/ thread帳號來記錄，希望有一天也能回頭看的時候覺得自己成長好多（笑</p>
+<p><a href="https://www.threads.com/@slothisfast">樹懶的學習樹洞</a></p>
+<p>以下由小幫手claude上場代寫（欸</p>
+<p>開始學 Generative AI 的第一天，講師說了一句話讓我愣住：「AI 根本不會畫畫，它只是在填格子。」說真的，我當下以為自己聽錯了。那些看起來美得一塌糊塗的 AI 圖片，難道不是某種程度的「創作」嗎？</p>
+<p>結果不是，完全不是，而且真正的原理比我想像的反直覺一百倍……就讓我來碎碎念一下今天學到的東西XD</p>
+<hr>
+<h2 id="生圖工具大爆炸先搞清楚誰是誰">生圖工具大爆炸（先搞清楚誰是誰）</h2>
+<p>開始接觸generative AI之後，網路上各種名詞跟工具排山倒海而來，我的第一反應是：這些是……同一種東西嗎？</p>
+<p>不是的，它們分兩類。<strong>第一類是生圖引擎</strong>，也就是真正在產圖的那一群：</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>強項</th>
+<th>能本機跑嗎</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DALL-E</td>
+<td>Logo、設計感強的圖</td>
+<td>不行（需要 OpenAI API）</td>
+</tr>
+<tr>
+<td>Midjourney</td>
+<td>超寫實人像</td>
+<td>不行（需要訂閱）</td>
+</tr>
+<tr>
+<td>Adobe Firefly</td>
+<td>跟 Adobe 套件整合</td>
+<td>不行</td>
+</tr>
+<tr>
+<td>Flux</td>
+<td>超寫實、有藝術感</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>Stable Diffusion</td>
+<td>彈性最高、可客製化程度強</td>
+<td>可以</td>
+</tr>
+</tbody>
+</table>
+<p><strong>第二類是自動化操作介面</strong>，功能是幫你把多個步驟串起來，本身不生圖：</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>特色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ComfyUI</td>
+<td>視覺化流程編輯，功能超強但學習曲線陡</td>
+</tr>
+<tr>
+<td>Forge</td>
+<td>介面比較友善</td>
+</tr>
+<tr>
+<td>Fooocus</td>
+<td>最容易上手，但需要好硬體或 Google Colab</td>
+</tr>
+</tbody>
+</table>
+<p>前者是引擎，後者是方向盤。我花了一些時間才搞清楚他們到底是啥。
+順帶一提，課程還提到了音樂和音效工具像是 ElevenLabs 跟 Udio，不過今天先專注在圖像這塊就好，腦袋一次只能裝這麼多orz</p>
+<hr>
+<h2 id="ai-到底是怎麼學會產圖的">AI 到底是怎麼「學會」產圖的</h2>
+<p>好，這才是今天的重頭戲，也是讓我整個世界觀震了一下的部分。</p>
+<p>核心概念叫做 <strong>Diffusion Model（擴散模型）</strong>。聽起來很厲害，但背後的邏輯其實出乎意料地……反常理。</p>
+<p><strong>第一步，AI 先學怎麼「破壞」一張圖。</strong></p>
+<p>訓練的時候，AI 拿著大量真實圖片，一層一層往上面加雜訊，直到那張圖完全變成一片雪花、什麼都看不出來。這個過程叫做 Forward Diffusion（正向擴散）。就像把一杯清水一滴一滴加入墨水，最後變成一杯混濁的黑水，再也找不回原本的清澈。</p>
+<p><img src="https://ichennn.github.io/img/20260518_forward_diffusion.png" alt="forward_diffusion"></p>
+<p>然後，<strong>學會怎麼破壞之後，它就反過來學怎麼「還原」。</strong></p>
+<p>這一步叫 Backward Diffusion（反向擴散）。神經網路反覆預測「這片雜訊哪裡有問題」，跟正確答案比對，調整參數，重複幾千次——去噪的能力就這樣被一點一點訓練出來。這是監督式學習，說白了就是不斷對答案、修正誤差的過程。</p>
+<p>所以你按下生圖按鈕之後，AI 做的事是：從一片亂七八糟的雜訊，往清晰的方向一步步走，把你要的圖「猜」出來。它不是在創作，它是在還原。這個邏輯第一次聽到的時候，我停在那裡想了好幾秒，因為這完全不是我以為的那回事。</p>
+<p><img src="https://ichennn.github.io/img/20260518_backward_diffusion.png" alt="backward_diffusion"></p>
+<hr>
+<h2 id="電腦怎麼讀懂你打的字">電腦怎麼讀懂你打的字</h2>
+<p>搞懂了 AI 怎麼生圖之後，下一個問題是：你輸入「一隻橘色的貓坐在窗邊」，電腦看到的到底是什麼？</p>
+<p>答案很簡單：數字。</p>
+<p>流程大概是這樣——</p>
+<ol>
+<li>你打的文字，電腦先切成一個一個的 <strong>Token</strong>（最小語意單位，可以是一個字、一個詞、或一個片語）</li>
+<li>每個 Token 被轉成一串數字，叫 <strong>Embedding（詞嵌入）</strong>——電腦就是用這組數字來「理解」一個詞的意思</li>
+<li>多個 Embedding 組合起來形成 <strong>Tensor（張量）</strong>，代表整段話的語意地圖</li>
+<li>這張語意地圖告訴 AI：根據這段文字，哪個像素位置應該填什麼顏色</li>
+</ol>
+<p>嘛，說起來四個步驟而已，但光是「把文字變成數字到底是怎麼做到的」就夠我再研究好幾天了&hellip;雖然話是這樣說，但我知道背後的原理就是一大堆數學公式，以前唸書的時候曾經有接觸過，但最後認清了我的極限只是個凡人&hellip;.所以這次就很識相的點到為止了嗚。</p>
+<hr>
+<h2 id="從文字到圖片完整走一遍">從文字到圖片，完整走一遍</h2>
+<p>把前面所有東西串起來，一張圖的誕生過程大概長這樣：</p>
+<table>
+<thead>
+<tr>
+<th>步驟</th>
+<th>在做什麼</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. 你打 Prompt</td>
+<td>輸入文字描述</td>
+</tr>
+<tr>
+<td>2. 文字 → Token → Embedding</td>
+<td>語言轉成電腦看得懂的數字</td>
+</tr>
+<tr>
+<td>3. Embedding → Tensor</td>
+<td>數字組合成語意地圖，說明整體脈絡</td>
+</tr>
+<tr>
+<td>4. 決定 SEED</td>
+<td>選定起始雜訊點，同一個 SEED 每次都會生出一樣的圖</td>
+</tr>
+<tr>
+<td>5. Backward Diffusion</td>
+<td>從雜訊出發，一步步把像素「猜」對，重複幾千次</td>
+</tr>
+<tr>
+<td>6. 圖片輸出</td>
+<td>每個像素的 RGB 確定了，圖出現了</td>
+</tr>
+</tbody>
+</table>
+<p>每次生圖，這整個流程都跑了一遍——就為了讓你得到那張貓貓圖（或是別的什麼 XD）。</p>
+<hr>
+<h2 id="小結">小結</h2>
+<p>學完 Day1 最大的感想不是「我現在會了」，而是「原來我連它在做什麼都不知道」（笑）。AI 生圖不是魔法，是數學，是把破壞和還原的過程重複千遍練出來的能力。這個認知雖然讓那些美麗的圖片少了一點神秘感，但反而讓我更好奇：接下來還有多少「我以為我懂但其實完全不懂」的東西在等著我呢～</p>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://ichennn.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+
